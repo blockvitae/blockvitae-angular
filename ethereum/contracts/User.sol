@@ -64,5 +64,25 @@ contract User {
         UserEducation[] education; // education of the user
         UserProject[] projects; // projects of the user
         string[] skills; // skills of the user
+        bool exists; // true everytime add new new struct
+    }
+
+    // set UserDetail values
+    function setUserDetail (
+        string fullName,
+        string userName,
+        string imgUrl,
+        string email
+    )
+    internal
+    pure
+    returns (UserDetail)
+    {
+        UserDetail memory detail;
+        detail.fullName = fullName;
+        detail.userName = userName;
+        detail.imgUrl = imgUrl;
+        detail.email = email;
+        return detail;
     }
 }
