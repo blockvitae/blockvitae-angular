@@ -1,23 +1,47 @@
 pragma solidity ^0.4.24;
 
-// @title Blockchain based CV
-contract Blockvitae {
-    
-    // UserDetails holds personal
-    // details of the user
-    struct UserDetails {
-        string fullName; // fullname of the user
-        string userName; // username or url selected by the user
-        string imgUrl; // profile image url
-        string email; // email address of the user
+// import user.sol contract
+import "./User.sol";
+
+// @title Blockvitae for CV
+contract Blockvitae is User{
+
+    // list of all users
+    mapping (address => UserMain) users;
+
+    // owner of the contract
+    address owner;
+
+    // checks if the user has an account or not
+    modifier userExists () {
+        require(users[msg.sender].exists);
+        _;
     }
 
-    struct User
+    // sets the owner of the contract
+    constructor () public {
+        owner = msg.sender;
+    } 
 
-    // User is struct which holds all
-    // the details for a particular user
-    // creating a CV on Blockvitae
-    struct User {
-        UserDetails personal; // personal details of the user
+    // @description: creates UserDetail struct
+    //
+    // @param string fullName full name of the user
+    // @param string userName username of the user
+    // @param string imgUrl profile image url of the user
+    // @param string email email of the user
+    function createUserDetail (
+        string fullName,
+        string userName,
+        string imgUrl,
+        string email
+    )
+    public
+    {
+        users[msg.sender].personal = setUserDetail(
+            fullName,
+            userName,
+            imgUrl,
+            email
+        );
     }
 }
