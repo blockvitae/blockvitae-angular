@@ -14,7 +14,8 @@ before_script:
 ## Reference link
 ## https://ethereum.stackexchange.com/a/42658
 script:
-  - cd angular && ng build --prod --aot
+  - cd angular 
+  - ng build --prod --aot
   - cd ../ethereum
   - ganache-cli -p 7545 > /dev/null &
   - sleep 5
