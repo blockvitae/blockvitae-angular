@@ -7,8 +7,9 @@ branches:
     - master
 
 before_script:
-  - cd angular
+  - npm install -g truffle
   - npm install -g @angular/cli
 
 script:
-  - ng build --prod --aot
+  - cd angular && ng build --prod --aot
+  - cd ../ethereum && truffle test
