@@ -4,13 +4,15 @@ pragma solidity ^0.4.24;
 import "./User.sol";
 
 // @title Blockvitae for CV
-contract Blockvitae is User{
+contract Blockvitae {
+
+    using User for User.UserMain;
 
     // list of all users
-    mapping (address => UserMain) users;
+    mapping (address => User.UserMain) users;
 
     // owner of the contract
-    address owner;
+    address public owner;
 
     // checks if the user has an account or not
     modifier userExists () {
@@ -37,11 +39,15 @@ contract Blockvitae is User{
     )
     public
     {
-        users[msg.sender].personal = setUserDetail(
+        // create userDetail section
+        users[msg.sender].personal = User.setUserDetail(
             fullName,
             userName,
             imgUrl,
             email
         );
+
+        // set the user exists to true
+        users[msg.sender].exists = true;
     }
 }

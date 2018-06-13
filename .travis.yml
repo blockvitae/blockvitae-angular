@@ -8,8 +8,15 @@ branches:
 
 before_script:
   - npm install -g truffle
+  - npm install -g ganache-cli
   - npm install -g @angular/cli
 
+## Reference link
+## https://ethereum.stackexchange.com/a/42658
 script:
   - cd angular && ng build --prod --aot
-  - cd ../ethereum && truffle test
+  - cd ../ethereum
+  - ganache-cli -p 7545 > /dev/null &
+  - sleep 5
+  - truffle migrate 
+  - truffle test

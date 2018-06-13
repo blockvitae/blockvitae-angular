@@ -2,7 +2,7 @@ pragma solidity ^0.4.24;
 
 // @title User holds all structs
 // for user details
-contract User {
+library User {
     
     // UserDetail holds personal
     // details of the user
@@ -67,7 +67,12 @@ contract User {
         bool exists; // true everytime add new new struct
     }
 
-    // set UserDetail values
+    // @description: sets the values of UserDetail struct
+    //
+    // @param string fullName full name of the user
+    // @param string userName username of the user
+    // @param string imgUrl profile image url of the user
+    // @param string email email of the user
     function setUserDetail (
         string fullName,
         string userName,
