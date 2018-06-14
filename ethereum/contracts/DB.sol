@@ -89,6 +89,31 @@ contract DB {
     }
 
     // @description
+    // inserts or updates a new UserProject in the database mapping
+    // 
+    // @param User.UserProject
+    // UserProject struct for the user
+    //
+    // @param address _user
+    // address of the user who's details are to be inserted or updated
+    function insertUserProject(User.UserProject _project, address _user) public isOwner {
+        users[_user].projects.push(_project);
+        persistUser(_user);
+    }
+
+    // @description
+    // finds the UserProject struct values for the given user
+    //
+    // @param address _user
+    // address of the user who's data is to be searched
+    //
+    // @return User.UserProject[]
+    // UserProject struct array of the user with given address
+    function findUserProjects(address _user) view public isOwner returns(User.UserProject[]) {
+        return users[_user].projects;
+    }
+
+    // @description
     // finds the UserDetail struct values for the given user
     //
     // @param address _user
