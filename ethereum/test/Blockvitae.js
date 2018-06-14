@@ -96,4 +96,33 @@ contract("Blockvitae", (accounts) => {
         assert.lengthOf(behanceUrl, social[5].length);
         assert(mediumUrl, social[6]);
     });
+
+    // check for user projects
+    it("user projects added successfully", async () => {
+        // projects
+        let name = ["Discover", "Blockvitae"];
+        let description = ["A web application to connect tourists with locals for city tours",
+                            "A blockchain based curriculum viate"];
+        let url = ["https://discoverapp.com", "https://blockviate.com"];
+
+        // create project 1
+        await blockvitae.createUserProject(name[0], description[0], url[0]);
+
+        // create project 2
+        await blockvitae.createUserProject(name[1], description[1], url[1]);
+
+        // get projects count 
+        let count = await blockvitae.getProjectCount(accounts[0]);
+
+        // get project details for each project index
+        for (let i = 0; i < count.toNumber(); i++) {
+             // get project 1
+            let project = await blockvitae.getUserProject(accounts[0], i);
+            
+            // assert statements
+            assert(name[i], project[i][0]);
+            assert(description[i], project[i][1]);
+            assert(url[i], project[i][2]);
+        }
+    });
 });
