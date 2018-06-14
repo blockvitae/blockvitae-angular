@@ -1,4 +1,5 @@
 pragma solidity ^0.4.24;
+pragma experimental ABIEncoderV2;
 
 // @title User holds all structs
 // for user details
@@ -65,6 +66,7 @@ library User {
         UserProject[] projects; // projects of the user
         string[] skills; // skills of the user
         bool exists; // true everytime add new new struct
+        address owner; // owner of the user profile
     }
 
     // @description: sets the values of UserDetail struct
@@ -74,20 +76,20 @@ library User {
     // @param string imgUrl profile image url of the user
     // @param string email email of the user
     function setUserDetail (
-        string fullName,
-        string userName,
-        string imgUrl,
-        string email
+        string _fullName,
+        string _userName,
+        string _imgUrl,
+        string _email
     )
     internal
     pure
     returns (UserDetail)
     {
         UserDetail memory detail;
-        detail.fullName = fullName;
-        detail.userName = userName;
-        detail.imgUrl = imgUrl;
-        detail.email = email;
+        detail.fullName = _fullName;
+        detail.userName = _userName;
+        detail.imgUrl = _imgUrl;
+        detail.email = _email;
         return detail;
     }
 }

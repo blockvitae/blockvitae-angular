@@ -1,27 +1,36 @@
 pragma solidity ^0.4.24;
+pragma experimental ABIEncoderV2;
 
 // import user.sol contract
 import "./User.sol";
+import "./DB.sol";
 
 // @title Blockvitae for CV
 contract Blockvitae {
 
     using User for User.UserMain;
 
-    // list of all users
-    mapping (address => User.UserMain) users;
+    // DB
+    DB public dbContract;
 
     // owner of the contract
     address public owner;
 
     // checks if the user has an account or not
     modifier userExists () {
-        require(users[msg.sender].exists);
+        require (dbContract.isExists(msg.sender));
+        _;
+    }
+
+    // checks if the address is not zero
+    modifier addressNotZero() {
+        require (msg.sender != address(0));
         _;
     }
 
     // sets the owner of the contract
-    constructor () public {
+    constructor (DB _dbContract) public {
+        dbContract = _dbContract;
         owner = msg.sender;
     } 
 
@@ -32,22 +41,33 @@ contract Blockvitae {
     // @param string imgUrl profile image url of the user
     // @param string email email of the user
     function createUserDetail (
-        string fullName,
-        string userName,
-        string imgUrl,
-        string email
+        string _fullName,
+        string _userName,
+        string _imgUrl,
+        string _email
     )
     public
+    addressNotZero
     {
-        // create userDetail section
-        users[msg.sender].personal = User.setUserDetail(
-            fullName,
-            userName,
-            imgUrl,
-            email
+        // create userDetail object
+        User.UserDetail memory personal = User.setUserDetail(
+            _fullName,
+            _userName,
+            _imgUrl,
+            _email
         );
 
-        // set the user exists to true
-        users[msg.sender].exists = true;
+        // insert into the database
+        dbContract.insertUserDetail(personal, msg.sender);
+    }
+
+    function getUserDetail (address _user)  
+    public 
+    view
+    userExists
+    returns (string, string, string, string) 
+    {
+        User.UserDetail memory personal = dbContract.findUserDetail(_user);
+        return (personal.fullName, personal.userName, personal.imgUrl, personal.email);
     }
 }
