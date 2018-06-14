@@ -156,4 +156,35 @@ library User {
         social.mediumUrl = bytes(_mediumUrl).length != 0 ? _mediumUrl : "";
         return social;
     }
+
+    // @description
+    // sets the values of UserProject struct
+    //
+    // @param string _name
+    // name of the project
+    //
+    // @param string _description
+    // description of the project
+    //
+    // @param string _url
+    // url of the project
+    //
+    // @return UserProject
+    // UserProject struct for the given vallues
+    function setUserProject(
+        string _name,
+        string _description,
+        string _url
+    )
+    internal
+    pure
+    returns(UserProject)
+    {
+        require(bytes(_name).length > 0);
+        UserProject memory project;
+        project.description = bytes(_description).length != 0 ? _description : "";
+        project.name = bytes(_name).length != 0 ? _name : "";
+        project.url = bytes(_url).length != 0 ? _url : "";
+        return project;
+    }
 }
