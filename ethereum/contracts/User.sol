@@ -91,7 +91,7 @@ library User {
     //
     // @return UserDetail
     // UserDetail struct for the given values
-    function setUserDetail (
+    function setUserDetail(
         string _fullName,
         string _userName,
         string _imgUrl,
@@ -99,7 +99,7 @@ library User {
     )
     internal
     pure
-    returns (UserDetail)
+    returns(UserDetail)
     {
         UserDetail memory detail;
         detail.fullName = _fullName;

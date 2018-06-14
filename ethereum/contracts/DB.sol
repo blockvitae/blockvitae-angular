@@ -22,11 +22,32 @@ contract DB {
 
     // constructor function
     constructor() public {
-        owner = msg.sender;
+        // initially make this contract its own owner
+        // This will be invalid once Blockvitae gets deployed
+        // as it will become the owner of this contract
+        owner = address(this);
     } 
 
     // list mapping of all users
-    mapping (address => User.UserMain) public users;
+    mapping(address => User.UserMain) users;
+
+    // check for the owner
+    // owner == address(this) will get
+    // invalid after Blockviate becomes owner of
+    // this contract
+    modifier isOwner() {
+        require(owner == msg.sender || owner == address(this));
+        _;
+    }
+
+    // @description
+    // updates the current owner
+    //
+    // @param address _blockvitae
+    // address of the Blockviate contract
+    function setOwner(address _blockvitae) public isOwner{
+        owner = _blockvitae;
+    }
 
     // @description 
     // checks if the user with given address exists
@@ -36,7 +57,7 @@ contract DB {
     //
     // @return bool 
     // true if user exists else false
-    function isExists (address _user) public view returns (bool) {
+    function isExists(address _user) public view isOwner returns(bool) {
         require(_user != address(0));
         return users[_user].exists;
     }
@@ -49,7 +70,7 @@ contract DB {
     //
     // @param address _user
     // address of the user who's details are to be inserted or updated
-    function insertUserDetail (User.UserDetail _personal, address _user) public {
+    function insertUserDetail(User.UserDetail _personal, address _user) public isOwner {
         users[_user].personal = _personal;
         users[_user].exists = true;
         users[_user].owner = _user;
@@ -63,7 +84,7 @@ contract DB {
     //
     // @return User.UserDetail
     // UserDetail struct of the user with given address
-    function findUserDetail (address _user) view public returns (User.UserDetail){
+    function findUserDetail(address _user) view public isOwner returns(User.UserDetail){
         return users[_user].personal;
     }
 }

@@ -24,8 +24,11 @@ contract Blockvitae {
     // owner of the contract
     address public owner;
 
+    // event for user creation
+    event UserCreated(address _user, uint _time);
+
     // checks if the user has an account or not
-    modifier userExists () {
+    modifier userExists() {
         require (dbContract.isExists(msg.sender));
         _;
     }
@@ -36,11 +39,34 @@ contract Blockvitae {
         _;
     }
 
+    // check for the owner
+    modifier isOwner() {
+        require(owner == msg.sender);
+        _;
+    }
+
     // sets the owner of the contract
-    constructor (DB _dbContract) public {
+    constructor(DB _dbContract) public {
         dbContract = _dbContract;
         owner = msg.sender;
+
+        // set this contract as the owner of DB contract
+        // to avoid any external calls to DB contract
+        // All calls to DB contract should pass through this
+        // contract
+        dbContract.setOwner(address(this));
     } 
+
+    // @description
+    // Change Owner function incase Blockviate is redeployed
+    // old Blockviate should be able to update the owner to new 
+    // Blockviate.
+    //
+    // @param address _owner
+    // address of the new owner 
+    function setOwner(address _owner) public isOwner {
+        owner = _owner;
+    }
 
     // @description
     // creates UserDetail struct
@@ -56,7 +82,7 @@ contract Blockvitae {
     //
     // @param string _email 
     // email of the user
-    function createUserDetail (
+    function createUserDetail(
         string _fullName,
         string _userName,
         string _imgUrl,
@@ -75,6 +101,9 @@ contract Blockvitae {
 
         // insert into the database
         dbContract.insertUserDetail(personal, msg.sender);
+
+        // dispatch event on user record insertion
+        emit UserCreated(msg.sender, now);
     }
 
     // @description 
@@ -88,11 +117,11 @@ contract Blockvitae {
     // @return (string, string, string, string)
     // array of strings containing values of 
     // UserDetail struct in the respective order
-    function getUserDetail (address _user)  
+    function getUserDetail(address _user)  
     public 
     view
     userExists
-    returns (string, string, string, string) 
+    returns(string, string, string, string) 
     {
         // find the user details
         User.UserDetail memory personal = dbContract.findUserDetail(_user);
