@@ -62,4 +62,38 @@ contract("Blockvitae", (accounts) => {
         assert(oldOwner, accounts[0]);
         assert(newOwner, accounts[1]);
     });
+
+    // check for user social 
+    it("user social accounts added successfully", async () => {
+        let twitterUrl = "https://twitter.com/johndoe";
+        let fbUrl = "https://facebook.com/johndoe";
+        let githubUrl = "https://github.com/johndoe";
+        let dribbbleUrl = "";
+        let linkedUrl = "https://linkedin.com/in/johndoe";
+        let behanceUrl = "";
+        let mediumUrl = "https://medium.com/@johndoe";
+
+        // create userSocial
+        await blockvitae.createUserSocial(
+            twitterUrl,
+            fbUrl,
+            githubUrl,
+            dribbbleUrl,
+            linkedUrl,
+            behanceUrl,
+            mediumUrl
+        );
+
+        // get values
+        let social = await blockvitae.getUserSocial(accounts[0]);
+
+        // assert statements
+        assert(twitterUrl, social[0]);
+        assert(fbUrl, social[1]);
+        assert(githubUrl, social[2]);
+        assert.lengthOf(dribbbleUrl, social[3].length);
+        assert(linkedUrl, social[4]);
+        assert.lengthOf(behanceUrl, social[5].length);
+        assert(mediumUrl, social[6]);
+    });
 });
