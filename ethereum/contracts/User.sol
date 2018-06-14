@@ -28,6 +28,7 @@ library User {
         string dribbbleUrl; // dribbble url
         string linkedInUrl; // linkedIn handle of user
         string behanceUrl; // behance Url of user
+        string mediumUrl; // medium url of user
     }
 
     // UserWorkExp holds record of 
@@ -107,5 +108,52 @@ library User {
         detail.imgUrl = _imgUrl;
         detail.email = _email;
         return detail;
+    }
+
+    // @description
+    // sets the values of UserSocial struct
+    //
+    // @param string _twitterUrl
+    // twitter url of the user
+    //
+    // @param string _fbUrl
+    // facebook url of the user
+    //
+    // @param string _githubUrl
+    // github url of the user
+    //
+    // @param string _linkedInUrl
+    // linked in url of the user
+    //
+    // @param string _behanceUrl
+    // behance url of the user
+    //
+    // @param string _mediumUrl
+    // medium url of the user
+    //
+    // @return UserSocial
+    // UserSocial struct for the given values
+    function setUserSocial(
+        string _twitterUrl,
+        string _fbUrl,
+        string _githubUrl,
+        string _dribbbleUrl,
+        string _linkedInUrl,
+        string _behanceUrl,
+        string _mediumUrl
+    ) 
+    internal
+    pure
+    returns(UserSocial)
+    {
+        UserSocial memory social;
+        social.twitterUrl = bytes(_twitterUrl).length != 0 ? _twitterUrl : "";
+        social.fbUrl = bytes(_fbUrl).length != 0 ? _fbUrl : "";
+        social.githubUrl = bytes(_githubUrl).length != 0 ? _githubUrl : "";
+        social.dribbbleUrl = bytes(_dribbbleUrl).length != 0 ? _dribbbleUrl : "";
+        social.linkedInUrl = bytes(_linkedInUrl).length != 0 ? _linkedInUrl : "";
+        social.behanceUrl = bytes(_behanceUrl).length != 0 ? _behanceUrl : "";
+        social.mediumUrl = bytes(_mediumUrl).length != 0 ? _mediumUrl : "";
+        return social;
     }
 }
