@@ -1,5 +1,13 @@
+/**
+ * This contract acts as a controller for front-end
+ * requests. The DB file is separate incase, solidity adds
+ * functionality to return structs. In that case, only
+ * this contract needs to be redeployed and data migration
+ * will not be needed as the data is stored in DB.sol
+ * contract.
+ */
 pragma solidity ^0.4.24;
-pragma experimental ABIEncoderV2;
+pragma experimental ABIEncoderV2; // experimental
 
 // import user.sol contract
 import "./User.sol";
@@ -34,12 +42,20 @@ contract Blockvitae {
         owner = msg.sender;
     } 
 
-    // @description: creates UserDetail struct
+    // @description
+    // creates UserDetail struct
     //
-    // @param string fullName full name of the user
-    // @param string userName username of the user
-    // @param string imgUrl profile image url of the user
-    // @param string email email of the user
+    // @param string _fullName 
+    // full name of the user
+    //
+    // @param string _userName 
+    // username of the user
+    //
+    // @param string _imgUrl 
+    // profile image url of the user
+    //
+    // @param string _email 
+    // email of the user
     function createUserDetail (
         string _fullName,
         string _userName,
@@ -61,13 +77,27 @@ contract Blockvitae {
         dbContract.insertUserDetail(personal, msg.sender);
     }
 
+    // @description 
+    // returns UserDetail struct values
+    // for the given address if user exists
+    //
+    // @param address _user 
+    // address of the user for which UserDetail is 
+    // to be searched
+    //
+    // @return (string, string, string, string)
+    // array of strings containing values of 
+    // UserDetail struct in the respective order
     function getUserDetail (address _user)  
     public 
     view
     userExists
     returns (string, string, string, string) 
     {
+        // find the user details
         User.UserDetail memory personal = dbContract.findUserDetail(_user);
+
+        // return
         return (personal.fullName, personal.userName, personal.imgUrl, personal.email);
     }
 }

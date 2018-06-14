@@ -11,7 +11,7 @@ contract("Blockvitae", (accounts) => {
     // global variables
     let blockvitae = '';
 
-    // run beforeEach before each it call
+    // run beforeEach before each "it" call
     beforeEach(async () => {
         blockvitae = await BlockvitaeContract.deployed();
     });
@@ -22,4 +22,31 @@ contract("Blockvitae", (accounts) => {
         let owner = await blockvitae.owner();
         assert.equal(owner, accounts[0]);
     });
+
+    // check if user gets created
+    it("user created successfully", async () => {
+        let fullName = "John";
+        let lastName = "Doe";
+        // CC0 license image pexels.com
+        let imgUrl = "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg";
+        let email = "john_doe@gmail.com";
+
+        // save in contract
+       await blockvitae.createUserDetail (
+            fullName,
+            lastName,
+            imgUrl,
+            email
+        );
+
+        // get the values
+        let personal = await blockvitae.getUserDetail(accounts[0]);
+
+        // assert statements
+        assert(fullName, personal[0]);
+        assert(lastName, personal[1]);
+        assert(imgUrl, personal[2]);
+        assert(email, personal[3]);
+    });
+    
 });

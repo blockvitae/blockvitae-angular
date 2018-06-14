@@ -1,5 +1,10 @@
+/**
+ * This library file acts as model which provides
+ * attributes for the user and the functions to 
+ * perform operations on the given data
+ */
 pragma solidity ^0.4.24;
-pragma experimental ABIEncoderV2;
+pragma experimental ABIEncoderV2; // experimental
 
 // @title User holds all structs
 // for user details
@@ -69,12 +74,23 @@ library User {
         address owner; // owner of the user profile
     }
 
-    // @description: sets the values of UserDetail struct
+    // @description 
+    // sets the values of UserDetail struct
     //
-    // @param string fullName full name of the user
-    // @param string userName username of the user
-    // @param string imgUrl profile image url of the user
-    // @param string email email of the user
+    // @param string _fullName 
+    // full name of the user
+    //
+    // @param string _userName 
+    // username of the user
+    //
+    // @param string _imgUrl 
+    // profile image url of the user
+    //
+    // @param string _email 
+    // email of the user
+    //
+    // @return UserDetail
+    // UserDetail struct for the given values
     function setUserDetail (
         string _fullName,
         string _userName,
