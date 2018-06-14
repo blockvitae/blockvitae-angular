@@ -147,6 +147,69 @@ contract Blockvitae {
         dbContract.insertUserSocial(social, msg.sender);
     }
 
+    function createUserProject(
+        string _name,
+        string _description,
+        string _url
+    )
+    public
+    addressNotZero
+    {
+        // create UserProject struct
+        User.UserProject memory project = User.setUserProject(
+            _name,
+            _description,
+            _url
+        );
+
+        // insert into the database
+        dbContract.insertUserProject(project, msg.sender);
+    }
+
+    // @description
+    // Solidity doesn't allow to return array of strings
+    // Therefore, get count of projects first and
+    // then get each project one at a time from front end
+    //
+    // @param address _user
+    // address of the user who's data is to be searched
+    //
+    // @return uint
+    // count of the total projects for the given user
+    function getProjectCount(address _user) 
+    public 
+    view 
+    userExists
+    returns(uint) {
+        uint projectCount = dbContract.findUserProjects(_user).length;
+        return projectCount;
+    }
+
+    // @description
+    // gets the user project with the given index for the given user
+    //
+    // @param address _user
+    // address of the user who's projects are to be searched
+    //
+    // @param uint index
+    // index of the project to be searched
+    //
+    // @return (string, string, string)
+    // name, description and url of the project with given index
+    function getUserProject(address _user, uint index)
+    public
+    view
+    userExists
+    returns(string, string, string) {
+        User.UserProject[] memory projects = dbContract.findUserProjects(_user);
+
+        string memory name = projects[index].name;
+        string memory description = projects[index].description;
+        string memory url = projects[index].url;
+    
+        return (name, description, url);
+    }
+
     // @description 
     // returns UserDetail struct values
     // for the given address if user exists
