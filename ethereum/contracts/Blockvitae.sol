@@ -24,9 +24,6 @@ contract Blockvitae {
     // owner of the contract
     address public owner;
 
-    // event for user creation
-    event UserCreated(address _user, uint _time);
-
     // checks if the user has an account or not
     modifier userExists() {
         require (dbContract.isExists(msg.sender));
@@ -91,7 +88,7 @@ contract Blockvitae {
     public
     addressNotZero
     {
-        // create userDetail object
+        // create userDetail struct
         User.UserDetail memory personal = User.setUserDetail(
             _fullName,
             _userName,
@@ -101,9 +98,53 @@ contract Blockvitae {
 
         // insert into the database
         dbContract.insertUserDetail(personal, msg.sender);
+    }
 
-        // dispatch event on user record insertion
-        emit UserCreated(msg.sender, now);
+    // @description
+    // create UserSocial struct
+    //
+    // @param string _twitterUrl
+    // twitter url of the user
+    //
+    // @param string _fbUrl
+    // facebook url of the user
+    //
+    // @param string _githubUrl
+    // github url of the user
+    //
+    // @param string _linkedInUrl
+    // linked in url of the user
+    //
+    // @param string _behanceUrl
+    // behance url of the user
+    //
+    // @param string _mediumUrl
+    // medium url of the user
+    function createUserSocial(
+        string _twitterUrl,
+        string _fbUrl,
+        string _githubUrl,
+        string _dribbbleUrl,
+        string _linkedInUrl,
+        string _behanceUrl,
+        string _mediumUrl
+    )
+    public
+    addressNotZero
+    {
+        // create userSocial struct
+        User.UserSocial memory social = User.setUserSocial(
+            _twitterUrl,
+            _fbUrl,
+            _githubUrl,
+            _dribbbleUrl,
+            _linkedInUrl,
+            _behanceUrl,
+            _mediumUrl
+        );
+
+        // insert into the database
+        dbContract.insertUserSocial(social, msg.sender);
     }
 
     // @description 
@@ -128,5 +169,30 @@ contract Blockvitae {
 
         // return
         return (personal.fullName, personal.userName, personal.imgUrl, personal.email);
+    }
+
+    // @description 
+    // returns UserSocial struct values
+    // for the given address if user exists
+    //
+    // @param address _user 
+    // address of the user for which UserSocial is 
+    // to be searched
+    //
+    // @return (string, string, string, string)
+    // array of strings containing values of 
+    // UserSocial struct in the respective order
+    function getUserSocial(address _user)  
+    public 
+    view
+    userExists
+    returns(string, string, string, string, string, string, string) 
+    {
+        // find the user details
+        User.UserSocial memory social = dbContract.findUserSocial(_user);
+
+        // return
+        return (social.twitterUrl, social.fbUrl, social.githubUrl, social.dribbbleUrl, 
+            social.linkedInUrl, social.behanceUrl, social.mediumUrl);
     }
 }
