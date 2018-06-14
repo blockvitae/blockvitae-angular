@@ -63,17 +63,29 @@ contract DB {
     }
 
     // @description
-    // inserts or updates the new UserDetail in the database mapping
+    // inserts or updates a new UserDetail in the database mapping
     //
     // @param User.UserDetail _personal
-    // UserDetail object for the user
+    // UserDetail struct for the user
     //
     // @param address _user
     // address of the user who's details are to be inserted or updated
     function insertUserDetail(User.UserDetail _personal, address _user) public isOwner {
         users[_user].personal = _personal;
-        users[_user].exists = true;
-        users[_user].owner = _user;
+        persistUser(_user);
+    }
+
+    // @description
+    // inserts or updates a new UserSocial in the database mapping
+    //
+    // @param User.UserSocial _social
+    // UserSocial struct for the user
+    //
+    // @param address _user
+    // address of the user who's details are to be inserted or updated
+    function insertUserSocial(User.UserSocial _social, address _user) public isOwner {
+        users[_user].social = _social;
+        persistUser(_user);
     }
 
     // @description
@@ -84,7 +96,29 @@ contract DB {
     //
     // @return User.UserDetail
     // UserDetail struct of the user with given address
-    function findUserDetail(address _user) view public isOwner returns(User.UserDetail){
+    function findUserDetail(address _user) view public isOwner returns(User.UserDetail) {
         return users[_user].personal;
+    }
+
+    // @description
+    // finds the UserSocial struct values for the given user
+    //
+    // @param
+    // address of the user who's data is to be searched
+    //
+    // @return User.UserSocial
+    // UserSOcial struct of the user with given address
+    function findUserSocial(address _user) view public isOwner returns(User.UserSocial) {
+        return users[_user].social;
+    }
+
+    // @description
+    // creates the existance of the user
+    // 
+    // @param address _user
+    // address of the user
+    function persistUser(address _user) private {
+        users[_user].exists = true;
+        users[_user].owner = _user;
     }
 }
