@@ -48,5 +48,18 @@ contract("Blockvitae", (accounts) => {
         assert(imgUrl, personal[2]);
         assert(email, personal[3]);
     });
-    
+
+    // check for update owner
+    it("owner updated successfully", async () => {
+        // old owner
+        let oldOwner = await blockvitae.owner();
+
+        // change owner
+        await blockvitae.setOwner(accounts[1]);
+
+        let newOwner = await blockvitae.owner();
+
+        assert(oldOwner, accounts[0]);
+        assert(newOwner, accounts[1]);
+    });
 });
