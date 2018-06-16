@@ -29,7 +29,7 @@ contract DB {
     } 
 
     // list mapping of all users
-    mapping(address => User.UserMain) users;
+    mapping(address => User.UserMain) internal users;
 
     // check for the owner
     // owner == address(this) will get
@@ -101,6 +101,14 @@ contract DB {
         persistUser(_user);
     }
 
+    // @description
+    // inserts or update a new UserWorkExp in the database mapping
+    //
+    // @param User.UserWorkExp
+    // UserWorkExp struct for the user
+    //
+    // @param address _user
+    // address of the user who's details are to be inserted or updated
     function insertUserWorkExp(User.UserWorkExp _workExp, address _user) public isOwner {
         users[_user].work.push(_workExp);
         persistUser(_user);
@@ -133,7 +141,7 @@ contract DB {
     // @description
     // finds the UserSocial struct values for the given user
     //
-    // @param
+    // @param address _user
     // address of the user who's data is to be searched
     //
     // @return User.UserSocial
@@ -142,6 +150,14 @@ contract DB {
         return users[_user].social;
     }
 
+    // @description
+    // finds the UserWorkExp struct values for the given user
+    //
+    // @param address _user
+    // address of the address of the user who's data is to be searched
+    //
+    // @return User.UserWorkExp
+    // UserWorkExp struct of the user with given address
     function findUserWorkExp(address _user) view public isOwner returns(User.UserWorkExp[]) {
         return users[_user].work;
     }

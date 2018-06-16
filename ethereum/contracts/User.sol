@@ -170,7 +170,7 @@ library User {
     // url of the project
     //
     // @return UserProject
-    // UserProject struct for the given vallues
+    // UserProject struct for the given values
     function setUserProject(
         string _name,
         string _description,
@@ -188,6 +188,26 @@ library User {
         return project;
     }
 
+    // @description
+    // sets the values of UserWorkExp struct
+    //
+    // @param string _company
+    // name of the company or organization
+    //
+    // @param string _position
+    // position held in the given company
+    //
+    // @param string _dateStart
+    // start date of the job
+    //
+    // @param string _dateEnd
+    // end date of the job
+    //
+    // @param string _description
+    // description of the work experience
+    //
+    // @return UserWorkExp
+    // UserWorkExp struct for the given values
     function setUserWorkExp(
         string _company,
         string _position,

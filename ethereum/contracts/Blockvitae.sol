@@ -101,7 +101,7 @@ contract Blockvitae {
     }
 
     // @description
-    // create UserSocial struct
+    // create UserSocial struct and insers in DB
     //
     // @param string _twitterUrl
     // twitter url of the user
@@ -147,6 +147,17 @@ contract Blockvitae {
         dbContract.insertUserSocial(social, msg.sender);
     }
 
+    // @description
+    // creates UserProject struct and insert in DB
+    //
+    // @param string _name
+    // name of the project
+    //
+    // @param string _description 
+    // description of the project
+    //
+    // @param string _url
+    // url of the project
     function createUserProject(
         string _name,
         string _description,
@@ -166,6 +177,23 @@ contract Blockvitae {
         dbContract.insertUserProject(project, msg.sender);
     }
 
+    // @description
+    // creates UserWorkExp struct and inserts in DB
+    //
+    // @param string _company
+    // name of the company or organization
+    //
+    // @param string _position
+    // position held in the given company
+    //
+    // @param string _dateStart
+    // start date of the job
+    //
+    // @param string _dateEnd
+    // end date of the job
+    //
+    // @param string _description
+    // description of the work experience
     function createUserWorkExp(
         string _company,
         string _position,
@@ -233,6 +261,14 @@ contract Blockvitae {
         return (name, description, url);
     }
 
+    // @description
+    // gets count of total work experiences added
+    //
+    // @param address _user
+    // address of the user who's data is to be searched
+    //
+    // @return uint
+    // count of the total work exp for the given user
     function getWorkExpCount(address _user) 
     public 
     view 
@@ -242,6 +278,18 @@ contract Blockvitae {
         return workExpCount;
     }
 
+    // @description
+    // gets the user work exp with the given index for the given user
+    //
+    // @param address _user
+    // address of the user who's projects are to be searched
+    //
+    // @param uint index
+    // index of the work exp to be searched
+    //
+    // @return (string, string, string, string, string)
+    // company, position, dateStart, dateEnd
+    // and description of the project with given index
     function getUserWorkExp(address _user, uint index)
     public
     view
