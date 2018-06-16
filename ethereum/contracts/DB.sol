@@ -36,7 +36,7 @@ contract DB {
     mapping(address => User.UserMain) internal users;
 
     // list mapping of all userNames
-    mapping(string => address) userNames;
+    mapping(string => address) internal userNames;
 
     // check for the owner
     // owner == address(this) will get
@@ -263,6 +263,19 @@ contract DB {
     // UserWorkExp struct of the user with given address
     function findUserWorkExp(address _user) view public isOwner returns(User.UserWorkExp[]) {
         return users[_user].work;
+    }
+
+    // @description
+    // finds the address the given userName
+    //
+    // @param string _userName
+    // userName of the user who's address is to be searched
+    //
+    // @return address
+    // address of the user with given userName
+    function findAddrForUserName(string _userName) view public isOwner returns(address) {
+        require(users[userNames[_userName]].exists);
+        return userNames[_userName];
     }
 
     // @description

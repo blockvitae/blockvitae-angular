@@ -288,7 +288,6 @@ contract Blockvitae {
     function getEducationCount(address _user)
     public
     view
-    userExists
     returns(uint) {
         return dbContract.findUserEducation(_user).length;
     }
@@ -308,7 +307,6 @@ contract Blockvitae {
     function getUserEducation(address _user, uint index)
     public
     view
-    userExists
     returns(string, string, string, string, string) {
         User.UserEducation[] memory education = dbContract.findUserEducation(_user);
 
@@ -330,7 +328,7 @@ contract Blockvitae {
     //
     // @return bytes32[]
     // bytes32 array of skills of the user with given address
-    function getUserSkills(address _user) public view userExists returns(bytes32[]) {
+    function getUserSkills(address _user) public view returns(bytes32[]) {
         return dbContract.findUserSkill(_user).skills;
     }
 
@@ -347,7 +345,6 @@ contract Blockvitae {
     function getProjectCount(address _user) 
     public 
     view 
-    userExists
     returns(uint) {
         return dbContract.findUserProject(_user).length;
     }
@@ -366,7 +363,6 @@ contract Blockvitae {
     function getUserProject(address _user, uint index)
     public
     view
-    userExists
     returns(string, string, string) {
         User.UserProject[] memory projects = dbContract.findUserProject(_user);
 
@@ -388,7 +384,6 @@ contract Blockvitae {
     function getWorkExpCount(address _user) 
     public 
     view 
-    userExists
     returns(uint) {
         return dbContract.findUserWorkExp(_user).length;
     }
@@ -408,7 +403,6 @@ contract Blockvitae {
     function getUserWorkExp(address _user, uint index)
     public
     view
-    userExists
     returns(string, string, string, string, string) {
         User.UserWorkExp[] memory work = dbContract.findUserWorkExp(_user);
 
@@ -435,7 +429,6 @@ contract Blockvitae {
     function getUserDetail(address _user)  
     public 
     view
-    userExists
     returns(string, string, string, string) 
     {
         // find the user details
@@ -459,7 +452,6 @@ contract Blockvitae {
     function getUserSocial(address _user)  
     public 
     view
-    userExists
     returns(string, string, string, string, string, string, string) 
     {
         // find the user details
@@ -468,5 +460,21 @@ contract Blockvitae {
         // return
         return (social.twitterUrl, social.fbUrl, social.githubUrl, social.dribbbleUrl, 
             social.linkedInUrl, social.behanceUrl, social.mediumUrl);
+    }
+
+    // @description
+    // finds the address the given userName
+    //
+    // @param string _userName
+    // userName of the user who's address is to be searched
+    //
+    // @return address
+    // address of the user with given userName
+    function getAddrForUserName(string _userName)
+    public
+    view
+    returns(address) 
+    {
+        return dbContract.findAddrForUserName(_userName);
     }
 }
