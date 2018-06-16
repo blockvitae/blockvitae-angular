@@ -33,7 +33,7 @@ contract DB {
 
     // check for the owner
     // owner == address(this) will get
-    // invalid after Blockviate becomes owner of
+    // invalid after Blockvitae becomes owner of
     // this contract
     modifier isOwner() {
         require(owner == msg.sender || owner == address(this));
@@ -44,7 +44,7 @@ contract DB {
     // updates the current owner
     //
     // @param address _blockvitae
-    // address of the Blockviate contract
+    // address of the Blockvitae contract
     function setOwner(address _blockvitae) public isOwner{
         owner = _blockvitae;
     }
@@ -104,7 +104,7 @@ contract DB {
     // @description
     // inserts or update a new UserWorkExp in the database mapping
     //
-    // @param User.UserWorkExp
+    // @param User.UserWorkExp _workExp
     // UserWorkExp struct for the user
     //
     // @param address _user
@@ -112,6 +112,31 @@ contract DB {
     function insertUserWorkExp(User.UserWorkExp _workExp, address _user) public isOwner {
         users[_user].work.push(_workExp);
         persistUser(_user);
+    }
+
+    // @description
+    // inserts or updates a new UserSkill in the database
+    //
+    // @param User.UserSkill _skills
+    // UserSkill struct for the user
+    //
+    // @param address _user
+    // address of the user who's details are to be inserted or updated
+    function insertUserSkill(User.UserSkill _skills, address _user) public isOwner {
+        users[_user].skills = _skills;
+        persistUser(_user);
+    }
+
+    // @description
+    // finds the UserSkill struct values for the given user
+    //
+    // @param address _user
+    // address of the user who's data is to be searched
+    //
+    // @return User.UserSkill
+    // UserSkill struct of the user with given address
+    function findUserSkill(address _user) view public isOwner returns(User.UserSkill) {
+        return users[_user].skills;
     }
 
     // @description
