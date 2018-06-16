@@ -231,6 +231,94 @@ contract Blockvitae {
     }
 
     // @description
+    // creates UserEducation struct and inserts in DB
+    //
+     // @param string _organization
+    // name of the organization
+    //
+    // @param string _level
+    // education level held in the given organization
+    //
+    // @param string _dateStart
+    // start date of the education
+    //
+    // @param string _dateEnd
+    // end date of the education
+    //
+    // @param string _description
+    // description of the education
+    //
+    // @return UserEducation
+    // UserEducation struct for the given values
+    function createUserEducation(
+        string _organization,
+        string _level,
+        string _dateStart,
+        string _dateEnd,
+        string _description 
+    )
+    public
+    addressNotZero
+    {
+        // create UserEducation struct
+        User.UserEducation memory education = User.setUserEducation(
+            _organization,
+            _level,
+            _dateStart,
+            _dateEnd,
+            _description
+        );
+
+        // insert in the database
+        dbContract.insertUserEducation(education, msg.sender);
+    }
+
+    // @description
+    // gets count of total education added
+    //
+    // @param address _user
+    // address of the user who's data is to be searched
+    //
+    // @return uint
+    // count of the total education for the given user
+    function getEducationCount(address _user)
+    public
+    view
+    userExists
+    returns(uint) {
+        return dbContract.findUserEducation(_user).length;
+    }
+
+    // @description
+    // gets the user education with the given index for the given user
+    //
+    // @param address _user
+    // address of the user who's education is to be searched
+    //
+    // @param uint index
+    // index of the education to be searched
+    //
+    // @return (string, string, string, string, string)
+    // organization, level, dateStart, dateEnd
+    // and description of the education with given index
+    function getUserEducation(address _user, uint index)
+    public
+    view
+    userExists
+    returns(string, string, string, string, string) {
+        User.UserEducation[] memory education = dbContract.findUserEducation(_user);
+
+        string memory organization = education[index].organization;
+        string memory level = education[index].level;
+        string memory dateStart = education[index].dateStart;
+        string memory dateEnd = education[index].dateEnd;
+        string memory description = education[index].description;
+    
+        return (organization, level, dateStart, dateEnd, description);
+    }
+
+
+    // @description
     // gets the array of skills of the user
     //
     // @param address _user
@@ -305,14 +393,14 @@ contract Blockvitae {
     // gets the user work exp with the given index for the given user
     //
     // @param address _user
-    // address of the user who's projects are to be searched
+    // address of the user who's work exp are to be searched
     //
     // @param uint index
     // index of the work exp to be searched
     //
     // @return (string, string, string, string, string)
     // company, position, dateStart, dateEnd
-    // and description of the project with given index
+    // and description of the work exp with given index
     function getUserWorkExp(address _user, uint index)
     public
     view
