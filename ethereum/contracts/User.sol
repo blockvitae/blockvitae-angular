@@ -187,4 +187,25 @@ library User {
         project.url = bytes(_url).length != 0 ? _url : "";
         return project;
     }
+
+    function setUserWorkExp(
+        string _company,
+        string _position,
+        string _dateStart,
+        string _dateEnd,
+        string _description
+    )
+    internal
+    pure
+    returns(UserWorkExp)
+    {
+        require(bytes(_company).length > 0);
+        UserWorkExp memory workExp;
+        workExp.company = bytes(_company).length != 0 ? _company : "";
+        workExp.position = bytes(_position).length != 0 ? _position : "";
+        workExp.dateStart = bytes(_dateStart).length != 0 ? _dateStart : "";
+        workExp.dateEnd = bytes(_dateEnd).length != 0 ? _dateEnd : "";
+        workExp.description = bytes(_description).length != 0 ? _description : "";
+        return workExp;
+    }
 }
