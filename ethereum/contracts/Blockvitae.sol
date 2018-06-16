@@ -166,6 +166,29 @@ contract Blockvitae {
         dbContract.insertUserProject(project, msg.sender);
     }
 
+    function createUserWorkExp(
+        string _company,
+        string _position,
+        string _dateStart,
+        string _dateEnd,
+        string _description
+    )
+    public
+    addressNotZero
+    {
+        // create UserWorkExp struct
+        User.UserWorkExp memory work = User.setUserWorkExp(
+            _company,
+            _position,
+            _dateStart,
+            _dateEnd,
+            _description
+        );
+
+        // insert in to database
+        dbContract.insertUserWorkExp(work, msg.sender);
+    }
+
     // @description
     // Solidity doesn't allow to return array of strings
     // Therefore, get count of projects first and
@@ -181,7 +204,7 @@ contract Blockvitae {
     view 
     userExists
     returns(uint) {
-        uint projectCount = dbContract.findUserProjects(_user).length;
+        uint projectCount = dbContract.findUserProject(_user).length;
         return projectCount;
     }
 
@@ -201,13 +224,38 @@ contract Blockvitae {
     view
     userExists
     returns(string, string, string) {
-        User.UserProject[] memory projects = dbContract.findUserProjects(_user);
+        User.UserProject[] memory projects = dbContract.findUserProject(_user);
 
         string memory name = projects[index].name;
         string memory description = projects[index].description;
         string memory url = projects[index].url;
     
         return (name, description, url);
+    }
+
+    function getWorkExpCount(address _user) 
+    public 
+    view 
+    userExists
+    returns(uint) {
+        uint workExpCount = dbContract.findUserWorkExp(_user).length;
+        return workExpCount;
+    }
+
+    function getUserWorkExp(address _user, uint index)
+    public
+    view
+    userExists
+    returns(string, string, string, string, string) {
+        User.UserWorkExp[] memory work = dbContract.findUserWorkExp(_user);
+
+        string memory company = work[index].company;
+        string memory position = work[index].position;
+        string memory dateStart = work[index].dateStart;
+        string memory dateEnd = work[index].dateEnd;
+        string memory description = work[index].description;
+    
+        return (company, position, dateStart, dateEnd, description);
     }
 
     // @description 
