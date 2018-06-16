@@ -61,6 +61,10 @@ library User {
         string url; // url of the project
     }
 
+    struct UserSkill {
+        bytes32[] skills; // skills of the user
+    }
+
     // User is struct which holds all
     // the details for a particular user
     // creating a CV on Blockvitae
@@ -70,7 +74,7 @@ library User {
         UserWorkExp[] work; // work experience of the user
         UserEducation[] education; // education of the user
         UserProject[] projects; // projects of the user
-        string[] skills; // skills of the user
+        UserSkill skills; // skills of the user
         bool exists; // true everytime add new new struct
         address owner; // owner of the user profile
     }
@@ -227,5 +231,19 @@ library User {
         workExp.dateEnd = bytes(_dateEnd).length != 0 ? _dateEnd : "";
         workExp.description = bytes(_description).length != 0 ? _description : "";
         return workExp;
+    }
+
+    // @description
+    // sets the values of UserSkill struct
+    //
+    // @param bytes32[] _skills
+    // a byte32 array of skills
+    // 
+    // @return UserSkill
+    // a UserSkill struct with given skills
+    function setUserSkill(bytes32[] _skills) internal pure returns(UserSkill) {
+        UserSkill memory uSkill;
+        uSkill.skills = _skills;
+        return uSkill;
     }
 }
