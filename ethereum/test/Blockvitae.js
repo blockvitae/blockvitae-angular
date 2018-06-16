@@ -103,7 +103,7 @@ contract("Blockvitae", (accounts) => {
         let name = ["Discover", "Blockvitae"];
         let description = ["A web application to connect tourists with locals for city tours",
                             "A blockchain based curriculum viate"];
-        let url = ["https://discoverapp.com", "https://blockviate.com"];
+        let url = ["https://discoverapp.com", "https://blockvitae.com"];
 
         // create project 1
         await blockvitae.createUserProject(name[0], description[0], url[0]);
@@ -123,6 +123,51 @@ contract("Blockvitae", (accounts) => {
             assert(name[i], project[i][0]);
             assert(description[i], project[i][1]);
             assert(url[i], project[i][2]);
+        }
+    });
+
+    // check for user work exp
+    it("user work experience added successfully", async () => {
+        // work exp
+        let company = ["Statusbrew", "Web Bakerz"];
+        let description = ["Work with a dedicated team of 25 members from 5 different nations", 
+                            "Managed and built marketing teams"];
+        let position = ["Backend Engineer", "CMO"];
+        let dateStart = ["2016-12-20", "2018-01-01"];
+        let dateEnd = ["2017-08-18", "2018-06-15"];
+
+        // create exp 1
+        await blockvitae.createUserWorkExp(
+            company[0],
+            position[0],
+            dateStart[0],
+            dateEnd[0],
+            description[0]
+        );
+
+        // create exp 2
+        await blockvitae.createUserWorkExp(
+            company[1],
+            position[1],
+            dateStart[1],
+            dateEnd[1],
+            description[1]
+        );
+
+        // get work exp count 
+        let count = await blockvitae.getWorkExpCount(accounts[0]);
+
+        // get work exp details for each index
+        for (let i = 0; i < count.toNumber(); i++) {
+             // get project 1
+            let work = await blockvitae.getUserWorkExp(accounts[0], i);
+            
+            // assert statements
+            assert(company[i], work[i][0]);
+            assert(position[i], work[i][1]);
+            assert(dateStart[i], work[i][2]);
+            assert(dateEnd[i], work[i][3]);
+            assert(description[i], work[i][4]);
         }
     });
 });
