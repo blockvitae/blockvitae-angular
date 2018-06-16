@@ -218,6 +218,31 @@ contract Blockvitae {
     }
 
     // @description
+    // creates UserSkill struct and inserts in DB
+    //
+    // @param bytes32[] _skills
+    // array of skills
+    function createUserSkill(bytes32[] _skills) public addressNotZero {
+        // create user skill struct
+        User.UserSkill memory skills = User.setUserSkill(_skills);
+
+        // insert into DB
+        dbContract.insertUserSkill(skills, msg.sender);
+    }
+
+    // @description
+    // gets the array of skills of the user
+    //
+    // @param address _user
+    // address of the user who's data is to be searched
+    //
+    // @return bytes32[]
+    // bytes32 array of skills of the user with given address
+    function getUserSkills(address _user) public view userExists returns(bytes32[]) {
+        return dbContract.findUserSkill(_user).skills;
+    }
+
+    // @description
     // Solidity doesn't allow to return array of strings
     // Therefore, get count of projects first and
     // then get each project one at a time from front end
@@ -232,8 +257,7 @@ contract Blockvitae {
     view 
     userExists
     returns(uint) {
-        uint projectCount = dbContract.findUserProject(_user).length;
-        return projectCount;
+        return dbContract.findUserProject(_user).length;
     }
 
     // @description
@@ -274,8 +298,7 @@ contract Blockvitae {
     view 
     userExists
     returns(uint) {
-        uint workExpCount = dbContract.findUserWorkExp(_user).length;
-        return workExpCount;
+        return dbContract.findUserWorkExp(_user).length;
     }
 
     // @description
