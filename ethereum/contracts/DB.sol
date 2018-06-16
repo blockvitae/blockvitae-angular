@@ -101,6 +101,11 @@ contract DB {
         persistUser(_user);
     }
 
+    function insertUserWorkExp(User.UserWorkExp _workExp, address _user) public isOwner {
+        users[_user].work.push(_workExp);
+        persistUser(_user);
+    }
+
     // @description
     // finds the UserProject struct values for the given user
     //
@@ -109,7 +114,7 @@ contract DB {
     //
     // @return User.UserProject[]
     // UserProject struct array of the user with given address
-    function findUserProjects(address _user) view public isOwner returns(User.UserProject[]) {
+    function findUserProject(address _user) view public isOwner returns(User.UserProject[]) {
         return users[_user].projects;
     }
 
@@ -132,9 +137,13 @@ contract DB {
     // address of the user who's data is to be searched
     //
     // @return User.UserSocial
-    // UserSOcial struct of the user with given address
+    // UserSocial struct of the user with given address
     function findUserSocial(address _user) view public isOwner returns(User.UserSocial) {
         return users[_user].social;
+    }
+
+    function findUserWorkExp(address _user) view public isOwner returns(User.UserWorkExp[]) {
+        return users[_user].work;
     }
 
     // @description
