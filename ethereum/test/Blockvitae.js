@@ -26,7 +26,7 @@ contract("Blockvitae", (accounts) => {
     // check if user gets created
     it("user created successfully", async () => {
         let fullName = "John";
-        let lastName = "Doe";
+        let userName = "JDoe";
         // CC0 license image pexels.com
         let imgUrl = "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg";
         let email = "john_doe@gmail.com";
@@ -34,7 +34,7 @@ contract("Blockvitae", (accounts) => {
         // save in contract
        await blockvitae.createUserDetail (
             fullName,
-            lastName,
+            userName,
             imgUrl,
             email
         );
@@ -44,7 +44,7 @@ contract("Blockvitae", (accounts) => {
 
         // assert statements
         assert(fullName, personal[0]);
-        assert(lastName, personal[1]);
+        assert(userName, personal[1]);
         assert(imgUrl, personal[2]);
         assert(email, personal[3]);
     });
@@ -234,5 +234,44 @@ contract("Blockvitae", (accounts) => {
             assert(dateEnd[i], education[i][3]);
             assert(description[i], education[i][4]);
         }
+    });
+
+    // username updated successfully
+    it("username updated successfully", async () => {
+        let fullName = "John";
+        let userName = "JDoe001";
+        // CC0 license image pexels.com
+        let imgUrl = "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg";
+        let email = "john_doe@gmail.com";
+
+        // get the values
+        let personalOld = await blockvitae.getUserDetail(accounts[0]);
+
+        // assert statements
+        assert(userName, personalOld[1]);
+
+        // save in contract
+       await blockvitae.createUserDetail (
+            fullName,
+            userName,
+            imgUrl,
+            email
+        );
+
+        // get the values
+        let personal = await blockvitae.getUserDetail(accounts[0]);
+       
+        // assert statements
+        assert(userName, personal[1]);
+    });
+
+    // get address for given userName
+    it("address for given userName", async () => {
+        let userName = "JDoe001";
+
+        // get address from userName
+        let addr = await blockvitae.getAddrForUserName(userName);
+
+        assert(addr, accounts[0]);
     });
 });
