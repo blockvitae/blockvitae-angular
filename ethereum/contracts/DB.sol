@@ -128,6 +128,31 @@ contract DB {
     }
 
     // @description
+    // inserts or updates a new UserEducation in the database
+    //
+    // @param User.UserEducation _education
+    // UserEducation struct for the user
+    //
+    // @param address _user
+    // address of the user who's details are to be inserted or updated
+    function insertUserEducation(User.UserEducation _education, address _user) public isOwner {
+        users[_user].education.push(_education);
+        persistUser(_user);
+    }
+
+    // @description
+    // finds the UserEducation struct values for the given user
+    //
+    // @param address _user
+    // address of the user who's data is to be searched
+    //
+    // @return User.UserEducation[]
+    // UserEducation struct array of the user with given address
+    function findUserEducation(address _user) view public isOwner returns(User.UserEducation[]){
+        return users[_user].education;
+    }
+
+    // @description
     // finds the UserSkill struct values for the given user
     //
     // @param address _user
