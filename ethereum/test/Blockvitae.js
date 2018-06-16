@@ -190,4 +190,49 @@ contract("Blockvitae", (accounts) => {
             assert(skills[i], savedSkills[i]);
         }
     });
+
+     // check for user education
+     it("user education added successfully", async () => {
+        // education
+        let organization = ["Northeastern University", "NYU"];
+        let description = ["Head of NeU Cultural Committee", 
+                            "Captain of NYU Basketball team"];
+        let level = ["Bachelors of Science", "Master of Science"];
+        let dateStart = ["2013-12-20", "2017-01-01"];
+        let dateEnd = ["2017-08-18", "2019-06-15"];
+
+        // create edu 1
+        await blockvitae.createUserEducation(
+            organization[0],
+            level[0],
+            dateStart[0],
+            dateEnd[0],
+            description[0]
+        );
+
+        // create edu 2
+        await blockvitae.createUserEducation(
+            organization[1],
+            level[1],
+            dateStart[1],
+            dateEnd[1],
+            description[1]
+        );
+
+        // get edu count 
+        let count = await blockvitae.getEducationCount(accounts[0]);
+
+        // get edu details for each index
+        for (let i = 0; i < count.toNumber(); i++) {
+             // get project 1
+            let education = await blockvitae.getUserEducation(accounts[0], i);
+        
+            // assert statements
+            assert(organization[i], education[i][0]);
+            assert(level[i], education[i][1]);
+            assert(dateStart[i], education[i][2]);
+            assert(dateEnd[i], education[i][3]);
+            assert(description[i], education[i][4]);
+        }
+    });
 });
