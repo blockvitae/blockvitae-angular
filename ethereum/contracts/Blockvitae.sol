@@ -131,6 +131,7 @@ contract Blockvitae {
     )
     public
     addressNotZero
+    userExists
     {
         // create userSocial struct
         User.UserSocial memory social = User.setUserSocial(
@@ -165,6 +166,7 @@ contract Blockvitae {
     )
     public
     addressNotZero
+    userExists
     {
         // create UserProject struct
         User.UserProject memory project = User.setUserProject(
@@ -203,6 +205,7 @@ contract Blockvitae {
     )
     public
     addressNotZero
+    userExists
     {
         // create UserWorkExp struct
         User.UserWorkExp memory work = User.setUserWorkExp(
@@ -222,7 +225,7 @@ contract Blockvitae {
     //
     // @param bytes32[] _skills
     // array of skills
-    function createUserSkill(bytes32[] _skills) public addressNotZero {
+    function createUserSkill(bytes32[] _skills) public addressNotZero userExists {
         // create user skill struct
         User.UserSkill memory skills = User.setUserSkill(_skills);
 
@@ -259,6 +262,7 @@ contract Blockvitae {
     )
     public
     addressNotZero
+    userExists
     {
         // create UserEducation struct
         User.UserEducation memory education = User.setUserEducation(

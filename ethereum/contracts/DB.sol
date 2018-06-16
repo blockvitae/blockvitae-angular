@@ -20,16 +20,23 @@ contract DB {
     // address of the owner of the contract
     address public owner;
 
+    // total registered users
+    uint public totalUsers;
+
     // constructor function
     constructor() public {
         // initially make this contract its own owner
         // This will be invalid once Blockvitae gets deployed
         // as it will become the owner of this contract
         owner = address(this);
+        totalUsers = 0;
     } 
 
     // list mapping of all users
     mapping(address => User.UserMain) internal users;
+
+    // list mapping of all userNames
+    mapping(string => address) userNames;
 
     // check for the owner
     // owner == address(this) will get
@@ -71,8 +78,54 @@ contract DB {
     // @param address _user
     // address of the user who's details are to be inserted or updated
     function insertUserDetail(User.UserDetail _personal, address _user) public isOwner {
-        users[_user].personal = _personal;
-        persistUser(_user);
+        // if new requested userName is available
+        if (userNames[_personal.userName] == address(0x0)) { 
+            // if user exists
+             // and user's old userName is not equal to the new one
+             // string comparison not allowed. Therefore, compare hashes.
+            if (users[_user].exists
+                && keccak256(abi.encodePacked(users[_user].personal.userName)) 
+                                != keccak256(abi.encodePacked(_personal.userName))) {
+                // temp save oldUserName
+                string memory oldUserName = users[_user].personal.userName;
+
+                // update personal details
+                users[_user].personal = _personal;
+
+                // update userName
+                userNames[oldUserName] = address(0x0);
+
+                // assign new userName
+                userNames[_personal.userName] = _user;
+            }
+            // user doesn't exist and requested userName is available
+            else if (!users[_user].exists) {
+                 // update personal details
+                users[_user].personal = _personal;
+
+                // assign new userName
+                userNames[_personal.userName] = _user;
+
+                // update new user count
+                totalUsers++;
+            }  
+
+            persistUser(_user); 
+        }
+        // user exits but hasn't requested for a new userName
+        else {
+            // existing userName is same as the one sent in the request
+            if (keccak256(abi.encodePacked(users[_user].personal.userName))
+                    == keccak256(abi.encodePacked(_personal.userName))) {
+                // update personal details
+                users[_user].personal = _personal;
+
+                // assign new userName
+                userNames[_personal.userName] = _user;
+            }
+
+            persistUser(_user);
+        }
     }
 
     // @description
