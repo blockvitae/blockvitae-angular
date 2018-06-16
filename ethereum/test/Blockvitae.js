@@ -170,4 +170,24 @@ contract("Blockvitae", (accounts) => {
             assert(description[i], work[i][4]);
         }
     });
+
+    // check for user skills
+    it("user skills added successfully", async () => {
+        let skills = ["Php", "ETH Smart Contracts", "MySQL", 
+            "Leadership", "Truffle", "Go", "Java Spring Boot"];
+
+        // insert skills
+        await blockvitae.createUserSkill(skills);
+
+        // retrieve skills
+        let savedSkills = await blockvitae.getUserSkills(accounts[0]);
+        
+        // convert bytes to Utf8
+        savedSkills = savedSkills.map(skill => web3.toUtf8(skill));
+
+        // assert statements
+        for (let i = 0; i < savedSkills.length; i++) {
+            assert(skills[i], savedSkills[i]);
+        }
+    });
 });
