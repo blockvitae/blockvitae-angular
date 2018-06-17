@@ -3,23 +3,19 @@
 
 mat-toolbar{
     box-shadow: -4px -2px 22px #000;
+    position: relative;
+    top:0;
+    z-index: 100;
 }
 
-.header {
-    background: mat-color($blockvitae-theme-primary);
-    height: 400px;
+.mat-toolbar-multiple-rows {
+    min-height: 50px;
 }
 
-.main-heading, .sub-heading {
-    color: #fff;
-    text-align: center;
+.mat-toolbar-row, .mat-toolbar-single-row {
+    height: 50px;
 }
 
-.main-heading {
-    font-size: 3.5em;
-}
-
-.sub-heading {
-    font-size: 1.5em;
-    margin-top: -2em;
+.spacer {
+    flex: 1 1 auto;
 }
