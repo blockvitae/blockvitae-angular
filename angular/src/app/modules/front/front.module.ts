@@ -5,6 +5,7 @@ import { LandingComponent } from './landing/landing.component';
 import { SignupComponent } from './signup/signup.component';
 import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   imports: [
@@ -13,10 +14,11 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     RouterModule,
     FlexLayoutModule
   ],
-  declarations: [LandingComponent, SignupComponent],
+  declarations: [LandingComponent, SignupComponent, LoginComponent],
   exports: [
     LandingComponent,
     SignupComponent,
+    LoginComponent,
   ]
 })
 export class FrontModule { }
