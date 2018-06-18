@@ -1,3 +1,27 @@
-<p>
-  signup works!
-</p>
+<mat-card 
+fxLayout 
+fxLayoutAlign="center center" 
+fxFlex="40" 
+fxFlexOffset="30"
+class="signup-card">
+  <div fxLayout="column" fxFlexFill fxFlex="80">
+      <div fxFlexFill>
+          <h2>Getting Started</h2>
+          <form>
+              <mat-form-field>
+                <input matInput placeholder="Full Name">
+              </mat-form-field>
+    
+              <mat-form-field>
+                <input matInput placeholder="Username">
+              </mat-form-field>
+    
+              <mat-form-field>
+                <input matInput placeholder="Email">
+              </mat-form-field>
+              <br/>
+              <button mat-raised-button color="primary" fxFlexFill>Create My Portfolio</button>
+          </form>
+      </div>
+    </div>
+</mat-card>
