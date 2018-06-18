@@ -1,0 +1,21 @@
+// Import theming functions
+@import '../theme/blockvitae-theme.scss';
+
+mat-toolbar{
+    box-shadow: -4px -2px 22px #000;
+    position: relative;
+    top:0;
+    z-index: 100;
+}
+
+.mat-toolbar-multiple-rows {
+    min-height: 50px;
+}
+
+.mat-toolbar-row, .mat-toolbar-single-row {
+    height: 50px;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}

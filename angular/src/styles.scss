@@ -1,0 +1,15 @@
+/* You can add global styles to this file, and also import other style files */
+@import './theme/blockvitae-theme.scss';
+
+/* Global */
+body {
+    margin: 0;
+}
+
+*{
+    font-family: 'Tajawal', sans-serif;
+}
+
+.bold-text {
+    font-size: 0.9em !important;
+}

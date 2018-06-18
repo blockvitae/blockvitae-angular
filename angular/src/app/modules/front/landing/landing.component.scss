@@ -1,0 +1,28 @@
+// Import theming functions
+@import '../../../../theme/blockvitae-theme.scss';
+
+.header {
+    background: mat-color($blockvitae-theme-primary);
+    height: 350px;
+    position: relative;
+    top: -60px;
+    padding-top: 60px;
+}
+
+.main-heading, .sub-heading, .button-row {
+    color: #fff;
+    text-align: center;
+}
+
+.main-heading {
+    font-size: 3.5em;
+}
+
+.sub-heading {
+    font-size: 1.5em;
+    margin-top: -2em;
+}
+
+.sub-head-text {
+    font-size: 1.2em;
+}
