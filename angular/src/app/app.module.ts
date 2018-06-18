@@ -1,3 +1,4 @@
+import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -18,7 +19,8 @@ import { blockvitaeRoutes } from './routes/blockvitae-routes';
     MaterialModule,
     FlexLayoutModule,
     FrontModule,
-    BrowserAnimationsModule, 
+    BrowserAnimationsModule,
+    DashboardModule, 
     RouterModule.forRoot(blockvitaeRoutes),
   ],
   providers: [],
