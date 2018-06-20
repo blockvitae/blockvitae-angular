@@ -61,6 +61,7 @@ library User {
         string url; // url of the project
     }
 
+    // Skills of the user
     struct UserSkill {
         bytes32[] skills; // skills of the user
     }
@@ -238,19 +239,19 @@ library User {
     //
     // @param string _organization
     // name of the organization
-    //
+    
     // @param string _level
     // education level held in the given organization
-    //
+    
     // @param string _dateStart
     // start date of the education
-    //
+    
     // @param string _dateEnd
     // end date of the education
-    //
+    
     // @param string _description
     // description of the education
-    //
+    
     // @return UserEducation
     // UserEducation struct for the given values
     function setUserEducation(
