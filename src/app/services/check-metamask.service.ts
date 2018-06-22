@@ -123,12 +123,11 @@ export class CheckMetamaskService {
   private setMetamaskError(_errorCode: string, 
     _errorMsg: string, 
     _errorDescription: string): BlockvitaeError.MetamaskError {
-      let error: BlockvitaeError.MetamaskError;
-      error = {
-        errorCode: _errorCode,
-        errorMsg: _errorMsg,
-        errorDescription: _errorDescription
-      };
+      let error = <BlockvitaeError.MetamaskError>{};
+    
+      error.errorCode = _errorCode,
+      error.errorMsg = _errorMsg,
+      error.errorDescription = _errorDescription
 
       return error;
     }

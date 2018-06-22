@@ -1,5 +1,5 @@
 # blockvitae-angular
-[![Build Status](https://travis-ci.org/sidharth0094/blockvitae.svg?branch=master)](https://travis-ci.org/sidharth0094/blockvitae)
+[![Build Status](https://travis-ci.org/blockvitae/blockvitae-angular.svg?branch=master)](https://travis-ci.org/blockvitae/blockvitae-angular)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
 
