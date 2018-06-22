@@ -1,3 +1,4 @@
+import { CheckMetamaskService } from './services/check-metamask.service';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
@@ -23,7 +24,9 @@ import { blockvitaeRoutes } from './routes/blockvitae-routes';
     DashboardModule, 
     RouterModule.forRoot(blockvitaeRoutes),
   ],
-  providers: [],
+  providers: [
+    CheckMetamaskService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
