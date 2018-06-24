@@ -1,5 +1,5 @@
 import { CheckMetamaskService } from './../../../services/check-metamask.service';
-import { Component, OnInit, AfterContentInit, AfterViewInit, OnChanges, AfterViewChecked, DoCheck } from '@angular/core';
+import { Component, DoCheck } from '@angular/core';
 import { SignupService } from '../../../services/signup.service';
 import { Blockvitae } from '../../../interfaces/interface';
 
@@ -19,6 +19,10 @@ export class SignupComponent implements DoCheck{
 
   public address: string;
 
+  public errorMsg: string;
+
+  public isUsernameAvailable: boolean;
+
   /**
    * constructor
    */
@@ -30,12 +34,12 @@ export class SignupComponent implements DoCheck{
     this.user = <Blockvitae.UserDetail>{};
     this.web3Installed = false;
     this.address = "";
-    this.ropstenSelected = false;
+    this.ropstenSelected = true;
+    this.isUsernameAvailable = false;
+    this.errorMsg = "";
 
     // initialize web3
-    if(this.checkMetamask.initializeDappBrowser()) {
-      this.web3Installed = true;
-    }
+    this.web3Installed = this.checkMetamask.initializeDappBrowser();
   }
 
   /**
@@ -45,8 +49,10 @@ export class SignupComponent implements DoCheck{
    * @Ref: https://stackoverflow.com/questions/42643389/why-do-we-need-ngdocheck
    */
   ngDoCheck() {
-    this.address = this.checkMetamask.web3.eth.defaultAccount;
-    this.ropstenSelected = this.checkMetamask.isRopstenSet;
+    if (this.web3Installed) {
+      this.address = this.checkMetamask.web3.eth.defaultAccount;
+      this.ropstenSelected = this.checkMetamask.isRopstenSet;
+    }
   }
 
   /**
@@ -54,6 +60,11 @@ export class SignupComponent implements DoCheck{
    * already been taken or not
    */
   public checkUserNameAvailability() {
-    console.log(this.user);
+      this.signup.checkUserNameAvailability(this.user.userName)
+                 .subscribe(res =>  {
+                    this.isUsernameAvailable = res;
+                    if (!this.isUsernameAvailable)
+                      this.errorMsg = "Username is already taken!";
+                 });
   }
 }
