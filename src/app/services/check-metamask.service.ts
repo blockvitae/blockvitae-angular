@@ -77,7 +77,7 @@ export class CheckMetamaskService {
       // and its abi interface
       this.tokenContract = new this.web3.eth.Contract(
               tokenAbi.abi,
-              '0xec1c286e41f0cefdaf624b0426c40626c46de1b5'  
+              '0x12c9f503fe05bb1a10e7f52fd073a7ca810ce5d2'  
       );
 
       return true;
