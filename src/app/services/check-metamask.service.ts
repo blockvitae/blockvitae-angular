@@ -42,6 +42,7 @@ export class CheckMetamaskService {
   // reference to the token on Blockchain
   public tokenContract: any;
 
+  // if selected network is ropsten or not
   public isRopstenSet: boolean;
 
   constructor() {
@@ -85,6 +86,13 @@ export class CheckMetamaskService {
     return false;
   }
 
+  /**
+   * Checks if dapp browser is present
+   * and Web3 has been injected or not
+   * 
+   * @return boolean
+   * true if Web3 has been injected else false
+   */
   private isWeb3Defined(): boolean {
     if (typeof window === "undefined" || typeof window.web3 === "undefined") {
         
@@ -104,6 +112,10 @@ export class CheckMetamaskService {
     return true;
   }
 
+  /**
+   * Retrieves the accounts from dapp browser
+   * and also sets the default account
+   */
   private getAccounts(): void {
     this.web3.eth.getAccounts()
                  .then(accounts => { 
@@ -116,9 +128,6 @@ export class CheckMetamaskService {
   /**
    * Checks network id of ethereum network
    * set in the dapp browser
-   * 1: Mainnet
-   * 3: Ropsten
-   * 4: Rinkebey
    * 
    * @returns void
    */
@@ -128,6 +137,7 @@ export class CheckMetamaskService {
       // 3 for ropsten
       this.getId()
           .then(id => {
+            // network 3 for Ropsten
             if (id !== 3) {
               // ropsten not selected
               this.web3Error = this.setMetamaskError(
@@ -148,7 +158,13 @@ export class CheckMetamaskService {
     }
   }
 
-  private async getId() {
+  /**
+   * Gets the Promise for the network id selected
+   * 1: Mainnet
+   * 3: Ropsten
+   * 4: Rinkebey
+   */
+  private async getId(): Promise<any> {
     return await this.web3.eth.net.getId();
   }
 
