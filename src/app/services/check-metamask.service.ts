@@ -9,8 +9,7 @@
  */
 import { Injectable } from '@angular/core';
 import Web3 from 'web3';
-
-import { BlockvitaeError } from './../interfaces/BlockvitaeError.interface';
+import { Blockvitae } from './../interfaces/interface';
 
 // declare window variable to 
 // inquire about the dapp browser
@@ -19,12 +18,8 @@ import { BlockvitaeError } from './../interfaces/BlockvitaeError.interface';
 // dapp browser
 declare let window: any;
 
-// require is not included in typescript
-// lib.d.ts file. Therefore declare it
-// https://stackoverflow.com/a/12742371/7868843
-// https://stackoverflow.com/a/46819440/7868843
-// http://blogs.microsoft.co.il/gilf/2013/07/22/quick-tip-typescript-declare-keyword/
-// declare function require(name: string);
+// token abi
+let tokenAbi = require('./../token/Blockvitae.json');
 
 @Injectable({
   providedIn: "root"
@@ -35,47 +30,87 @@ export class CheckMetamaskService {
   // is instance of Web3 if Dapp
   // browser is installed and network is Ropsten
   // else is false
-  public web3: Web3 | null;
+  public web3: Web3;
+
+  // error
+  public web3Error: Blockvitae.MetamaskError;
+
+  // Holds list of all ethereum accounts provided
+  // Metamask
+  public accounts: Array<string>;
+
+  // reference to the token on Blockchain
+  public tokenContract: any;
+
+  public isRopstenSet: boolean;
 
   constructor() {
     this.web3 = null;
+    this.web3Error = null;
+    this.accounts = null;
+    this.isRopstenSet = false;
   }
 
   /**
    * Checks if any Dapp browser is installed or not
    * 
-   * @returns boolean | BlockvitaeError.MetamaskError
-   * returns true if installed and sets the global
-   * web3 else returns BlockvitaeError.MetamaskError
+   * @returns boolean
+   * returns true if web3 is ready to use else false
    */
-  public checkDappBrowser(): BlockvitaeError.MetamaskError | boolean {
-    if (typeof window === "undefined" || typeof window.web3 === "undefined") {
-        
-        // set web3 instance to null
-        this.web3 = null;
-
-        // return error
-        return this.setMetamaskError(
-          "DAPP_01",
-          "DaPP_Browser_Not_Found",
-          "Please install Metamask"
-        );
-    }
-    else {
+  public initializeDappBrowser(): boolean {
+    if (this.isWeb3Defined()) {
 
       // create Web3 instance
       this.web3 = new Web3(window.web3.currentProvider);
+
+      // check network id
+      // should be ropsten
+      this.isRopsten();
+    
+      // Ropsten selected
+      // get accounts and set default
+      // account
+      this.getAccounts();
+
+      // get token contract from blockchain
+      // and its abi interface
+      this.tokenContract = new this.web3.eth.Contract(
+              tokenAbi.abi,
+              '0xec1c286e41f0cefdaf624b0426c40626c46de1b5'  
+      );
+
       return true;
     }
+
+    return false;
   }
 
-  /**
-   * Returns the web3 instance
-   * 
-   * @returns Web3 instance
-   */
-  public getWeb3(): any {
-    return this.web3;
+  private isWeb3Defined(): boolean {
+    if (typeof window === "undefined" || typeof window.web3 === "undefined") {
+        
+      // set web3 instance to null
+      this.web3 = null;
+
+      // return error
+      this.web3Error =  this.setMetamaskError(
+        "DAPP_01",
+        "DaPP_Browser_Not_Found",
+        "Please install Metamask"
+      );
+
+      return false;
+    }
+    
+    return true;
+  }
+
+  private getAccounts(): void {
+    this.web3.eth.getAccounts()
+                 .then(accounts => { 
+                        accounts.length > 0 ? this.accounts = accounts : null;
+                        if (this.accounts !== null) 
+                          this.web3.eth.defaultAccount = this.accounts[0];
+                      });
   }
 
   /**
@@ -85,24 +120,36 @@ export class CheckMetamaskService {
    * 3: Ropsten
    * 4: Rinkebey
    * 
-   * @returns boolean
-   * true if the network id is 3 else
-   * false
+   * @returns void
    */
-  public async checkNetworkId(): Promise<BlockvitaeError.MetamaskError>{
+  private isRopsten(): void {
     if (this.web3 instanceof Web3) {
       // get network Id
       // 3 for ropsten
-      let networkId = await this.web3.eth.net.getId();
-      if (networkId !== 3) {
-        // ropsten not selected
-        return this.setMetamaskError(
-          "DAPP_02",
-          "Ropsten_Network_Not_Found",
-          "Please select Ropsten Network"
-        );
-      }
+      this.getId()
+          .then(id => {
+            if (id !== 3) {
+              // ropsten not selected
+              this.web3Error = this.setMetamaskError(
+                "DAPP_02",
+                "Ropsten_Network_Not_Found",
+                "Please select Ropsten Network"
+              );
+
+              this.isRopstenSet = false;
+            }
+            else {
+              this.isRopstenSet = true;
+            }
+          });
     }
+    else {
+      this.isRopstenSet = false;
+    }
+  }
+
+  private async getId() {
+    return await this.web3.eth.net.getId();
   }
 
   /**
@@ -117,13 +164,14 @@ export class CheckMetamaskService {
    * @param string _errorDescription
    * Description of the error
    * 
-   * @returns BlockvitaeError.MetamaskError
+   * @returns Blockvitae.MetamaskError
    * Error object with all the given values
    */
-  private setMetamaskError(_errorCode: string, 
+  private setMetamaskError(
+    _errorCode: string, 
     _errorMsg: string, 
-    _errorDescription: string): BlockvitaeError.MetamaskError {
-      let error = <BlockvitaeError.MetamaskError>{};
+    _errorDescription: string): Blockvitae.MetamaskError {
+      let error = <Blockvitae.MetamaskError>{};
     
       error.errorCode = _errorCode,
       error.errorMsg = _errorMsg,
