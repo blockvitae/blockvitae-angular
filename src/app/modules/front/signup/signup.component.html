@@ -9,15 +9,37 @@ class="signup-card">
           <h2>Getting Started</h2>
           <form>
               <mat-form-field>
-                <input matInput placeholder="Full Name">
+                <input 
+                matInput 
+                placeholder="Full Name" 
+                [(ngModel)]="user.fullName" 
+                name="fullName"/>
               </mat-form-field>
     
               <mat-form-field>
-                <input matInput placeholder="Username">
+                <input 
+                matInput 
+                placeholder="Username" 
+                [(ngModel)]="user.userName"
+                name="userName"
+                (blur)="checkUserNameAvailability()" />
               </mat-form-field>
     
               <mat-form-field>
-                <input matInput placeholder="Email">
+                <input 
+                matInput 
+                placeholder="Email"
+                [(ngModel)]="user.email"
+                name="email" />
+              </mat-form-field>
+
+              <mat-form-field *ngIf = "ropstenSelected">
+                <input 
+                matInput
+                disabled
+                [value]="address"
+                placeholder="Eth Address"
+                />
               </mat-form-field>
               <br/>
               <button mat-raised-button color="primary" fxFlexFill>Create My Portfolio</button>
