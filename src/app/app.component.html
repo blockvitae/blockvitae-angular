@@ -1,8 +1,11 @@
 <mat-toolbar color="primary">
-  <mat-toolbar-row>
+  <mat-toolbar-row fxFlex="92" fxFlexOffset="4">
     <span><i class="fas fa-th"></i> Blockvitae</span>
     <span class="spacer"></span>
-    <a mat-button class="bold-text" routerLink="login">Login</a>
+    <a 
+    mat-raised-button 
+    color="accent"
+    *ngIf="isOwner">Edit Profile</a>
   </mat-toolbar-row>
 </mat-toolbar>
 <router-outlet></router-outlet>

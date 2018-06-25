@@ -45,11 +45,17 @@ export class CheckMetamaskService {
   // if selected network is ropsten or not
   public isRopstenSet: boolean;
 
+  // true if the current user is the
+  // owner of the profile else false
+  // used to show edit button
+  public isOwner: boolean;
+
   constructor() {
     this.web3 = null;
     this.web3Error = null;
     this.accounts = null;
     this.isRopstenSet = false;
+    this.isOwner = false;
   }
 
   /**
