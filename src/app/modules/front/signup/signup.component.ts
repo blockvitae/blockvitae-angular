@@ -1,6 +1,5 @@
 import { CheckMetamaskService } from './../../../services/check-metamask.service';
 import { Component, DoCheck } from '@angular/core';
-import { SignupService } from '../../../services/signup.service';
 import { Blockvitae } from '../../../interfaces/interface';
 
 const BTN_TEXT = "Create My Portfolio";
@@ -8,8 +7,7 @@ const BTN_TEXT = "Create My Portfolio";
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss'],
-  providers: [SignupService]
+  styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements DoCheck{
 
@@ -49,7 +47,6 @@ export class SignupComponent implements DoCheck{
    */
   constructor(
     private checkMetamask: CheckMetamaskService,
-    private signup: SignupService
   ) {
     // initialize dummy object
     this.user = <Blockvitae.UserDetail>{};
@@ -83,7 +80,7 @@ export class SignupComponent implements DoCheck{
    * already been taken or not
    */
   public checkUserNameAvailability() {
-      this.signup.checkUserNameAvailability(this.user.userName)
+      this.checkMetamask.checkUserNameAvailability(this.user.userName)
                  .subscribe(res =>  {
                     this.isUsernameAvailable = res;
                     if (!this.isUsernameAvailable)
@@ -99,7 +96,7 @@ export class SignupComponent implements DoCheck{
   public registerUser() {
     this.registrationInProcess = true;
     this.btnText = "Please Wait...";
-    this.signup.signupUser(this.user)
+    this.checkMetamask.signupUser(this.user)
                .subscribe(res => {
                  if (res.status) {
                    // success
