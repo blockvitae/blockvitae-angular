@@ -13,3 +13,7 @@ body {
 .bold-text {
     font-size: 0.9em !important;
 }
+
+.error {
+    color: mat-color($blockvitae-theme-warn);
+}
