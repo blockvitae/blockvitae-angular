@@ -2,7 +2,7 @@
 
 @include mat-core();
 
-$blockvitae-theme-primary: mat-palette($mat-indigo);
+$blockvitae-theme-primary: mat-palette($mat-blue, 600);
 $blockvitae-theme-accent: mat-palette($mat-orange, 900);
 $blockvitae-theme-warn: mat-palette($mat-red);
 

@@ -76,4 +76,21 @@ export namespace Blockvitae {
         description?: string; // description of the project
         url?: string; // url of the project
     }
+
+    /**
+     * Errors related to metamask
+     * 
+     * errorCode: "DAPP_01"
+     * errorMsg: "DaPP_Browser_Not_Found"
+     * errorDescription: "Please install Metamask"
+     * 
+     * errorCode: "DAPP_02"
+     * errorMsg: "Ropsten_Network_Not_Found"
+     * errorDescription: "Please select Ropsten Network"
+     */
+    export interface MetamaskError {
+        errorCode: string,
+        errorMsg: string,
+        errorDescription: string 
+    }
 }

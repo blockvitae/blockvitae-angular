@@ -6,22 +6,78 @@ fxFlexOffset="30"
 class="signup-card">
   <div fxLayout="column" fxFlexFill fxFlex="80">
       <div fxFlexFill>
-          <h2>Getting Started</h2>
-          <form>
+          <h2 *ngIf="web3Installed && ropstenSelected">Getting Started</h2>
+          <span *ngIf="!isUsernameAvailable" class="error">{{errorMsg}}</span>
+          <form *ngIf="web3Installed && ropstenSelected">
               <mat-form-field>
-                <input matInput placeholder="Full Name">
+                <input 
+                matInput 
+                placeholder="Full Name" 
+                [(ngModel)]="user.fullName" 
+                name="fullName"
+                required/>
+              </mat-form-field>
+    
+              <mat-form-field  
+                [ngClass]="{'mat-form-field-invalid': !isUsernameAvailable}">
+                <input 
+                matInput 
+                placeholder="Username" 
+                [(ngModel)]="user.userName"
+                name="userName"
+                (blur)="checkUserNameAvailability()" 
+                required/>
               </mat-form-field>
     
               <mat-form-field>
-                <input matInput placeholder="Username">
+                <input 
+                type="email"
+                matInput 
+                placeholder="Email"
+                [(ngModel)]="user.email"
+                name="email" 
+                required/>
               </mat-form-field>
-    
-              <mat-form-field>
-                <input matInput placeholder="Email">
+
+              <mat-form-field *ngIf = "ropstenSelected">
+                <input 
+                matInput
+                disabled
+                [value]="address"
+                placeholder="Eth Address"
+                />
               </mat-form-field>
               <br/>
-              <button mat-raised-button color="primary" fxFlexFill>Create My Portfolio</button>
+              <button 
+              mat-raised-button 
+              color="primary" 
+              fxFlexFill
+              (click)="registerUser()"
+              [disabled]="registrationInProcess || !isUsernameAvailable">
+              {{btnText}} 
+              <app-spinner  *ngIf="registrationInProcess"></app-spinner>
+            </button>
           </form>
+
+          <div align="center" *ngIf="!web3Installed || !ropstenSelected">
+            <h3 *ngIf="!web3Installed">
+              Please install Metamask browser extension to manage your Ethereum
+              Accounts and Transactions on Blockvitae.
+              <br/> Thank you! :)
+            </h3>
+            <a *ngIf="!web3Installed"
+            mat-raised-button 
+            href="https://metamask.io/" 
+            target="_blank"
+            color="accent">
+            Download Metmask Extension
+            </a>
+            <h3 *ngIf="!ropstenSelected">
+              We are still in testing phase.
+              Please select Ropsten network in your Metamask plugin. 
+              <br/>Thank you! :)
+            </h3>
+          </div>
       </div>
     </div>
 </mat-card>
