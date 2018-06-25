@@ -10,6 +10,7 @@
 import { Injectable } from '@angular/core';
 import Web3 from 'web3';
 import { Blockvitae } from './../interfaces/interface';
+import { from, Observable, Subject } from 'rxjs';
 
 // declare window variable to 
 // inquire about the dapp browser
@@ -45,17 +46,38 @@ export class CheckMetamaskService {
   // if selected network is ropsten or not
   public isRopstenSet: boolean;
 
+  public isOwner$: Observable<boolean>;
+
+  public owner: string;
+
   // true if the current user is the
   // owner of the profile else false
   // used to show edit button
-  public isOwner: boolean;
+  private isOwnerSource = new Subject<boolean>();
+
 
   constructor() {
     this.web3 = null;
     this.web3Error = null;
     this.accounts = null;
     this.isRopstenSet = false;
-    this.isOwner = false;
+    this.isOwner$ = this.isOwnerSource.asObservable();
+    this.owner = null;
+  }
+
+  // public toggleEditControls(toggle: boolean): void {
+  //   this.isOwnerSource.next(toggle);
+  // }
+
+  /**
+   * Get the user detail object from network
+   * 
+   * @returns Observable<string[]>
+   */
+  public getUserDetail(): Observable<string[]> {
+    return from(
+      this.tokenContract.methods.getUserDetail(this.owner).call()
+    );
   }
 
   /**
@@ -73,7 +95,7 @@ export class CheckMetamaskService {
       // check network id
       // should be ropsten
       this.isRopsten();
-    
+
       // Ropsten selected
       // get accounts and set default
       // account
@@ -82,14 +104,69 @@ export class CheckMetamaskService {
       // get token contract from blockchain
       // and its abi interface
       this.tokenContract = new this.web3.eth.Contract(
-              tokenAbi.abi,
-              '0x12c9f503fe05bb1a10e7f52fd073a7ca810ce5d2'  
+        tokenAbi.abi,
+        '0x12c9f503fe05bb1a10e7f52fd073a7ca810ce5d2'
       );
 
       return true;
     }
 
     return false;
+  }
+
+  /**
+  * Checks if the username is available or already taken
+  * 
+  * @param string userName 
+  * username to be checked
+  * 
+  * @returns Observable<boolean>
+  */
+  public checkUserNameAvailability(userName: string): Observable<boolean> {
+    return from(
+      this.tokenContract.methods
+        .isUsernameAvailable(userName)
+        .call()
+    );
+  }
+
+  /**
+   * Signs up the new user on the blockchain
+   * 
+   * @param Blockvitae.UserDetail user 
+   * user detail variable having values for 
+   * fullname, username and email. Image url 
+   * will be updated once user starts creating their
+   * profile
+   * 
+   * @returns Observable<any>
+   */
+  public signupUser(user: Blockvitae.UserDetail): Observable<any> {
+    return from(
+      this.tokenContract.methods
+        .createUserDetail(
+          user.fullName,
+          user.userName,
+          '',
+          user.email
+        ).send({
+          from: this.web3.eth.defaultAccount
+        })
+    );
+  }
+
+  /**
+   * Finds the address for the username
+   * 
+   * @param string username
+   * Username to be searched
+   * 
+   * @returns Observable<string>
+   */
+  public getAddrForUsername(username: string): Observable<string> {
+    return from(
+      this.tokenContract.methods.getAddrForUserName(username).call()
+    );
   }
 
   /**
@@ -101,12 +178,12 @@ export class CheckMetamaskService {
    */
   private isWeb3Defined(): boolean {
     if (typeof window === "undefined" || typeof window.web3 === "undefined") {
-        
+
       // set web3 instance to null
       this.web3 = null;
 
       // return error
-      this.web3Error =  this.setMetamaskError(
+      this.web3Error = this.setMetamaskError(
         "DAPP_01",
         "DaPP_Browser_Not_Found",
         "Please install Metamask"
@@ -114,7 +191,7 @@ export class CheckMetamaskService {
 
       return false;
     }
-    
+
     return true;
   }
 
@@ -124,11 +201,11 @@ export class CheckMetamaskService {
    */
   private getAccounts(): void {
     this.web3.eth.getAccounts()
-                 .then(accounts => { 
-                        accounts.length > 0 ? this.accounts = accounts : null;
-                        if (this.accounts !== null) 
-                          this.web3.eth.defaultAccount = this.accounts[0];
-                      });
+      .then(accounts => {
+        accounts.length > 0 ? this.accounts = accounts : null;
+        if (this.accounts !== null)
+          this.web3.eth.defaultAccount = this.accounts[0];
+      });
   }
 
   /**
@@ -142,22 +219,22 @@ export class CheckMetamaskService {
       // get network Id
       // 3 for ropsten
       this.getId()
-          .then(id => {
-            // network 3 for Ropsten
-            if (id !== 3) {
-              // ropsten not selected
-              this.web3Error = this.setMetamaskError(
-                "DAPP_02",
-                "Ropsten_Network_Not_Found",
-                "Please select Ropsten Network"
-              );
+        .then(id => {
+          // network 3 for Ropsten
+          if (id !== 3) {
+            // ropsten not selected
+            this.web3Error = this.setMetamaskError(
+              "DAPP_02",
+              "Ropsten_Network_Not_Found",
+              "Please select Ropsten Network"
+            );
 
-              this.isRopstenSet = false;
-            }
-            else {
-              this.isRopstenSet = true;
-            }
-          });
+            this.isRopstenSet = false;
+          }
+          else {
+            this.isRopstenSet = true;
+          }
+        });
     }
     else {
       this.isRopstenSet = false;
@@ -190,15 +267,15 @@ export class CheckMetamaskService {
    * Error object with all the given values
    */
   private setMetamaskError(
-    _errorCode: string, 
-    _errorMsg: string, 
+    _errorCode: string,
+    _errorMsg: string,
     _errorDescription: string): Blockvitae.MetamaskError {
-      let error = <Blockvitae.MetamaskError>{};
-    
-      error.errorCode = _errorCode,
+    let error = <Blockvitae.MetamaskError>{};
+
+    error.errorCode = _errorCode,
       error.errorMsg = _errorMsg,
       error.errorDescription = _errorDescription
 
-      return error;
-    }
+    return error;
+  }
 }
