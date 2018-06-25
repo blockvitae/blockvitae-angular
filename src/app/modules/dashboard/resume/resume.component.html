@@ -1,17 +1,174 @@
-<mat-card fxLayout fxFlex="90" fxFlexOffset="5">
-    <div class="bv-container" fxLayout fxFill>
-    <div 
-    fxFlexOffset="10" 
-    fxFlex="20"
-    fxLayoutAlign="center">
-      <div class="bv-profile-img"></div>
+<div class="bv-body">
+  <mat-card fxLayout="column" fxFlex="90" fxFlexOffset="5">
+
+    <!--Profile Image-->
+    <div class="bv-container bv-first-container">
+      <div 
+      fxFlex="20"
+      fxLayoutAlign="start">
+        <div>
+          <img class="bv-profile-img"
+            src="https://images.pexels.com/photos/555790/pexels-photo-555790.png?auto=compress&cs=tinysrgb&h=350"
+            alt="John Doe"
+          />
+        </div>
+      </div>
+      <div 
+      fxFlexOffset="1"
+      fxFlex="50">
+        <span class="bv-name">John Doe</span><br/>
+        <span class="bv-description"> Full-Stack Developer</span><br/><br/>
+        <span class="bv-detail"><i class="fas fa-map-marker-alt"></i> Boston, MA</span>
+        <br/><br/>
+        <span class="bv-social">
+          <a 
+          matTooltip="Twitter">
+            <i class="fab fa-twitter-square"></i>
+          </a>
+          <a
+          matTooltip="Facebook">
+            <i class="fab fa-facebook-square"></i>
+          </a>
+          <a
+          matTooltip="LinkedIn">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a
+          matTooltip="Github">
+            <i class="fab fa-github-square"></i>
+          </a>
+          <a
+          matTooltip="Dribbble">
+            <i class="fab fa-dribbble-square"></i>
+          </a>
+          <a
+          matTooltip="Behance">
+            <i class="fab fa-behance-square"></i>
+          </a>
+          <a
+          matTooltip="Medium">
+            <i class="fab fa-medium"></i>
+          </a>
+          <a
+          matTooltip="Email">
+            <i class="fas fa-envelope-square"></i>
+          </a>
+          <a
+          matTooltip="Personal Website">
+            <i class="fas fa-globe"></i>
+          </a>
+        </span>
+      </div>
     </div>
-    <div 
-    fxFlexOffset="1"
-    fxFlex="33">
-      <span class="bv-name">Sidharth Malhotra</span><br/>
-      <span class="bv-detail"><i class="fas fa-map-marker-alt"></i> Boston, MA</span>
+
+    <!--Introduction-->
+    <div class="bv-container">
+      <h1 class="bv-head">Introduction</h1>
+      <p class="bv-about">Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+          when an unknown printer took a galley of type and scrambled it to make a type 
+          specimen book. It has survived not only five centuries, but also the leap 
+          into electronic typesetting, remaining essentially unchanged.
+      </p>
     </div>
+
+    <!--Skills-->
+    <div class="bv-container">
+      <h1 class="bv-head">Skills</h1>
+      <mat-chip-list>
+          <mat-chip color="primary" selected="true">PHP</mat-chip>
+          <mat-chip color="primary" selected="true">Angular</mat-chip>
+          <mat-chip color="primary" selected="true">MySQL</mat-chip>
+          <mat-chip color="primary" selected="true">Python</mat-chip>
+          <mat-chip color="primary" selected="true">Agile Development</mat-chip>
+        </mat-chip-list>
+    </div>
+
+    <!--Experience-->
+    <div class="bv-container">
+      <h1 class="bv-head">Work Experience</h1>
+      <h3 class="bv-list-head">
+        <i class="far fa-dot-circle"></i>
+        Software Engineer Intern at Conduit Computing
+      </h3>
+      <p class="bv-list-sub-head">June 2018 to August 2018</p>
+      <p class="bv-list-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+        when an unknown printer took a galley of type and scrambled it to make a type 
+        specimen book. It has survived not only five centuries, but also the leap 
+        into electronic typesetting, remaining essentially unchanged.
+      </p>
+      <br/>
+      <h3 class="bv-list-head">
+          <i class="far fa-dot-circle"></i>
+          Software Engineer Intern at Conduit Computing
+        </h3>
+        <p class="bv-list-sub-head">June 2018 to August 2018</p>
+        <p class="bv-list-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+          when an unknown printer took a galley of type and scrambled it to make a type 
+          specimen book. It has survived not only five centuries, but also the leap 
+          into electronic typesetting, remaining essentially unchanged.
+        </p>
+    </div>
+
+    <!--Education-->
+    <div class="bv-container">
+        <h1 class="bv-head">Education</h1>
+        <h3 class="bv-list-head">
+            <i class="far fa-dot-circle"></i>
+            Master of Science in Computer Science 
+            at Northeastern University, Boston, MA
+        </h3>
+        <p class="bv-list-sub-head">September 2017 to May 2019</p>
+        <p class="bv-list-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+          when an unknown printer took a galley of type and scrambled it to make a type 
+          specimen book. It has survived not only five centuries, but also the leap 
+          into electronic typesetting, remaining essentially unchanged.
+        </p>
+        <br/>
+        <h3 class="bv-list-head">
+            <i class="far fa-dot-circle"></i>
+            Master of Science in Computer Science 
+            at Northeastern University, Boston, MA
+        </h3>
+        <p class="bv-list-sub-head">September 2017 to May 2019</p>
+        <p class="bv-list-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+          when an unknown printer took a galley of type and scrambled it to make a type 
+          specimen book. It has survived not only five centuries, but also the leap 
+          into electronic typesetting, remaining essentially unchanged.
+        </p>
+    </div>
+
+     <!--Projects-->
+     <div class="bv-container">
+        <h1 class="bv-head">Projects</h1>
+        <h3 class="bv-list-head">
+            <i class="far fa-dot-circle"></i>
+            Blockvitae
+        </h3>
+        <p class="bv-list-sub-head">A Blockchain based curriculum vitae</p>
+        <p class="bv-list-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+          when an unknown printer took a galley of type and scrambled it to make a type 
+          specimen book. It has survived not only five centuries, but also the leap 
+          into electronic typesetting, remaining essentially unchanged.
+        </p>
+        <br/>
+        <h3 class="bv-list-head">
+            <i class="far fa-dot-circle"></i>
+            Blockvitae
+        </h3>
+        <p class="bv-list-sub-head">A Blockchain based curriculum vitae</p>
+        <p class="bv-list-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+          when an unknown printer took a galley of type and scrambled it to make a type 
+          specimen book. It has survived not only five centuries, but also the leap 
+          into electronic typesetting, remaining essentially unchanged.
+        </p>
+      </div>
+  </mat-card>
 </div>
-</mat-card>
 
