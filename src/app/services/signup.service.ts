@@ -8,8 +8,7 @@ export class SignupService {
 
   constructor(
     private checkMetamask: CheckMetamaskService
-  ) { 
-  }
+  ) {}
 
   /**
    * Checks if the username is available or already taken
@@ -27,7 +26,28 @@ export class SignupService {
     );
   }
 
-  // public signupUser(user: Blockvitae.User): boolean {
-
-  // }
+  /**
+   * Signs up the new user on the blockchain
+   * 
+   * @param Blockvitae.UserDetail user 
+   * user detail variable having values for 
+   * fullname, username and email. Image url 
+   * will be updated once user starts creating their
+   * profile
+   * 
+   * @returns Observable<any>
+   */
+  public signupUser(user: Blockvitae.UserDetail): Observable<any> {
+    return from(
+      this.checkMetamask.tokenContract.methods
+          .createUserDetail(
+            user.fullName,
+            user.userName,
+            '',
+            user.email
+          ).send({
+            from: this.checkMetamask.web3.eth.defaultAccount
+          })
+    );
+  }
 }

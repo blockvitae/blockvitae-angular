@@ -48,7 +48,15 @@ class="signup-card">
                 />
               </mat-form-field>
               <br/>
-              <button mat-raised-button color="primary" fxFlexFill>Create My Portfolio</button>
+              <button 
+              mat-raised-button 
+              color="primary" 
+              fxFlexFill
+              (click)="registerUser()"
+              [disabled]="registrationInProcess || !isUsernameAvailable">
+              {{btnText}} 
+              <app-spinner  *ngIf="registrationInProcess"></app-spinner>
+            </button>
           </form>
 
           <div align="center" *ngIf="!web3Installed || !ropstenSelected">

@@ -3,6 +3,8 @@ import { Component, DoCheck } from '@angular/core';
 import { SignupService } from '../../../services/signup.service';
 import { Blockvitae } from '../../../interfaces/interface';
 
+const BTN_TEXT = "Create My Portfolio";
+
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -23,6 +25,10 @@ export class SignupComponent implements DoCheck{
 
   public isUsernameAvailable: boolean;
 
+  public registrationInProcess: boolean;
+
+  public btnText: string;
+
   /**
    * constructor
    */
@@ -36,7 +42,9 @@ export class SignupComponent implements DoCheck{
     this.address = "";
     this.ropstenSelected = true;
     this.isUsernameAvailable = false;
+    this.registrationInProcess = false;
     this.errorMsg = "";
+    this.btnText = BTN_TEXT;
 
     // initialize web3
     this.web3Installed = this.checkMetamask.initializeDappBrowser();
@@ -56,7 +64,7 @@ export class SignupComponent implements DoCheck{
   }
 
   /**
-   * This function validates if the given userName has
+   * Validates if the given userName has
    * already been taken or not
    */
   public checkUserNameAvailability() {
@@ -66,5 +74,27 @@ export class SignupComponent implements DoCheck{
                     if (!this.isUsernameAvailable)
                       this.errorMsg = "Username is already taken!";
                  });
+  }
+
+  /**
+   * Registers user to the smart contract
+   * If successfull redirects user to the dashboard page
+   * to build the profile else shows the error
+   */
+  public registerUser() {
+    this.registrationInProcess = true;
+    this.btnText = "Please Wait...";
+    this.signup.signupUser(this.user)
+               .subscribe(res => {
+                 if (res.status) {
+                   // success
+                  console.log("Registered");
+                 }
+                 else {
+                   // @TODO error
+                 }
+                 this.registrationInProcess = false;
+                  this.btnText = BTN_TEXT;
+                });          
   }
 }
