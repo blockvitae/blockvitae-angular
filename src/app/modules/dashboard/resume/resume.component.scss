@@ -1,0 +1,95 @@
+@import './../../../../theme/blockvitae-theme.scss';
+
+.bv-first-container {
+    padding-top: 5% !important;
+}
+
+.bv-container {
+    padding: 0% 5% 5% 5%;
+
+}
+
+.bv-profile-img {
+    border-radius: 50%;
+    margin-top: 10px;
+    background-color: gray;
+    height: 150px;
+    width: 150px;
+}
+
+.bv-name {
+    color: rgb(0, 0, 0);
+    font-size: 40px;
+}
+
+.bv-about, 
+.bv-detail, 
+.bv-description, 
+.bv-about, 
+.bv-list-head,
+.bv-list-sub-head,
+.bv-social {
+    color: rgba(0, 0, 0, 0.644);
+}
+
+.bv-detail {
+    font-size: 16px;
+}
+
+.bv-description {
+    font-size: 20px;
+    font-style: italic;
+}
+
+hr {
+    border-top: 2px solid gray;
+}
+
+.bv-about {
+    text-align: justify;
+    font-size: 14px;
+}
+
+button {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.bv-body {
+    background-color: rgba(128, 128, 128, 0.068);
+}
+
+.bv-head {
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.521);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.521);;
+}
+
+.bv-list-head {
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+.bv-list-sub-head {
+    margin-top: 2px;
+    margin-left: 24px;
+    font-size: 14px;
+}
+
+.bv-list-description {
+    font-size: 14px;
+    margin-left: 24px;
+    text-align: justify;
+}
+
+.bv-social {
+    font-size: 24px;
+}
+
+.bv-social > a {
+    margin-right: 10px;
+}
+
+.bv-social > a:hover {
+    color: mat-color($blockvitae-theme-primary)
+}
