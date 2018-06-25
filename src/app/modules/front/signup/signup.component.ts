@@ -13,20 +13,35 @@ const BTN_TEXT = "Create My Portfolio";
 })
 export class SignupComponent implements DoCheck{
 
+  // user object containing
+  // fullname, email and username
   public user: Blockvitae.UserDetail;
 
+  // true if metmask is installed
+  // else false
   public web3Installed: boolean;
 
+  // true if Ropsten Network is selected
+  // else false
   public ropstenSelected: boolean;
 
+  // address of the selected account
   public address: string;
 
+  // error message
   public errorMsg: string;
 
+  // true if provided username is 
+  // available else false
   public isUsernameAvailable: boolean;
 
+  // true while waiting for ethereum 
+  // network to respond
   public registrationInProcess: boolean;
 
+  // btnText = "Create My Portfolio" initially
+  // btnText = "Please Wait..." while
+  // waiting for response
   public btnText: string;
 
   /**
@@ -94,7 +109,7 @@ export class SignupComponent implements DoCheck{
                    // @TODO error
                  }
                  this.registrationInProcess = false;
-                  this.btnText = BTN_TEXT;
+                 this.btnText = BTN_TEXT;
                 });          
   }
 }
