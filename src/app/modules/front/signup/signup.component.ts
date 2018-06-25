@@ -15,10 +15,6 @@ export class SignupComponent implements DoCheck{
   // fullname, email and username
   public user: Blockvitae.UserDetail;
 
-  // true if metmask is installed
-  // else false
-  public web3Installed: boolean;
-
   // true if Ropsten Network is selected
   // else false
   public ropstenSelected: boolean;
@@ -50,7 +46,6 @@ export class SignupComponent implements DoCheck{
   ) {
     // initialize dummy object
     this.user = <Blockvitae.UserDetail>{};
-    this.web3Installed = false;
     this.address = "";
     this.ropstenSelected = true;
     this.isUsernameAvailable = false;
@@ -59,7 +54,7 @@ export class SignupComponent implements DoCheck{
     this.btnText = BTN_TEXT;
 
     // initialize web3
-    this.web3Installed = this.checkMetamask.initializeDappBrowser();
+    this.checkMetamask.initializeDappBrowser();
   }
 
   /**
@@ -69,7 +64,7 @@ export class SignupComponent implements DoCheck{
    * @Ref: https://stackoverflow.com/questions/42643389/why-do-we-need-ngdocheck
    */
   ngDoCheck() {
-    if (this.web3Installed) {
+    if (this.checkMetamask.metamaskInstalled) {
       this.address = this.checkMetamask.web3.eth.defaultAccount;
       this.ropstenSelected = this.checkMetamask.isRopstenSet;
     }

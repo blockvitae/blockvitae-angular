@@ -50,6 +50,11 @@ export class CheckMetamaskService {
 
   public owner: string;
 
+  // if false user can view profile
+  // but can't edit it or create an account
+  // on the application
+  public metamaskInstalled: boolean;
+
   // true if the current user is the
   // owner of the profile else false
   // used to show edit button
@@ -63,6 +68,7 @@ export class CheckMetamaskService {
     this.isRopstenSet = false;
     this.isOwner$ = this.isOwnerSource.asObservable();
     this.owner = null;
+    this.metamaskInstalled = false;
   }
 
   // public toggleEditControls(toggle: boolean): void {
@@ -82,11 +88,9 @@ export class CheckMetamaskService {
 
   /**
    * Checks if any Dapp browser is installed or not
-   * 
-   * @returns boolean
-   * returns true if web3 is ready to use else false
+   *
    */
-  public initializeDappBrowser(): boolean {
+  public initializeDappBrowser(): void {
     if (this.isWeb3Defined()) {
 
       // create Web3 instance
@@ -101,17 +105,27 @@ export class CheckMetamaskService {
       // account
       this.getAccounts();
 
-      // get token contract from blockchain
-      // and its abi interface
-      this.tokenContract = new this.web3.eth.Contract(
-        tokenAbi.abi,
-        '0x12c9f503fe05bb1a10e7f52fd073a7ca810ce5d2'
-      );
+      this.metamaskInstalled = true;
+    }
+    else {
+      // if user doesn't have metamask installed
+      // they should still be able to view the profile
+      // however, they won't be able to edit or create their
+      // own untill they install metamask
+      let provider = new Web3.providers
+        .HttpProvider("https://ropsten.infura.io");
+      this.web3 = new Web3(provider);
 
-      return true;
+      this.metamaskInstalled = false;
     }
 
-    return false;
+    // get token contract from blockchain
+    // and its abi interface
+    this.tokenContract = new this.web3.eth.Contract(
+      tokenAbi.abi,
+      '0x12c9f503fe05bb1a10e7f52fd073a7ca810ce5d2'
+    );
+
   }
 
   /**
