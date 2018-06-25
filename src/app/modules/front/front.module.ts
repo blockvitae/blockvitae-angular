@@ -7,7 +7,6 @@ import { SignupComponent } from './signup/signup.component';
 import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { LoginComponent } from './login/login.component';
-import { ExtraModule } from '../extra/extra.module';
 
 @NgModule({
   imports: [
@@ -16,7 +15,6 @@ import { ExtraModule } from '../extra/extra.module';
     RouterModule,
     FlexLayoutModule,
     FormsModule,
-    ExtraModule
   ],
   declarations: [LandingComponent, SignupComponent, LoginComponent],
   exports: [
