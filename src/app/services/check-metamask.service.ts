@@ -77,13 +77,13 @@ export class CheckMetamaskService {
     this.isMetamaskInstalled = false;
   }
 
- /**
-   * Generates a warning dialog inside resume component through observable
-   * if the client doesn't has metamask extension installed
-   * and tries to edit their profile
-   */
+  /**
+    * Generates a warning dialog inside resume component through observable
+    * if the client doesn't has metamask extension installed
+    * and tries to edit their profile
+    */
   public generateMetamaskWarning(generateWarning: boolean): void {
-      this.metamaskInstalledSource.next(generateWarning)
+    this.metamaskInstalledSource.next(generateWarning)
   }
 
   /**
