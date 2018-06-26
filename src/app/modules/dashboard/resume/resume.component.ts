@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CheckMetamaskService } from '../../../services/check-metamask.service';
 import { MatDialog } from '@angular/material';
-import { ProfileDialogComponent } from '../dialog/profile-dialog/profile-dialog.component';
 import { Blockvitae } from '../../../interfaces/interface';
 import { ActivatedRoute } from '@angular/router';
 import { MetamaskWarningDialogComponent } from '../dialog/metamask-warning-dialog/metamask-warning-dialog.component';
