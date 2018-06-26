@@ -1,6 +1,5 @@
 import { CheckMetamaskService } from './../../../services/check-metamask.service';
 import { Component, DoCheck } from '@angular/core';
-import { SignupService } from '../../../services/signup.service';
 import { Blockvitae } from '../../../interfaces/interface';
 
 const BTN_TEXT = "Create My Portfolio";
@@ -8,18 +7,13 @@ const BTN_TEXT = "Create My Portfolio";
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss'],
-  providers: [SignupService]
+  styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements DoCheck{
 
   // user object containing
   // fullname, email and username
   public user: Blockvitae.UserDetail;
-
-  // true if metmask is installed
-  // else false
-  public web3Installed: boolean;
 
   // true if Ropsten Network is selected
   // else false
@@ -44,16 +38,16 @@ export class SignupComponent implements DoCheck{
   // waiting for response
   public btnText: string;
 
+  public web3Installed: boolean;
+
   /**
    * constructor
    */
   constructor(
     private checkMetamask: CheckMetamaskService,
-    private signup: SignupService
   ) {
     // initialize dummy object
     this.user = <Blockvitae.UserDetail>{};
-    this.web3Installed = false;
     this.address = "";
     this.ropstenSelected = true;
     this.isUsernameAvailable = false;
@@ -62,7 +56,7 @@ export class SignupComponent implements DoCheck{
     this.btnText = BTN_TEXT;
 
     // initialize web3
-    this.web3Installed = this.checkMetamask.initializeDappBrowser();
+    this.checkMetamask.initializeDappBrowser();
   }
 
   /**
@@ -72,9 +66,10 @@ export class SignupComponent implements DoCheck{
    * @Ref: https://stackoverflow.com/questions/42643389/why-do-we-need-ngdocheck
    */
   ngDoCheck() {
-    if (this.web3Installed) {
+    if (this.checkMetamask.isMetamaskInstalled) {
       this.address = this.checkMetamask.web3.eth.defaultAccount;
       this.ropstenSelected = this.checkMetamask.isRopstenSet;
+      this.web3Installed = this.checkMetamask.isMetamaskInstalled;
     }
   }
 
@@ -83,7 +78,7 @@ export class SignupComponent implements DoCheck{
    * already been taken or not
    */
   public checkUserNameAvailability() {
-      this.signup.checkUserNameAvailability(this.user.userName)
+      this.checkMetamask.checkUserNameAvailability(this.user.userName)
                  .subscribe(res =>  {
                     this.isUsernameAvailable = res;
                     if (!this.isUsernameAvailable)
@@ -99,7 +94,7 @@ export class SignupComponent implements DoCheck{
   public registerUser() {
     this.registrationInProcess = true;
     this.btnText = "Please Wait...";
-    this.signup.signupUser(this.user)
+    this.checkMetamask.signupUser(this.user)
                .subscribe(res => {
                  if (res.status) {
                    // success

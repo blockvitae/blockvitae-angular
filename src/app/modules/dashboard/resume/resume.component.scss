@@ -1,7 +1,7 @@
 @import './../../../../theme/blockvitae-theme.scss';
 
 .bv-first-container {
-    padding-top: 5% !important;
+    padding-top: 2% !important;
 }
 
 .bv-container {
@@ -28,7 +28,8 @@
 .bv-about, 
 .bv-list-head,
 .bv-list-sub-head,
-.bv-social {
+.bv-social,
+.bv-edit {
     color: rgba(0, 0, 0, 0.644);
 }
 
@@ -90,6 +91,16 @@ button {
     margin-right: 10px;
 }
 
-.bv-social > a:hover {
+.bv-social > a:hover, a:hover {
     color: mat-color($blockvitae-theme-primary)
+}
+
+.bv-edit {
+    font-size: 20px;
+    float: right;
+}
+
+a {
+    text-decoration: none !important;
+    color: #495057;
 }

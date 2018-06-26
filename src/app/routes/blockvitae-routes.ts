@@ -7,6 +7,9 @@ import { ResumeComponent } from '../modules/dashboard/resume/resume.component';
 export const blockvitaeRoutes: Routes = [
   {path: 'signup', component: SignupComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'resume', component: ResumeComponent},
+  // not using route guard for searching username
+  // because metamask injects web3 provider after DOM loads
+  // and blockchain can't be accessed without web3 instance
+  {path: 'resume/:username', component: ResumeComponent},
   {path: '', component: LandingComponent},
 ];
