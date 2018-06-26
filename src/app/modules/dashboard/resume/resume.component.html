@@ -5,9 +5,7 @@
     <div class="bv-container bv-first-container">
       <div fxFlex="20" fxLayoutAlign="start">
         <div>
-          <img class="bv-profile-img" 
-            [src]="userDetail.imgUrl"
-            [alt]="userDetail.fullName" />
+          <img class="bv-profile-img" [src]="userDetail.imgUrl" [alt]="userDetail.fullName" />
         </div>
       </div>
       <div fxFlexOffset="1" fxFlex="80">
@@ -26,25 +24,46 @@
         <br/>
         <br/>
         <span class="bv-social">
-          <a matTooltip="Twitter">
+          <a matTooltip="Twitter" 
+          *ngIf="userSocial.twitterUrl != null" 
+          [href]="'https://twitter.com/' + userSocial.twitterUrl"
+          target="_blank">
             <i class="fab fa-twitter-square"></i>
           </a>
-          <a matTooltip="Facebook">
+          <a matTooltip="Facebook"
+          *ngIf="userSocial.fbUrl != null"
+          [href]="'https://facebook.com/' + userSocial.fbUrl"
+          target="_blank">
             <i class="fab fa-facebook-square"></i>
           </a>
-          <a matTooltip="LinkedIn">
+          <a matTooltip="LinkedIn"
+          *ngIf="userSocial.linkedinUrl != null"
+          [href]="'https://linkedin.com/in/' + userSocial.linkedinUrl"
+          target="_blank">
             <i class="fab fa-linkedin"></i>
           </a>
-          <a matTooltip="Github">
+          <a matTooltip="Github"
+          *ngIf="userSocial.githubUrl != null"
+          [href]="'https://github.com/' + userSocial.githubUrl"
+          target="_blank">
             <i class="fab fa-github-square"></i>
           </a>
-          <a matTooltip="Dribbble">
+          <a matTooltip="Dribbble"
+          *ngIf="userSocial.dribbbleUrl != null"
+          [href]="'https://dribbble.com/' + userSocial.dribbbleUrl"
+          target="_blank">
             <i class="fab fa-dribbble-square"></i>
           </a>
-          <a matTooltip="Behance">
+          <a matTooltip="Behance"
+          *ngIf="userSocial.behanceUrl !+ null"
+          [href]="'https://behance.com/' + userSocial.behanceUrl"
+          target="_blank">
             <i class="fab fa-behance-square"></i>
           </a>
-          <a matTooltip="Medium">
+          <a matTooltip="Medium"
+          *ngIf="userSocial.mediumUrl != null"
+          [href]="'https://medium.com/@' + userSocial.mediumUrl"
+          target="_blank">
             <i class="fab fa-medium"></i>
           </a>
           <a matTooltip="Email" href="mailto:{{userDetail.email}}">

@@ -37,7 +37,7 @@ export namespace Blockvitae {
         fbUrl?: string; // facebook handle of user
         githubUrl?: string; // github url
         dribbbleUrl?: string; // Dribbble url
-        linkedUrl?: string; // LinkedIn Url
+        linkedinUrl?: string; // LinkedIn Url
         behanceUrl?: string; // behance url 
         mediumUrl?: string; // medium url
     }

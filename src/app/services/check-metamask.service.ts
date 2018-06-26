@@ -48,6 +48,9 @@ export class CheckMetamaskService {
 
   // owner of the current blockvitae account
   // only owner is allowed to edit their account
+  //
+  // @usage
+  // ResumeComponent => mapUsername()
   public owner: string;
 
   // if false user can view profile
@@ -94,6 +97,12 @@ export class CheckMetamaskService {
   public getUserDetail(): Observable<string[]> {
     return from(
       this.tokenContract.methods.getUserDetail(this.owner).call()
+    );
+  }
+
+  public getUserSocial(): Observable<string[]> {
+    return from(
+      this.tokenContract.methods.getUserSocial(this.owner).call()
     );
   }
 
