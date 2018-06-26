@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material';
 import { ProfileDialogComponent } from '../dialog/profile-dialog/profile-dialog.component';
 import { Blockvitae } from '../../../interfaces/interface';
 import { ActivatedRoute } from '@angular/router';
+import { MetamaskWarningDialogComponent } from '../dialog/metamask-warning-dialog/metamask-warning-dialog.component';
 
 @Component({
   selector: 'app-resume',
@@ -17,8 +18,6 @@ export class ResumeComponent implements OnInit {
   public isEditModeOn: boolean;
 
   private urlUsername: string;
-
-  private owner: string;
 
   constructor(
     public dialog: MatDialog,
@@ -34,6 +33,32 @@ export class ResumeComponent implements OnInit {
   ngOnInit() {
     // map username to address
     this.mapUsername();
+
+    // subscribe to metamask plugin update from 
+    // app component
+    this.generateMetamaskWarning();
+  }
+
+  /**
+   * Subscribes to observable input from 
+   * AppComponent. Triggers Dialog for warning
+   * if metamask is not installed and user tries to edit their 
+   * account
+   */
+  private generateMetamaskWarning(): void {
+    this.checkMetamask.metamaskWarningDialog$
+    .subscribe(generateWarning => {
+      if(generateWarning) {
+        this.openMetmaskWarningDialog();
+      }
+    });
+  }
+
+  /**
+   * Triggers the warning dialog
+   */
+  private openMetmaskWarningDialog(): void {
+    let dialogRef = this.dialog.open(MetamaskWarningDialogComponent);
   }
 
 

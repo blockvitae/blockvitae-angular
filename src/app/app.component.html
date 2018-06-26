@@ -2,10 +2,11 @@
   <mat-toolbar-row fxFlex="92" fxFlexOffset="4">
     <span><i class="fas fa-th"></i> Blockvitae</span>
     <span class="spacer"></span>
-    <a 
-    mat-raised-button 
+    <button
+    mat-raised-button
     color="accent"
-    *ngIf="isOwner">Edit Profile</a>
+    (click) = "editProfileToggle()"
+    >{{editProfileMsg}}</button>
   </mat-toolbar-row>
 </mat-toolbar>
 <router-outlet></router-outlet>

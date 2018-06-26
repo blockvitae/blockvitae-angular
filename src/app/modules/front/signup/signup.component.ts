@@ -38,6 +38,8 @@ export class SignupComponent implements DoCheck{
   // waiting for response
   public btnText: string;
 
+  public web3Installed: boolean;
+
   /**
    * constructor
    */
@@ -64,9 +66,10 @@ export class SignupComponent implements DoCheck{
    * @Ref: https://stackoverflow.com/questions/42643389/why-do-we-need-ngdocheck
    */
   ngDoCheck() {
-    if (this.checkMetamask.metamaskInstalled) {
+    if (this.checkMetamask.isMetamaskInstalled) {
       this.address = this.checkMetamask.web3.eth.defaultAccount;
       this.ropstenSelected = this.checkMetamask.isRopstenSet;
+      this.web3Installed = this.checkMetamask.isMetamaskInstalled;
     }
   }
 

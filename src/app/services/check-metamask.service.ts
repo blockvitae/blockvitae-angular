@@ -46,19 +46,25 @@ export class CheckMetamaskService {
   // if selected network is ropsten or not
   public isRopstenSet: boolean;
 
-  public isOwner$: Observable<boolean>;
-
+  // owner of the current blockvitae account
+  // only owner is allowed to edit their account
   public owner: string;
 
   // if false user can view profile
   // but can't edit it or create an account
   // on the application
-  public metamaskInstalled: boolean;
+  public isMetamaskInstalled: boolean;
+
+  // Observable that lets parent component: AppComponent
+  // to display a dialog inside resume component
+  // when user clicks on edit profile button
+  // but the metamask is not installed
+  public metamaskWarningDialog$: any;
 
   // true if the current user is the
   // owner of the profile else false
   // used to show edit button
-  private isOwnerSource = new Subject<boolean>();
+  private metamaskInstalledSource = new Subject<boolean>();
 
 
   constructor() {
@@ -66,14 +72,19 @@ export class CheckMetamaskService {
     this.web3Error = null;
     this.accounts = null;
     this.isRopstenSet = false;
-    this.isOwner$ = this.isOwnerSource.asObservable();
+    this.metamaskWarningDialog$ = this.metamaskInstalledSource.asObservable();
     this.owner = null;
-    this.metamaskInstalled = false;
+    this.isMetamaskInstalled = false;
   }
 
-  // public toggleEditControls(toggle: boolean): void {
-  //   this.isOwnerSource.next(toggle);
-  // }
+ /**
+   * Generates a warning dialog inside resume component through observable
+   * if the client doesn't has metamask extension installed
+   * and tries to edit their profile
+   */
+  public generateMetamaskWarning(generateWarning: boolean): void {
+      this.metamaskInstalledSource.next(generateWarning)
+  }
 
   /**
    * Get the user detail object from network
@@ -105,7 +116,7 @@ export class CheckMetamaskService {
       // account
       this.getAccounts();
 
-      this.metamaskInstalled = true;
+      this.isMetamaskInstalled = true;
     }
     else {
       // if user doesn't have metamask installed
@@ -116,7 +127,7 @@ export class CheckMetamaskService {
         .HttpProvider("https://ropsten.infura.io");
       this.web3 = new Web3(provider);
 
-      this.metamaskInstalled = false;
+      this.isMetamaskInstalled = false;
     }
 
     // get token contract from blockchain

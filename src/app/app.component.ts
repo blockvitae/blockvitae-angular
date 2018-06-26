@@ -1,4 +1,4 @@
-import { Component, DoCheck } from '@angular/core';
+import { Component } from '@angular/core';
 import { CheckMetamaskService } from './services/check-metamask.service';
 
 @Component({
@@ -6,17 +6,25 @@ import { CheckMetamaskService } from './services/check-metamask.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements DoCheck{
+export class AppComponent {
 
-  // true if the current user is the owner of the
-  // profile else false
-  public isOwner: boolean;
+  public editProfileMsg: string;
 
   constructor(
     private checkMetamask: CheckMetamaskService
-  ){}
+  ) {
+    this.checkMetamask.initializeDappBrowser();
+    this.editProfileMsg = "Edit Profile";
+  }
 
-  ngDoCheck() {
-    this.isOwner = this.checkMetamask.isOwner;
+  /**
+   * Generates a warning dialog inside resume component through observable
+   * if the client doesn't has metamask extension installed
+   * and tries to edit their profile
+   */
+  public editProfileToggle() {
+    if (!this.checkMetamask.isMetamaskInstalled) {
+      this.checkMetamask.generateMetamaskWarning(true);
+    }
   }
 }
