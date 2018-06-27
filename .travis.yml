@@ -5,6 +5,10 @@ node_js:
 branches:
   only:
     - master
+    
+cache:
+  directories:
+    - "node_modules"    
 
 before_script:
   - npm install -g @angular/cli
