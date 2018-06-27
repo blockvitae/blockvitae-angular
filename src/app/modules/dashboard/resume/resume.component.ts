@@ -16,6 +16,8 @@ export class ResumeComponent implements OnInit {
 
   public userSocial: Blockvitae.UserSocial;
 
+  public userSkills: string[];
+
   public isEditModeOn: boolean;
 
   private urlUsername: string;
@@ -30,6 +32,7 @@ export class ResumeComponent implements OnInit {
     this.userSocial = <Blockvitae.UserSocial>{};
     this.isEditModeOn = false;
     this.urlUsername = null;
+    this.userSkills = [];
   }
 
   ngOnInit() {
@@ -49,18 +52,18 @@ export class ResumeComponent implements OnInit {
    */
   private generateMetamaskWarning(): void {
     this.checkMetamask.metamaskWarningDialog$
-    .subscribe(generateWarning => {
-      if(generateWarning) {
-        this.openMetmaskWarningDialog();
-      }
-    });
+      .subscribe(generateWarning => {
+        if (generateWarning) {
+          this.openMetmaskWarningDialog();
+        }
+      });
   }
 
   /**
    * Triggers the warning dialog
    */
   private openMetmaskWarningDialog(): void {
-    let dialogRef = this.dialog.open(MetamaskWarningDialogComponent);
+    this.dialog.open(MetamaskWarningDialogComponent);
   }
 
 
@@ -90,6 +93,9 @@ export class ResumeComponent implements OnInit {
 
             // get UserSocial Object
             this.getUserSocial();
+
+            // get user skills
+            this.getUserSkills();
           });
       });
   }
@@ -110,19 +116,35 @@ export class ResumeComponent implements OnInit {
       })
   }
 
+  /**
+   * Fetches all the social accounts of the user.
+   * Sets null for each social account which is not present
+   */
   private getUserSocial(): void {
     this.checkMetamask.getUserSocial()
-    .subscribe(social => {
-      this.userSocial.twitterUrl = social[0].length > 0 ? social[0] : null;
-      this.userSocial.fbUrl = social[1].length > 0 ? social[1] : null;
-      this.userSocial.githubUrl = social[2].length > 0 ? social[2] : null;
-      this.userSocial.dribbbleUrl = social[3].length > 0 ? social[3] : null;
-      this.userSocial.linkedinUrl = social[4].length > 0 ? social[4] : null;
-      this.userSocial.behanceUrl = social[5].length > 0 ? social[5] : null;
-      this.userSocial.mediumUrl = social[6].length > 0 ? social[6] : null;
+      .subscribe(social => {
+        this.userSocial.twitterUrl = social[0].length > 0 ? social[0] : null;
+        this.userSocial.fbUrl = social[1].length > 0 ? social[1] : null;
+        this.userSocial.githubUrl = social[2].length > 0 ? social[2] : null;
+        this.userSocial.dribbbleUrl = social[3].length > 0 ? social[3] : null;
+        this.userSocial.linkedinUrl = social[4].length > 0 ? social[4] : null;
+        this.userSocial.behanceUrl = social[5].length > 0 ? social[5] : null;
+        this.userSocial.mediumUrl = social[6].length > 0 ? social[6] : null;
 
-      // @TODO add personal website link
-      console.log(this.userSocial);
-    });
+        // @TODO add personal website link
+      });
+  }
+
+  /**
+   * Fetches array of user skills
+   */
+  private getUserSkills(): void {
+    this.checkMetamask.getUserSkills()
+      .subscribe(skills => {
+        for (let i = 0; i < skills.length; i++) {
+            // add to the array
+            this.userSkills.push(skills[i]);
+        }
+      });
   }
 }

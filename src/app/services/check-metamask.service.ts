@@ -100,11 +100,31 @@ export class CheckMetamaskService {
     );
   }
 
+  /**
+   * Get the user social accounts from network
+   * 
+   * @returns Observable<string[]>
+   */
   public getUserSocial(): Observable<string[]> {
     return from(
       this.tokenContract.methods.getUserSocial(this.owner).call()
     );
   }
+
+  /**
+   * Get the array of user skills from network
+   * 
+   * @return Observable<string[]>
+   */
+  public getUserSkills(): Observable<string[]> {
+    return from(
+      this.tokenContract.methods.getUserSkills(this.owner).call()
+    );
+  }
+
+  public getWorkExp(): Observable<string[]> {
+    return 
+  } 
 
   /**
    * Checks if any Dapp browser is installed or not
@@ -200,6 +220,17 @@ export class CheckMetamaskService {
   public getAddrForUsername(username: string): Observable<string> {
     return from(
       this.tokenContract.methods.getAddrForUserName(username).call()
+    );
+  }
+
+  /**
+   * Get the count of total work experiences from the network
+   * 
+   * @returns Observable<number>
+   */
+  private getWorkExpCount(): Observable<number> {
+    return from(
+      this.tokenContract.methods.getWorkExpCount(this.owner).call()
     );
   }
 

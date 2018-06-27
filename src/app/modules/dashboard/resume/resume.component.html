@@ -92,7 +92,7 @@
     </div>
 
     <!--Skills-->
-    <div class="bv-container">
+    <div class="bv-container" *ngIf="userSkills.length > 0">
       <h1 class="bv-head">
         Skills
         <a class="bv-edit" *ngIf="isEditModeOn">
@@ -100,11 +100,10 @@
         </a>
       </h1>
       <mat-chip-list>
-        <mat-chip color="primary" selected="true">PHP</mat-chip>
-        <mat-chip color="primary" selected="true">Angular</mat-chip>
-        <mat-chip color="primary" selected="true">MySQL</mat-chip>
-        <mat-chip color="primary" selected="true">Python</mat-chip>
-        <mat-chip color="primary" selected="true">Agile Development</mat-chip>
+        <mat-chip 
+        color="primary" 
+        selected="true"
+        *ngFor="let skill of userSkills">{{skill}}</mat-chip>
       </mat-chip-list>
     </div>
 
