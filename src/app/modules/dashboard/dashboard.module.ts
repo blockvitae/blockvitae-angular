@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { MaterialModule } from '../material/material.module';
 import { ResumeComponent } from './resume/resume.component';
 import { MetamaskWarningDialogComponent } from './dialog/metamask-warning-dialog/metamask-warning-dialog.component';
+import { ProfileDialogComponent } from './dialog/profile-dialog/profile-dialog.component';
 
 @NgModule({
   imports: [
@@ -13,7 +14,7 @@ import { MetamaskWarningDialogComponent } from './dialog/metamask-warning-dialog
     RouterModule,
     FlexLayoutModule
   ],
-  declarations: [ResumeComponent, MetamaskWarningDialogComponent],
+  declarations: [ResumeComponent, MetamaskWarningDialogComponent, ProfileDialogComponent],
   entryComponents: [MetamaskWarningDialogComponent]
 })
 export class DashboardModule { }
