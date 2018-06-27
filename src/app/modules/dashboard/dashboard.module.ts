@@ -6,6 +6,8 @@ import { MaterialModule } from '../material/material.module';
 import { ResumeComponent } from './resume/resume.component';
 import { MetamaskWarningDialogComponent } from './dialog/metamask-warning-dialog/metamask-warning-dialog.component';
 import { ProfileDialogComponent } from './dialog/profile-dialog/profile-dialog.component';
+import { IntroductionDialogComponent } from './dialog/introduction-dialog/introduction-dialog.component';
+import { SkillsDialogComponent } from './dialog/skills-dialog/skills-dialog.component';
 
 @NgModule({
   imports: [
@@ -14,7 +16,17 @@ import { ProfileDialogComponent } from './dialog/profile-dialog/profile-dialog.c
     RouterModule,
     FlexLayoutModule
   ],
-  declarations: [ResumeComponent, MetamaskWarningDialogComponent, ProfileDialogComponent],
-  entryComponents: [MetamaskWarningDialogComponent]
+  declarations: [
+    ResumeComponent, 
+    MetamaskWarningDialogComponent, 
+    ProfileDialogComponent, 
+    IntroductionDialogComponent, SkillsDialogComponent
+  ],
+  entryComponents: [
+    MetamaskWarningDialogComponent, 
+    ProfileDialogComponent,
+    IntroductionDialogComponent,
+    SkillsDialogComponent
+  ]
 })
 export class DashboardModule { }
