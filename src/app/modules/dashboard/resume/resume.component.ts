@@ -12,18 +12,30 @@ import { MetamaskWarningDialogComponent } from '../dialog/metamask-warning-dialo
 })
 export class ResumeComponent implements OnInit {
 
+  // user detail object
   public userDetail: Blockvitae.UserDetail;
 
+  // user social object
   public userSocial: Blockvitae.UserSocial;
 
+  // user skills array
   public userSkills: string[];
 
+  // array of user work experience objects
   public userWorkExp: Blockvitae.UserWorkExp[];
 
+  // array of user education objects
   public userEducation: Blockvitae.UserEducation[];
 
+  // array of user project objects
+  public userProjects: Blockvitae.UserProject[];
+
+  // true if user has clicked on edit profile
+  // for making changes
   public isEditModeOn: boolean;
 
+  // username from the url
+  // basically the username of the profile
   private urlUsername: string;
 
   constructor(
@@ -36,6 +48,7 @@ export class ResumeComponent implements OnInit {
     this.userSocial = <Blockvitae.UserSocial>{};
     this.userWorkExp = <Blockvitae.UserWorkExp[]>{};
     this.userEducation = <Blockvitae.UserEducation[]>{};
+    this.userProjects = <Blockvitae.UserProject[]>{};
     this.isEditModeOn = false;
     this.urlUsername = null;
     this.userSkills = [];
@@ -107,6 +120,9 @@ export class ResumeComponent implements OnInit {
 
             // get user education
             this.getUserEducation();
+
+            // get user projects
+            this.getUserProjects();
           });
       });
   }
@@ -171,6 +187,11 @@ export class ResumeComponent implements OnInit {
       });
   }
 
+  /**
+   * Initiates the getEducation method and
+   * then subscribes to the observables for
+   * each education set by getEducation method
+   */
   private getUserEducation(): void {
     // start fecthing observables
     this.checkMetamask.getEducation();
@@ -188,6 +209,29 @@ export class ResumeComponent implements OnInit {
 
         // push in the array
         this.userEducation.push(userEducation);
+      });
+  }
+
+  /**
+   * Initiates the getUserProjects method and
+   * then subscribes to the observables for
+   * each project set by getProjects method
+   */
+  private getUserProjects(): void {
+    // start fecthing observables
+    this.checkMetamask.getProjects();
+
+    // observe observables
+    this.checkMetamask.project$
+      .subscribe(project => {
+        let userProject = {
+          name: project[0],
+          description: project[1],
+          url: project[2]
+        };
+
+        // push in the array
+        this.userProjects.push(userProject);
       });
   }
 
