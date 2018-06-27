@@ -18,6 +18,8 @@ export class ResumeComponent implements OnInit {
 
   public userSkills: string[];
 
+  public userWorkExp: Blockvitae.UserWorkExp[];
+
   public isEditModeOn: boolean;
 
   private urlUsername: string;
@@ -30,6 +32,7 @@ export class ResumeComponent implements OnInit {
     this.checkMetamask.initializeDappBrowser();
     this.userDetail = <Blockvitae.UserDetail>{};
     this.userSocial = <Blockvitae.UserSocial>{};
+    this.userWorkExp = <Blockvitae.UserWorkExp[]>{};
     this.isEditModeOn = false;
     this.urlUsername = null;
     this.userSkills = [];
@@ -96,6 +99,9 @@ export class ResumeComponent implements OnInit {
 
             // get user skills
             this.getUserSkills();
+
+            // get work exp
+            this.getUserWorkExp();
           });
       });
   }
@@ -136,14 +142,39 @@ export class ResumeComponent implements OnInit {
   }
 
   /**
+   * Initiates the getWorkExp method and
+   * then subscribes to the observables for
+   * each workexp set by getWorkExp method
+   */
+  private getUserWorkExp(): void {
+    // start fetching observables
+    this.checkMetamask.getWorkExp();
+
+    // observe observables
+    this.checkMetamask.workExp$
+      .subscribe(workExp => {
+        let userWorkExp = {
+          company: workExp[0],
+          position: workExp[1],
+          dateStart: workExp[2],
+          dateEnd: workExp[3],
+          description: workExp[4]
+        };
+
+        // push in the array
+        this.userWorkExp.push(userWorkExp);
+      });
+  }
+
+  /**
    * Fetches array of user skills
    */
   private getUserSkills(): void {
     this.checkMetamask.getUserSkills()
       .subscribe(skills => {
         for (let i = 0; i < skills.length; i++) {
-            // add to the array
-            this.userSkills.push(skills[i]);
+          // add to the array
+          this.userSkills.push(skills[i]);
         }
       });
   }

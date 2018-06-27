@@ -64,10 +64,14 @@ export class CheckMetamaskService {
   // but the metamask is not installed
   public metamaskWarningDialog$: any;
 
+  public workExp$: any;
+
   // true if the current user is the
   // owner of the profile else false
   // used to show edit button
   private metamaskInstalledSource = new Subject<boolean>();
+
+  private workExpSource = new Subject<Observable<string[]>>();
 
 
   constructor() {
@@ -78,6 +82,7 @@ export class CheckMetamaskService {
     this.metamaskWarningDialog$ = this.metamaskInstalledSource.asObservable();
     this.owner = null;
     this.isMetamaskInstalled = false;
+    this.workExp$ = this.workExpSource.asObservable();
   }
 
   /**
@@ -122,9 +127,23 @@ export class CheckMetamaskService {
     );
   }
 
-  public getWorkExp(): Observable<string[]> {
-    return 
-  } 
+  /**
+   * Gets the count of work experiences user has
+   * and then initiates the observables for each work
+   * experience user has
+   */
+  public getWorkExp(): void {
+    this.getWorkExpCount()
+      .subscribe(count => {
+        for (let i = 0; i < count; i++) {
+          this.workExpSource.next(
+            from(
+              this.tokenContract.methods.getUserWorkExp(this.owner, i).call()
+            )
+          );
+        }
+      });
+  }
 
   /**
    * Checks if any Dapp browser is installed or not

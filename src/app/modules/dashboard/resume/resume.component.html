@@ -108,34 +108,24 @@
     </div>
 
     <!--Experience-->
-    <div class="bv-container">
+    <div class="bv-container" *ngIf="userWorkExp.length > 0">
       <h1 class="bv-head">
         Work Experience
         <a class="bv-edit" *ngIf="isEditModeOn">
           <i class="fas fa-pencil-alt"></i>
         </a>
       </h1>
-      <h3 class="bv-list-head">
-        <i class="far fa-dot-circle"></i>
-        Software Engineer Intern at Conduit Computing
-      </h3>
-      <p class="bv-list-sub-head">June 2018 to August 2018</p>
-      <p class="bv-list-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
-        dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen
-        book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially
-        unchanged.
-      </p>
-      <br/>
-      <h3 class="bv-list-head">
-        <i class="far fa-dot-circle"></i>
-        Software Engineer Intern at Conduit Computing
-      </h3>
-      <p class="bv-list-sub-head">June 2018 to August 2018</p>
-      <p class="bv-list-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
-        dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen
-        book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially
-        unchanged.
-      </p>
+      <span *ngFor="let workExp of userWorkExp">
+        <h3 class="bv-list-head">
+            <i class="far fa-dot-circle"></i>
+            {{ workExp.position }} at {{ workExp.company }}
+        </h3>
+        <p class="bv-list-sub-head">{{ workExp.dateStart }} to {{ workExp.dateEnd }}</p>
+        <p class="bv-list-description">
+          {{ workExp.description }}
+        </p>
+        <br/>
+      </span>
     </div>
 
     <!--Education-->
