@@ -20,6 +20,8 @@ export class ResumeComponent implements OnInit {
 
   public userWorkExp: Blockvitae.UserWorkExp[];
 
+  public userEducation: Blockvitae.UserEducation[];
+
   public isEditModeOn: boolean;
 
   private urlUsername: string;
@@ -33,6 +35,7 @@ export class ResumeComponent implements OnInit {
     this.userDetail = <Blockvitae.UserDetail>{};
     this.userSocial = <Blockvitae.UserSocial>{};
     this.userWorkExp = <Blockvitae.UserWorkExp[]>{};
+    this.userEducation = <Blockvitae.UserEducation[]>{};
     this.isEditModeOn = false;
     this.urlUsername = null;
     this.userSkills = [];
@@ -69,7 +72,6 @@ export class ResumeComponent implements OnInit {
     this.dialog.open(MetamaskWarningDialogComponent);
   }
 
-
   /**
    * Maps the url username to address
    * 
@@ -102,6 +104,9 @@ export class ResumeComponent implements OnInit {
 
             // get work exp
             this.getUserWorkExp();
+
+            // get user education
+            this.getUserEducation();
           });
       });
   }
@@ -163,6 +168,26 @@ export class ResumeComponent implements OnInit {
 
         // push in the array
         this.userWorkExp.push(userWorkExp);
+      });
+  }
+
+  private getUserEducation(): void {
+    // start fecthing observables
+    this.checkMetamask.getEducation();
+
+    // observe observables
+    this.checkMetamask.workExp$
+      .subscribe(education => {
+        let userEducation = {
+          organization: education[0],
+          degree: education[1],
+          dateStart: education[2],
+          dateEnd: education[3],
+          description: education[4]
+        };
+
+        // push in the array
+        this.userEducation.push(userEducation);
       });
   }
 

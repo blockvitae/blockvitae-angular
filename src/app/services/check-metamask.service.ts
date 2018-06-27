@@ -64,14 +64,22 @@ export class CheckMetamaskService {
   // but the metamask is not installed
   public metamaskWarningDialog$: any;
 
+  // Observable for work exp
   public workExp$: any;
+
+  // Observable for education
+  public education$: any;
 
   // true if the current user is the
   // owner of the profile else false
   // used to show edit button
   private metamaskInstalledSource = new Subject<boolean>();
 
+  // Source for work exp observable
   private workExpSource = new Subject<Observable<string[]>>();
+
+  // Source for education observable
+  private educationSource = new Subject<Observable<string[]>>();
 
 
   constructor() {
@@ -79,10 +87,11 @@ export class CheckMetamaskService {
     this.web3Error = null;
     this.accounts = null;
     this.isRopstenSet = false;
-    this.metamaskWarningDialog$ = this.metamaskInstalledSource.asObservable();
     this.owner = null;
     this.isMetamaskInstalled = false;
+    this.metamaskWarningDialog$ = this.metamaskInstalledSource.asObservable();
     this.workExp$ = this.workExpSource.asObservable();
+    this.education$ = this.educationSource.asObservable();
   }
 
   /**
@@ -139,6 +148,24 @@ export class CheckMetamaskService {
           this.workExpSource.next(
             from(
               this.tokenContract.methods.getUserWorkExp(this.owner, i).call()
+            )
+          );
+        }
+      });
+  }
+
+  /**
+  * Gets the count of education user has
+  * and then initiates the observables for each education
+  * user has
+  */
+  public getEducation(): void {
+    this.getEducationCount()
+      .subscribe(count => {
+        for (let i = 0; i < count; i++) {
+          this.educationSource.next(
+            from(
+              this.tokenContract.methods.getUserEducation(this.owner, i).call()
             )
           );
         }
@@ -239,6 +266,17 @@ export class CheckMetamaskService {
   public getAddrForUsername(username: string): Observable<string> {
     return from(
       this.tokenContract.methods.getAddrForUserName(username).call()
+    );
+  }
+
+  /**
+   * Get the count of total education from the network
+   * 
+   * @returns Observable<number>
+   */
+  private getEducationCount(): Observable<number> {
+    return from(
+      this.tokenContract.methods.getEducationCount(this.owner).call()
     );
   }
 
