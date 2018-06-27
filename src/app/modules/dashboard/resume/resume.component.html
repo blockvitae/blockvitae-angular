@@ -5,9 +5,7 @@
     <div class="bv-container bv-first-container">
       <div fxFlex="20" fxLayoutAlign="start">
         <div>
-          <img class="bv-profile-img" 
-            [src]="userDetail.imgUrl"
-            [alt]="userDetail.fullName" />
+          <img class="bv-profile-img" [src]="userDetail.imgUrl" [alt]="userDetail.fullName" />
         </div>
       </div>
       <div fxFlexOffset="1" fxFlex="80">
@@ -26,25 +24,46 @@
         <br/>
         <br/>
         <span class="bv-social">
-          <a matTooltip="Twitter">
+          <a matTooltip="Twitter" 
+          *ngIf="userSocial.twitterUrl != null" 
+          [href]="'https://twitter.com/' + userSocial.twitterUrl"
+          target="_blank">
             <i class="fab fa-twitter-square"></i>
           </a>
-          <a matTooltip="Facebook">
+          <a matTooltip="Facebook"
+          *ngIf="userSocial.fbUrl != null"
+          [href]="'https://facebook.com/' + userSocial.fbUrl"
+          target="_blank">
             <i class="fab fa-facebook-square"></i>
           </a>
-          <a matTooltip="LinkedIn">
+          <a matTooltip="LinkedIn"
+          *ngIf="userSocial.linkedinUrl != null"
+          [href]="'https://linkedin.com/in/' + userSocial.linkedinUrl"
+          target="_blank">
             <i class="fab fa-linkedin"></i>
           </a>
-          <a matTooltip="Github">
+          <a matTooltip="Github"
+          *ngIf="userSocial.githubUrl != null"
+          [href]="'https://github.com/' + userSocial.githubUrl"
+          target="_blank">
             <i class="fab fa-github-square"></i>
           </a>
-          <a matTooltip="Dribbble">
+          <a matTooltip="Dribbble"
+          *ngIf="userSocial.dribbbleUrl != null"
+          [href]="'https://dribbble.com/' + userSocial.dribbbleUrl"
+          target="_blank">
             <i class="fab fa-dribbble-square"></i>
           </a>
-          <a matTooltip="Behance">
+          <a matTooltip="Behance"
+          *ngIf="userSocial.behanceUrl !+ null"
+          [href]="'https://behance.com/' + userSocial.behanceUrl"
+          target="_blank">
             <i class="fab fa-behance-square"></i>
           </a>
-          <a matTooltip="Medium">
+          <a matTooltip="Medium"
+          *ngIf="userSocial.mediumUrl != null"
+          [href]="'https://medium.com/@' + userSocial.mediumUrl"
+          target="_blank">
             <i class="fab fa-medium"></i>
           </a>
           <a matTooltip="Email" href="mailto:{{userDetail.email}}">
@@ -73,7 +92,7 @@
     </div>
 
     <!--Skills-->
-    <div class="bv-container">
+    <div class="bv-container" *ngIf="userSkills.length > 0">
       <h1 class="bv-head">
         Skills
         <a class="bv-edit" *ngIf="isEditModeOn">
@@ -81,63 +100,52 @@
         </a>
       </h1>
       <mat-chip-list>
-        <mat-chip color="primary" selected="true">PHP</mat-chip>
-        <mat-chip color="primary" selected="true">Angular</mat-chip>
-        <mat-chip color="primary" selected="true">MySQL</mat-chip>
-        <mat-chip color="primary" selected="true">Python</mat-chip>
-        <mat-chip color="primary" selected="true">Agile Development</mat-chip>
+        <mat-chip 
+        color="primary" 
+        selected="true"
+        *ngFor="let skill of userSkills">{{skill}}</mat-chip>
       </mat-chip-list>
     </div>
 
     <!--Experience-->
-    <div class="bv-container">
+    <div class="bv-container" *ngIf="userWorkExp.length > 0">
       <h1 class="bv-head">
         Work Experience
         <a class="bv-edit" *ngIf="isEditModeOn">
           <i class="fas fa-pencil-alt"></i>
         </a>
       </h1>
-      <h3 class="bv-list-head">
-        <i class="far fa-dot-circle"></i>
-        Software Engineer Intern at Conduit Computing
-      </h3>
-      <p class="bv-list-sub-head">June 2018 to August 2018</p>
-      <p class="bv-list-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
-        dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen
-        book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially
-        unchanged.
-      </p>
-      <br/>
-      <h3 class="bv-list-head">
-        <i class="far fa-dot-circle"></i>
-        Software Engineer Intern at Conduit Computing
-      </h3>
-      <p class="bv-list-sub-head">June 2018 to August 2018</p>
-      <p class="bv-list-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
-        dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen
-        book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially
-        unchanged.
-      </p>
+      <span *ngFor="let workExp of userWorkExp">
+        <h3 class="bv-list-head">
+            <i class="far fa-dot-circle"></i>
+            {{ workExp.position }} at {{ workExp.company }}
+        </h3>
+        <p class="bv-list-sub-head">{{ workExp.dateStart }} to {{ workExp.dateEnd }}</p>
+        <p class="bv-list-description">
+          {{ workExp.description }}
+        </p>
+        <br/>
+      </span>
     </div>
 
     <!--Education-->
-    <div class="bv-container">
+    <div class="bv-container" *ngIf="userEducation.length > 0">
       <h1 class="bv-head">
         Education
         <a class="bv-edit">
           <i class="fas fa-pencil-alt"></i>
         </a>
       </h1>
-      <h3 class="bv-list-head">
-        <i class="far fa-dot-circle"></i>
-        Master of Science in Computer Science at Northeastern University, Boston, MA
-      </h3>
-      <p class="bv-list-sub-head">September 2017 to May 2019</p>
-      <p class="bv-list-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
-        dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen
-        book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially
-        unchanged.
-      </p>
+      <span *ngFor="let education of userEducation">
+        <h3 class="bv-list-head">
+          <i class="far fa-dot-circle"></i>
+          {{ education.degree }} at {{ education.organization }}
+        </h3>
+        <p class="bv-list-sub-head">{{ education.dateStart }} to {{ education.dateEnd }}</p>
+        <p class="bv-list-description">
+          {{ education.description }}
+        </p>
+      </span>
       <br/>
       <h3 class="bv-list-head">
         <i class="far fa-dot-circle"></i>

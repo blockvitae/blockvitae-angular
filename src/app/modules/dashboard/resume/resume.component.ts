@@ -14,6 +14,14 @@ export class ResumeComponent implements OnInit {
 
   public userDetail: Blockvitae.UserDetail;
 
+  public userSocial: Blockvitae.UserSocial;
+
+  public userSkills: string[];
+
+  public userWorkExp: Blockvitae.UserWorkExp[];
+
+  public userEducation: Blockvitae.UserEducation[];
+
   public isEditModeOn: boolean;
 
   private urlUsername: string;
@@ -25,8 +33,12 @@ export class ResumeComponent implements OnInit {
   ) {
     this.checkMetamask.initializeDappBrowser();
     this.userDetail = <Blockvitae.UserDetail>{};
+    this.userSocial = <Blockvitae.UserSocial>{};
+    this.userWorkExp = <Blockvitae.UserWorkExp[]>{};
+    this.userEducation = <Blockvitae.UserEducation[]>{};
     this.isEditModeOn = false;
     this.urlUsername = null;
+    this.userSkills = [];
   }
 
   ngOnInit() {
@@ -46,20 +58,19 @@ export class ResumeComponent implements OnInit {
    */
   private generateMetamaskWarning(): void {
     this.checkMetamask.metamaskWarningDialog$
-    .subscribe(generateWarning => {
-      if(generateWarning) {
-        this.openMetmaskWarningDialog();
-      }
-    });
+      .subscribe(generateWarning => {
+        if (generateWarning) {
+          this.openMetmaskWarningDialog();
+        }
+      });
   }
 
   /**
    * Triggers the warning dialog
    */
   private openMetmaskWarningDialog(): void {
-    let dialogRef = this.dialog.open(MetamaskWarningDialogComponent);
+    this.dialog.open(MetamaskWarningDialogComponent);
   }
-
 
   /**
    * Maps the url username to address
@@ -82,7 +93,20 @@ export class ResumeComponent implements OnInit {
           .subscribe(res => {
             this.checkMetamask.owner = res;
 
+            // get UserDetail Object
             this.getUserDetail();
+
+            // get UserSocial Object
+            this.getUserSocial();
+
+            // get user skills
+            this.getUserSkills();
+
+            // get work exp
+            this.getUserWorkExp();
+
+            // get user education
+            this.getUserEducation();
           });
       });
   }
@@ -100,7 +124,83 @@ export class ResumeComponent implements OnInit {
         this.userDetail.userName = detail[1];
         this.userDetail.imgUrl = detail[2] === '' ? "https://images.pexels.com/photos/555790/pexels-photo-555790.png?auto=compress&cs=tinysrgb&h=350" : detail[2];
         this.userDetail.email = detail[3];
-        console.log(this.userDetail);
       })
+  }
+
+  /**
+   * Fetches all the social accounts of the user.
+   * Sets null for each social account which is not present
+   */
+  private getUserSocial(): void {
+    this.checkMetamask.getUserSocial()
+      .subscribe(social => {
+        this.userSocial.twitterUrl = social[0].length > 0 ? social[0] : null;
+        this.userSocial.fbUrl = social[1].length > 0 ? social[1] : null;
+        this.userSocial.githubUrl = social[2].length > 0 ? social[2] : null;
+        this.userSocial.dribbbleUrl = social[3].length > 0 ? social[3] : null;
+        this.userSocial.linkedinUrl = social[4].length > 0 ? social[4] : null;
+        this.userSocial.behanceUrl = social[5].length > 0 ? social[5] : null;
+        this.userSocial.mediumUrl = social[6].length > 0 ? social[6] : null;
+
+        // @TODO add personal website link
+      });
+  }
+
+  /**
+   * Initiates the getWorkExp method and
+   * then subscribes to the observables for
+   * each workexp set by getWorkExp method
+   */
+  private getUserWorkExp(): void {
+    // start fetching observables
+    this.checkMetamask.getWorkExp();
+
+    // observe observables
+    this.checkMetamask.workExp$
+      .subscribe(workExp => {
+        let userWorkExp = {
+          company: workExp[0],
+          position: workExp[1],
+          dateStart: workExp[2],
+          dateEnd: workExp[3],
+          description: workExp[4]
+        };
+
+        // push in the array
+        this.userWorkExp.push(userWorkExp);
+      });
+  }
+
+  private getUserEducation(): void {
+    // start fecthing observables
+    this.checkMetamask.getEducation();
+
+    // observe observables
+    this.checkMetamask.workExp$
+      .subscribe(education => {
+        let userEducation = {
+          organization: education[0],
+          degree: education[1],
+          dateStart: education[2],
+          dateEnd: education[3],
+          description: education[4]
+        };
+
+        // push in the array
+        this.userEducation.push(userEducation);
+      });
+  }
+
+  /**
+   * Fetches array of user skills
+   */
+  private getUserSkills(): void {
+    this.checkMetamask.getUserSkills()
+      .subscribe(skills => {
+        for (let i = 0; i < skills.length; i++) {
+          // add to the array
+          this.userSkills.push(skills[i]);
+        }
+      });
   }
 }

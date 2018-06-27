@@ -37,7 +37,7 @@ export namespace Blockvitae {
         fbUrl?: string; // facebook handle of user
         githubUrl?: string; // github url
         dribbbleUrl?: string; // Dribbble url
-        linkedUrl?: string; // LinkedIn Url
+        linkedinUrl?: string; // LinkedIn Url
         behanceUrl?: string; // behance url 
         mediumUrl?: string; // medium url
     }
@@ -61,7 +61,7 @@ export namespace Blockvitae {
      */
     export interface UserEducation {
         organization: string; // name of the school
-        level?: string; // level of qualification
+        degree?: string; // degree of qualification
         dateStart?: string; // start date
         dateEnd?: string; // end date
         description?: string; // description of the qualification
