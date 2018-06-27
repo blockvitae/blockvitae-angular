@@ -15,6 +15,6 @@ import { ProfileDialogComponent } from './dialog/profile-dialog/profile-dialog.c
     FlexLayoutModule
   ],
   declarations: [ResumeComponent, MetamaskWarningDialogComponent, ProfileDialogComponent],
-  entryComponents: [MetamaskWarningDialogComponent]
+  entryComponents: [MetamaskWarningDialogComponent, ProfileDialogComponent]
 })
 export class DashboardModule { }
