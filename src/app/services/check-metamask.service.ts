@@ -70,6 +70,9 @@ export class CheckMetamaskService {
   // Observable for education
   public education$: any;
 
+  // Observable for project
+  public project$: any;
+
   // true if the current user is the
   // owner of the profile else false
   // used to show edit button
@@ -80,6 +83,9 @@ export class CheckMetamaskService {
 
   // Source for education observable
   private educationSource = new Subject<Observable<string[]>>();
+
+  // Source for project observable
+  private projectSource = new Subject<Observable<string[]>>();
 
 
   constructor() {
@@ -92,6 +98,7 @@ export class CheckMetamaskService {
     this.metamaskWarningDialog$ = this.metamaskInstalledSource.asObservable();
     this.workExp$ = this.workExpSource.asObservable();
     this.education$ = this.educationSource.asObservable();
+    this.project$ = this.projectSource.asObservable();
   }
 
   /**
@@ -166,6 +173,24 @@ export class CheckMetamaskService {
           this.educationSource.next(
             from(
               this.tokenContract.methods.getUserEducation(this.owner, i).call()
+            )
+          );
+        }
+      });
+  }
+
+  /**
+  * Gets the count of projects user has
+  * and then initiates the observables for each project
+  * user has
+  */
+  public getProjects(): void {
+    this.getProjectCount()
+      .subscribe(count => {
+        for (let i = 0; i < count; i++) {
+          this.projectSource.next(
+            from(
+              this.tokenContract.methods.getUserProject(this.owner, i).call()
             )
           );
         }
@@ -280,6 +305,18 @@ export class CheckMetamaskService {
     );
   }
 
+
+  /**
+   * Get the count of total projects from the network
+   * 
+   * @returns Observable<number>
+   */
+  private getProjectCount(): Observable<number> {
+    return from(
+      this.tokenContract.methods.getProjectCount(this.owner).call()
+    );
+  }
+
   /**
    * Get the count of total work experiences from the network
    * 
@@ -368,6 +405,8 @@ export class CheckMetamaskService {
    * 1: Mainnet
    * 3: Ropsten
    * 4: Rinkebey
+   * 
+   * @TODO: Update to Observables
    */
   private async getId(): Promise<any> {
     return await this.web3.eth.net.getId();

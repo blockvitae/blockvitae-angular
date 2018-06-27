@@ -145,49 +145,31 @@
         <p class="bv-list-description">
           {{ education.description }}
         </p>
+        <br/>
       </span>
-      <br/>
-      <h3 class="bv-list-head">
-        <i class="far fa-dot-circle"></i>
-        Master of Science in Computer Science at Northeastern University, Boston, MA
-      </h3>
-      <p class="bv-list-sub-head">September 2017 to May 2019</p>
-      <p class="bv-list-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
-        dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen
-        book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially
-        unchanged.
-      </p>
     </div>
 
     <!--Projects-->
-    <div class="bv-container">
+    <div class="bv-container" *ngIf="userProjects.length > 0">
       <h1 class="bv-head">
         Projects
         <a class="bv-edit">
           <i class="fas fa-pencil-alt"></i>
         </a>
       </h1>
-      <h3 class="bv-list-head">
-        <i class="far fa-dot-circle"></i>
-        Blockvitae
-      </h3>
-      <p class="bv-list-sub-head">A Blockchain based curriculum vitae</p>
-      <p class="bv-list-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
-        dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen
-        book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially
-        unchanged.
-      </p>
-      <br/>
-      <h3 class="bv-list-head">
-        <i class="far fa-dot-circle"></i>
-        Blockvitae
-      </h3>
-      <p class="bv-list-sub-head">A Blockchain based curriculum vitae</p>
-      <p class="bv-list-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
-        dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen
-        book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially
-        unchanged.
-      </p>
+      <span *ngFor="let project of userProjects">
+        <h3 class="bv-list-head">
+          <i class="far fa-dot-circle"></i>
+          <a [href]="project.url.length > 0 ? project.url: '#'">
+            {{ project.name }}
+          </a>
+        </h3>
+        <p class="bv-list-sub-head">One Line Description Here</p>
+        <p class="bv-list-description">
+          {{ project.description }}
+        </p>
+        <br/>
+      </span>
     </div>
   </mat-card>
 </div>
