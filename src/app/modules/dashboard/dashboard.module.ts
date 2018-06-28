@@ -9,6 +9,7 @@ import { ProfileDialogComponent } from './dialog/profile-dialog/profile-dialog.c
 import { IntroductionDialogComponent } from './dialog/introduction-dialog/introduction-dialog.component';
 import { SkillsDialogComponent } from './dialog/skills-dialog/skills-dialog.component';
 import { WorkexpDialogComponent } from './dialog/workexp-dialog/workexp-dialog.component';
+import { ProjectsDialogComponent } from './dialog/projects-dialog/projects-dialog.component';
 
 @NgModule({
   imports: [
@@ -23,14 +24,16 @@ import { WorkexpDialogComponent } from './dialog/workexp-dialog/workexp-dialog.c
     ProfileDialogComponent, 
     IntroductionDialogComponent, 
     SkillsDialogComponent, 
-    WorkexpDialogComponent
+    WorkexpDialogComponent, 
+    ProjectsDialogComponent
   ],
   entryComponents: [
     MetamaskWarningDialogComponent, 
     ProfileDialogComponent,
     IntroductionDialogComponent,
     SkillsDialogComponent,
-    WorkexpDialogComponent
+    WorkexpDialogComponent,
+    ProjectsDialogComponent
   ]
 })
 export class DashboardModule { }
