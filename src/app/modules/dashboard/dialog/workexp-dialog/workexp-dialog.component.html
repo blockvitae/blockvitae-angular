@@ -1,0 +1,55 @@
+<div class="bv-container">
+  <div fxLayout="column" fxFill>
+    <form>
+      <h3>Add your work experience</h3>
+      <mat-form-field fxFill>
+        <input 
+        type="text"
+        matInput 
+        placeholder="Company Name"
+        required>
+      </mat-form-field>
+      <mat-form-field fxFill>
+        <input 
+        type="text"
+        matInput 
+        placeholder="Position"
+        required>
+      </mat-form-field>
+      <mat-form-field fxFill>
+        <input 
+        matInput 
+        [matDatepicker]="startDate" 
+        placeholder="Start Date"
+        required />
+        <mat-datepicker-toggle 
+        matSuffix 
+        [for]="startDate"></mat-datepicker-toggle>
+        <mat-datepicker #startDate></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field fxFill>
+        <input 
+        matInput 
+        [matDatepicker]="endDate" 
+        placeholder="End Date"
+        required />
+        <mat-datepicker-toggle 
+        matSuffix 
+        [for]="endDate"></mat-datepicker-toggle>
+        <mat-datepicker #endDate></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field fxFill>
+        <textarea 
+        type="text"
+        matInput 
+        placeholder="Description"
+        required></textarea>
+      </mat-form-field>
+      <div fxLayout class="bv-action-btn">
+        <span class="spacer" fxFlex="80"></span>
+        <button mat-button color="primary" [mat-dialog-close]="true">Cancel</button>
+        <button mat-raised-button color="primary">Add</button>
+      </div>
+    </form>
+  </div>
+</div>

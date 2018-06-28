@@ -8,6 +8,7 @@ import { MetamaskWarningDialogComponent } from './dialog/metamask-warning-dialog
 import { ProfileDialogComponent } from './dialog/profile-dialog/profile-dialog.component';
 import { IntroductionDialogComponent } from './dialog/introduction-dialog/introduction-dialog.component';
 import { SkillsDialogComponent } from './dialog/skills-dialog/skills-dialog.component';
+import { WorkexpDialogComponent } from './dialog/workexp-dialog/workexp-dialog.component';
 
 @NgModule({
   imports: [
@@ -20,13 +21,16 @@ import { SkillsDialogComponent } from './dialog/skills-dialog/skills-dialog.comp
     ResumeComponent, 
     MetamaskWarningDialogComponent, 
     ProfileDialogComponent, 
-    IntroductionDialogComponent, SkillsDialogComponent
+    IntroductionDialogComponent, 
+    SkillsDialogComponent, 
+    WorkexpDialogComponent
   ],
   entryComponents: [
     MetamaskWarningDialogComponent, 
     ProfileDialogComponent,
     IntroductionDialogComponent,
-    SkillsDialogComponent
+    SkillsDialogComponent,
+    WorkexpDialogComponent
   ]
 })
 export class DashboardModule { }
