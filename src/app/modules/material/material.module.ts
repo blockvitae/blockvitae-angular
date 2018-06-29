@@ -8,7 +8,10 @@ import { MatToolbarModule,
   MatProgressSpinnerModule,
   MatChipsModule,
   MatTooltipModule,
-  MatDialogModule} from '@angular/material';
+  MatDialogModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatCheckboxModule} from '@angular/material';
 
 @NgModule({
   imports: [
@@ -21,7 +24,10 @@ import { MatToolbarModule,
     MatProgressSpinnerModule,
     MatChipsModule,
     MatTooltipModule,
-    MatDialogModule
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCheckboxModule
   ],
   exports : [
     MatToolbarModule,
@@ -32,7 +38,10 @@ import { MatToolbarModule,
     MatProgressSpinnerModule,
     MatChipsModule,
     MatTooltipModule,
-    MatDialogModule
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCheckboxModule
   ],
   declarations: []
 })
