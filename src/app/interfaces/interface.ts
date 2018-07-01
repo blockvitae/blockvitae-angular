@@ -14,6 +14,7 @@ export namespace Blockvitae {
         education: Array<UserEducation>;
         projects: Array<UserProject>;
         skills: Array<string>;
+        introduction: UserIntroduction;
         address: string;
     }
 
@@ -26,6 +27,7 @@ export namespace Blockvitae {
         userName: string; // userName of the user
         imgUrl?: string; // profile img url
         email: string;  // email address of the user
+        location: string; // location of the user
     }
 
     /**
@@ -33,6 +35,7 @@ export namespace Blockvitae {
      * accounts of the user
      */
     export interface UserSocial {
+        websiteUrl?: string; // personal website url
         twitterUrl?: string; // twitter handle of user
         fbUrl?: string; // facebook handle of user
         githubUrl?: string; // github url
@@ -52,6 +55,7 @@ export namespace Blockvitae {
         dateStart?: string; // start date
         dateEnd?: string; // end date
         description?: string; // description of the job role
+        isWorking?: boolean; // true if user is currently working here
     }
 
     /**
@@ -73,8 +77,16 @@ export namespace Blockvitae {
      */
     export interface UserProject {
         name: string; // name of the project
+        shortDescription: string; // one line description
         description?: string; // description of the project
         url?: string; // url of the project
+    }
+
+    /**
+     * Holds introduction paragraph of the user
+     */
+    export interface UserIntroduction {
+        introduction: string; // introduction paragraph of the user
     }
 
     /**

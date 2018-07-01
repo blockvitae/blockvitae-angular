@@ -11,13 +11,16 @@ import { SkillsDialogComponent } from './dialog/skills-dialog/skills-dialog.comp
 import { WorkexpDialogComponent } from './dialog/workexp-dialog/workexp-dialog.component';
 import { ProjectsDialogComponent } from './dialog/projects-dialog/projects-dialog.component';
 import { EducationDialogComponent } from './dialog/education-dialog/education-dialog.component';
+import { FormsModule } from '@angular/forms';
+import { TransactionProcessingDialogComponent } from './dialog/transaction-processing-dialog/transaction-processing-dialog.component';
 
 @NgModule({
   imports: [
     CommonModule,
     MaterialModule,
     RouterModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    FormsModule
   ],
   declarations: [
     ResumeComponent, 
@@ -26,7 +29,9 @@ import { EducationDialogComponent } from './dialog/education-dialog/education-di
     IntroductionDialogComponent, 
     SkillsDialogComponent, 
     WorkexpDialogComponent, 
-    ProjectsDialogComponent, EducationDialogComponent
+    ProjectsDialogComponent, 
+    EducationDialogComponent, 
+    TransactionProcessingDialogComponent
   ],
   entryComponents: [
     MetamaskWarningDialogComponent, 
@@ -35,7 +40,8 @@ import { EducationDialogComponent } from './dialog/education-dialog/education-di
     SkillsDialogComponent,
     WorkexpDialogComponent,
     ProjectsDialogComponent,
-    EducationDialogComponent
+    EducationDialogComponent,
+    TransactionProcessingDialogComponent
   ]
 })
 export class DashboardModule { }
