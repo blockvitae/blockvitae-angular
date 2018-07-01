@@ -28,6 +28,7 @@ export namespace Blockvitae {
         imgUrl?: string; // profile img url
         email: string;  // email address of the user
         location: string; // location of the user
+        shortDescription: string; // one line description
     }
 
     /**
