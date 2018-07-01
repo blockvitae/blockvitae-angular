@@ -77,19 +77,19 @@ export class ResumeComponent implements OnInit {
   }
 
   public editIntroduction(): void {
-   let dialogRef = this.dialog.open(IntroductionDialogComponent, {
-     data: this.userIntro
-   });
+    let dialogRef = this.dialog.open(IntroductionDialogComponent, {
+      data: this.userIntro
+    });
 
-   dialogRef.afterClosed().subscribe(result => {
-    if (!result) {
-      // false
-    }
-    else {
-      this.userIntro = result;
-    }
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.userIntro = result;
 
-   });
+        // update blockchain
+
+      }
+
+    });
   }
 
   public editSkills(): void {
@@ -106,6 +106,14 @@ export class ResumeComponent implements OnInit {
 
   public addEducation(): void {
     this.dialog.open(EducationDialogComponent);
+  }
+
+  private updateIntroduction(): void {
+    this.checkMetamask
+      .setIntroduction(this.userIntro.introduction)
+      .subscribe(res => {
+        console.log(res);
+      })
   }
 
   /**
@@ -181,6 +189,7 @@ export class ResumeComponent implements OnInit {
   private getUserDetail(): void {
     this.checkMetamask.getUserDetail()
       .subscribe(detail => {
+        console.log(detail);
         this.userDetail.fullName = detail[0];
         this.userDetail.userName = detail[1];
         this.userDetail.imgUrl = detail[2] === '' ? "https://images.pexels.com/photos/555790/pexels-photo-555790.png?auto=compress&cs=tinysrgb&h=350" : detail[2];

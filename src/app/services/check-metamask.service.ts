@@ -197,6 +197,17 @@ export class CheckMetamaskService {
       });
   }
 
+  public setIntroduction(intro: string): Observable<any> {
+    return from(
+      this.tokenContract
+        .methods
+        .createUserIntroduction(intro)
+        .send({
+          from: this.web3.eth.defaultAccount
+        })
+    );
+  }
+
   /**
    * Checks if any Dapp browser is installed or not
    *
@@ -273,7 +284,8 @@ export class CheckMetamaskService {
           user.fullName,
           user.userName,
           '',
-          user.email
+          user.email,
+          ''
         ).send({
           from: this.web3.eth.defaultAccount
         })
