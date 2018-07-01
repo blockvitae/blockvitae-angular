@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { Blockvitae } from '../../../../interfaces/interface';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-introduction-dialog',
