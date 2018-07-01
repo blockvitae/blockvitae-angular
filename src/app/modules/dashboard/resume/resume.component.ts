@@ -4,6 +4,12 @@ import { MatDialog } from '@angular/material';
 import { Blockvitae } from '../../../interfaces/interface';
 import { ActivatedRoute } from '@angular/router';
 import { MetamaskWarningDialogComponent } from '../dialog/metamask-warning-dialog/metamask-warning-dialog.component';
+import { ProfileDialogComponent } from '../dialog/profile-dialog/profile-dialog.component';
+import { IntroductionDialogComponent } from '../dialog/introduction-dialog/introduction-dialog.component';
+import { SkillsDialogComponent } from '../dialog/skills-dialog/skills-dialog.component';
+import { WorkexpDialogComponent } from '../dialog/workexp-dialog/workexp-dialog.component';
+import { ProjectsDialogComponent } from '../dialog/projects-dialog/projects-dialog.component';
+import { EducationDialogComponent } from '../dialog/education-dialog/education-dialog.component';
 
 @Component({
   selector: 'app-resume',
@@ -34,6 +40,8 @@ export class ResumeComponent implements OnInit {
   // for making changes
   public isEditModeOn: boolean;
 
+  public userIntro: Blockvitae.UserIntroduction;
+
   // username from the url
   // basically the username of the profile
   private urlUsername: string;
@@ -46,9 +54,10 @@ export class ResumeComponent implements OnInit {
     this.checkMetamask.initializeDappBrowser();
     this.userDetail = <Blockvitae.UserDetail>{};
     this.userSocial = <Blockvitae.UserSocial>{};
-    this.userWorkExp = <Blockvitae.UserWorkExp[]>{};
-    this.userEducation = <Blockvitae.UserEducation[]>{};
-    this.userProjects = <Blockvitae.UserProject[]>{};
+    this.userIntro = <Blockvitae.UserIntroduction>{};
+    this.userWorkExp = [];
+    this.userEducation = [];
+    this.userProjects = [];
     this.isEditModeOn = false;
     this.urlUsername = null;
     this.userSkills = [];
@@ -61,6 +70,42 @@ export class ResumeComponent implements OnInit {
     // subscribe to metamask plugin update from 
     // app component
     this.generateMetamaskWarning();
+  }
+
+  public editProfile(): void {
+    this.dialog.open(ProfileDialogComponent);
+  }
+
+  public editIntroduction(): void {
+   let dialogRef = this.dialog.open(IntroductionDialogComponent, {
+     data: this.userIntro
+   });
+
+   dialogRef.afterClosed().subscribe(result => {
+    if (!result) {
+      // false
+    }
+    else {
+      this.userIntro = result;
+    }
+
+   });
+  }
+
+  public editSkills(): void {
+    this.dialog.open(SkillsDialogComponent);
+  }
+
+  public addWorkExp(): void {
+    this.dialog.open(WorkexpDialogComponent);
+  }
+
+  public addProject(): void {
+    this.dialog.open(ProjectsDialogComponent);
+  }
+
+  public addEducation(): void {
+    this.dialog.open(EducationDialogComponent);
   }
 
   /**
@@ -226,8 +271,9 @@ export class ResumeComponent implements OnInit {
       .subscribe(project => {
         let userProject = {
           name: project[0],
-          description: project[1],
-          url: project[2]
+          shortDescription: project[1],
+          description: project[2],
+          url: project[3]
         };
 
         // push in the array

@@ -11,13 +11,15 @@ import { SkillsDialogComponent } from './dialog/skills-dialog/skills-dialog.comp
 import { WorkexpDialogComponent } from './dialog/workexp-dialog/workexp-dialog.component';
 import { ProjectsDialogComponent } from './dialog/projects-dialog/projects-dialog.component';
 import { EducationDialogComponent } from './dialog/education-dialog/education-dialog.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
     MaterialModule,
     RouterModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    FormsModule
   ],
   declarations: [
     ResumeComponent, 
