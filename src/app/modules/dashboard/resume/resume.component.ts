@@ -11,6 +11,7 @@ import { WorkexpDialogComponent } from '../dialog/workexp-dialog/workexp-dialog.
 import { ProjectsDialogComponent } from '../dialog/projects-dialog/projects-dialog.component';
 import { EducationDialogComponent } from '../dialog/education-dialog/education-dialog.component';
 import { TransactionProcessingDialogComponent } from '../dialog/transaction-processing-dialog/transaction-processing-dialog.component';
+import { UserSocialDialogComponent } from '../dialog/user-social-dialog/user-social-dialog.component';
 
 @Component({
   selector: 'app-resume',
@@ -80,8 +81,44 @@ export class ResumeComponent implements OnInit {
     this.generateMetamaskWarning();
   }
 
-  public editProfile(): void {
-    this.dialog.open(ProfileDialogComponent);
+  /**
+   * Edits the user Detail section of the user
+   */
+  public editUserDetail(): void {
+    let dialogRef = this.dialog.open(ProfileDialogComponent, {
+      data: this.userDetail
+    });
+
+    dialogRef.afterClosed().subscribe(data => {
+      if (data) {
+        this.userDetail = data;
+
+        this.updateUserDetail();
+      }
+      else {
+        this.getUserDetail();
+      }
+    });
+  }
+
+  /**
+   * Edits the user Social section of the user
+   */
+  public editUserSocial(): void {
+    let dialogRef = this.dialog.open(UserSocialDialogComponent, {
+      data: this.userSocial
+    });
+
+    dialogRef.afterClosed().subscribe(data => {
+      if (data) {
+        this.userSocial = data;
+
+        this.updateUserSocial();
+      }
+      else {
+        this.getUserSocial();
+      }
+    });
   }
 
   /**
@@ -141,7 +178,6 @@ export class ResumeComponent implements OnInit {
       .setIntroduction(this.userIntro.introduction)
       .subscribe(res => {
         if (res.status) {
-
           // get introduction
           this.getIntroduction();
         }
@@ -153,7 +189,48 @@ export class ResumeComponent implements OnInit {
         this.closeTxnProcessingDialog();
       })
   }
-  
+
+  private updateUserDetail(): void {
+    // open processing dialog
+    this.openTxnProcessingDialog();
+
+    // update user details first and then
+    // update the social contacts
+    this.checkMetamask
+    .setUserDetail(this.userDetail)
+    .subscribe(res => {
+      if (res.status) {
+        this.getUserDetail();
+      }
+
+      // show snackbar
+      this.showSuccessSnackbar("Profile details updated successfully!");
+
+      // close processing dialog
+      this.closeTxnProcessingDialog();
+    })
+  }
+
+  private updateUserSocial(): void {
+    // open processing dialog
+    this.openTxnProcessingDialog();
+
+    // update user details first and then
+    // update the social contacts
+    this.checkMetamask
+    .setUserSocial(this.userSocial)
+    .subscribe(res => {
+      if (res.status) {
+       this.getUserSocial();
+      }
+
+      // show snackbar
+      this.showSuccessSnackbar("Social accounts updated successfully!");
+
+      // close processing dialog
+      this.closeTxnProcessingDialog();
+    })
+  }
 
   /**
    * Subscribes to observable input from 
@@ -275,6 +352,7 @@ export class ResumeComponent implements OnInit {
         this.userDetail.userName = detail[1];
         this.userDetail.imgUrl = detail[2] === '' ? "https://images.pexels.com/photos/555790/pexels-photo-555790.png?auto=compress&cs=tinysrgb&h=350" : detail[2];
         this.userDetail.email = detail[3];
+        this.userDetail.location = detail[4];
       });
   }
 
@@ -285,13 +363,14 @@ export class ResumeComponent implements OnInit {
   private getUserSocial(): void {
     this.checkMetamask.getUserSocial()
       .subscribe(social => {
-        this.userSocial.twitterUrl = social[0].length > 0 ? social[0] : null;
-        this.userSocial.fbUrl = social[1].length > 0 ? social[1] : null;
-        this.userSocial.githubUrl = social[2].length > 0 ? social[2] : null;
-        this.userSocial.dribbbleUrl = social[3].length > 0 ? social[3] : null;
-        this.userSocial.linkedinUrl = social[4].length > 0 ? social[4] : null;
-        this.userSocial.behanceUrl = social[5].length > 0 ? social[5] : null;
-        this.userSocial.mediumUrl = social[6].length > 0 ? social[6] : null;
+        this.userSocial.websiteUrl = social[0].length > 0 ? social[0] : null;
+        this.userSocial.twitterUrl = social[1].length > 0 ? social[1] : null;
+        this.userSocial.fbUrl = social[2].length > 0 ? social[2] : null;
+        this.userSocial.githubUrl = social[3].length > 0 ? social[3] : null;
+        this.userSocial.dribbbleUrl = social[4].length > 0 ? social[4] : null;
+        this.userSocial.linkedinUrl = social[5].length > 0 ? social[5] : null;
+        this.userSocial.behanceUrl = social[6].length > 0 ? social[6] : null;
+        this.userSocial.mediumUrl = social[7].length > 0 ? social[7] : null;
 
         // @TODO add personal website link
       });

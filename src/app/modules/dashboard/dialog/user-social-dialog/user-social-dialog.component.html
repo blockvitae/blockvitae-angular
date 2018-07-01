@@ -1,0 +1,78 @@
+<div class="bv-container">
+  <div fxLayout fxFill>
+    <form fxLayout="column" fxFill>
+        <div fxLayout="column" fxFlex="45" fxFlexOffset="10">  
+      
+          <h3>Social Media Accounts</h3>
+          <mat-form-field>
+            <input 
+            type="text"
+            matInput 
+            placeholder="Twitter Username eg. johndoe"
+            name="twitter"
+            [(ngModel)]="userSocial.twitterUrl"/>
+          </mat-form-field>
+      
+          <mat-form-field>
+            <input 
+            type="text"
+            matInput 
+            placeholder="Facebook Username eg. johndoe"
+            name="facebook"
+            [(ngModel)]="userSocial.fbUrl"/>
+          </mat-form-field>
+      
+          <mat-form-field>
+            <input 
+            type="text"
+            matInput 
+            placeholder="Linkedin Username eg. johndoe"
+            name="linkedIn"
+            [(ngModel)]="userSocial.linkedinUrl"/>
+          </mat-form-field>
+      
+          <mat-form-field>
+            <input 
+            type="text"
+            matInput 
+            placeholder="Dribbble Username eg. johndoe"
+            name="dribbble"
+            [(ngModel)]="userSocial.dribbbleUrl"/>
+          </mat-form-field>
+      
+          <mat-form-field>
+            <input 
+            type="text"
+            matInput 
+            placeholder="Github Username eg. johndoe"
+            name="github"
+            [(ngModel)]="userSocial.githubUrl"/>
+          </mat-form-field>
+      
+          <mat-form-field>
+            <input 
+            type="text"
+            matInput 
+            placeholder="Medium Username eg. johndoe"
+            name="medium"
+            [(ngModel)]="userSocial.mediumUrl"/>
+          </mat-form-field>
+
+          <mat-form-field>
+              <input 
+              type="url"
+              matInput 
+              placeholder="Personal Website eg. https://johndoe.com"
+              name="websiteUrl"
+              [(ngModel)]="userSocial.websiteUrl"
+              />
+            </mat-form-field>
+        </div>
+        <div fxLayout class="bv-action-btn">
+          <span class="spacer" fxFlex="80"></span>
+          <button mat-button color="primary" [mat-dialog-close]="false">Cancel</button>
+          <button mat-raised-button color="primary" [mat-dialog-close]="userSocial">Update</button>
+        </div>
+    </form>
+  </div>
+</div>

@@ -13,6 +13,7 @@ import { ProjectsDialogComponent } from './dialog/projects-dialog/projects-dialo
 import { EducationDialogComponent } from './dialog/education-dialog/education-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { TransactionProcessingDialogComponent } from './dialog/transaction-processing-dialog/transaction-processing-dialog.component';
+import { UserSocialDialogComponent } from './dialog/user-social-dialog/user-social-dialog.component';
 
 @NgModule({
   imports: [
@@ -31,7 +32,8 @@ import { TransactionProcessingDialogComponent } from './dialog/transaction-proce
     WorkexpDialogComponent, 
     ProjectsDialogComponent, 
     EducationDialogComponent, 
-    TransactionProcessingDialogComponent
+    TransactionProcessingDialogComponent, 
+    UserSocialDialogComponent
   ],
   entryComponents: [
     MetamaskWarningDialogComponent, 
@@ -41,7 +43,8 @@ import { TransactionProcessingDialogComponent } from './dialog/transaction-proce
     WorkexpDialogComponent,
     ProjectsDialogComponent,
     EducationDialogComponent,
-    TransactionProcessingDialogComponent
+    TransactionProcessingDialogComponent,
+    UserSocialDialogComponent
   ]
 })
 export class DashboardModule { }

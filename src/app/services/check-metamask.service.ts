@@ -227,6 +227,59 @@ export class CheckMetamaskService {
   }
 
   /**
+   * Sets the user details of the user on the network
+   * 
+   * @param Blockvitae.UserDetail userDetail
+   * user detail object of the user
+   * 
+   * @return Observable<any>
+   */
+  public setUserDetail(userDetail: Blockvitae.UserDetail): Observable<any> {
+    return from(
+      this.tokenContract
+        .methods
+        .createUserDetail(
+          userDetail.fullName,
+          userDetail.userName,
+          userDetail.imgUrl,
+          userDetail.email,
+          userDetail.location
+        )
+        .send({
+          from: this.web3.eth.defaultAccount
+        })
+    );
+  }
+
+  /**
+   * Sets the user social details of the user on the network
+   * 
+   * @param Blockvitae.UserSocial userSocial
+   * user social object of the user
+   * 
+   * @return Observable<any>
+   */
+  public setUserSocial(userSocial: Blockvitae.UserSocial): Observable<any> {
+    return from(
+      this.tokenContract
+        .methods
+        .createUserSocial(
+          userSocial.websiteUrl,
+          userSocial.twitterUrl,
+          userSocial.fbUrl,
+          userSocial.githubUrl,
+          userSocial.dribbbleUrl,
+          userSocial.linkedinUrl,
+          '',
+          userSocial.mediumUrl
+        )
+        .send({
+          from: this.web3.eth.defaultAccount
+        })
+    );
+  }
+
+  /**
    * Checks if any Dapp browser is installed or not
    *
    */
