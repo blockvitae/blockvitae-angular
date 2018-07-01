@@ -11,7 +11,7 @@
       <div fxFlexOffset="1" fxFlex="80">
         <span class="bv-name">
           {{userDetail.fullName}}
-          <a class="bv-edit" (click)="editProfile()">
+          <a class="bv-edit" (click)="editUserDetail()">
             <i class="fas fa-pencil-alt"></i>
           </a>
         </span>
@@ -20,10 +20,13 @@
         <br/>
         <br/>
         <span class="bv-detail">
-          <i class="fas fa-map-marker-alt"></i> Boston, MA</span>
+          <i class="fas fa-map-marker-alt"></i> {{ userDetail.location }}</span>
         <br/>
         <br/>
         <span class="bv-social">
+          <a class="bv-edit" (click)="editUserSocial()">
+            <i class="fas fa-pencil-alt"></i>
+          </a>
           <a matTooltip="Twitter" 
           *ngIf="userSocial.twitterUrl != null" 
           [href]="'https://twitter.com/' + userSocial.twitterUrl"
@@ -69,7 +72,10 @@
           <a matTooltip="Email" href="mailto:{{userDetail.email}}">
             <i class="fas fa-envelope-square"></i>
           </a>
-          <a matTooltip="Personal Website">
+          <a matTooltip="Personal Website"
+          *ngIf="userSocial.websiteUrl != null"
+          [href]="userSocial.websiteUrl"
+          target="_blank">
             <i class="fas fa-globe"></i>
           </a>
         </span>
