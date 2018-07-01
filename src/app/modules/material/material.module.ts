@@ -11,7 +11,8 @@ import { MatToolbarModule,
   MatDialogModule,
   MatDatepickerModule,
   MatNativeDateModule,
-  MatCheckboxModule} from '@angular/material';
+  MatCheckboxModule,
+  MatSnackBarModule} from '@angular/material';
 
 @NgModule({
   imports: [
@@ -41,7 +42,8 @@ import { MatToolbarModule,
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatSnackBarModule
   ],
   declarations: []
 })

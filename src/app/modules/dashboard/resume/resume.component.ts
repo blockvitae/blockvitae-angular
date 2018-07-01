@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CheckMetamaskService } from '../../../services/check-metamask.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { Blockvitae } from '../../../interfaces/interface';
 import { ActivatedRoute } from '@angular/router';
 import { MetamaskWarningDialogComponent } from '../dialog/metamask-warning-dialog/metamask-warning-dialog.component';
@@ -10,6 +10,7 @@ import { SkillsDialogComponent } from '../dialog/skills-dialog/skills-dialog.com
 import { WorkexpDialogComponent } from '../dialog/workexp-dialog/workexp-dialog.component';
 import { ProjectsDialogComponent } from '../dialog/projects-dialog/projects-dialog.component';
 import { EducationDialogComponent } from '../dialog/education-dialog/education-dialog.component';
+import { TransactionProcessingDialogComponent } from '../dialog/transaction-processing-dialog/transaction-processing-dialog.component';
 
 @Component({
   selector: 'app-resume',
@@ -40,16 +41,22 @@ export class ResumeComponent implements OnInit {
   // for making changes
   public isEditModeOn: boolean;
 
+  // Object for user introduction
   public userIntro: Blockvitae.UserIntroduction;
 
   // username from the url
   // basically the username of the profile
   private urlUsername: string;
 
+  // dialog reference for transaction 
+  // processing dialog
+  private dialogRef: any;
+
   constructor(
     public dialog: MatDialog,
     private checkMetamask: CheckMetamaskService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private snackbar: MatSnackBar
   ) {
     this.checkMetamask.initializeDappBrowser();
     this.userDetail = <Blockvitae.UserDetail>{};
@@ -61,6 +68,7 @@ export class ResumeComponent implements OnInit {
     this.isEditModeOn = false;
     this.urlUsername = null;
     this.userSkills = [];
+    this.dialogRef = null;
   }
 
   ngOnInit() {
@@ -76,17 +84,30 @@ export class ResumeComponent implements OnInit {
     this.dialog.open(ProfileDialogComponent);
   }
 
+  /**
+   * Edits the introduction of the user
+   */
   public editIntroduction(): void {
+    // Open dialog to get new introduction
     let dialogRef = this.dialog.open(IntroductionDialogComponent, {
       data: this.userIntro
     });
 
+    // @TODO validate introduction
+
+    // After dialog is closed if clicked on update
+    // call update introduction
+    // else call getIntroduction
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.userIntro = result;
 
         // update blockchain
-
+        this.updateIntroduction();
+      }
+      else {
+        // get the old introduction
+        this.getIntroduction();
       }
 
     });
@@ -108,13 +129,31 @@ export class ResumeComponent implements OnInit {
     this.dialog.open(EducationDialogComponent);
   }
 
+  /**
+   * Updates introduction
+   */
   private updateIntroduction(): void {
+    // open processing dialog
+    this.openTxnProcessingDialog();
+
+    // update introduction
     this.checkMetamask
       .setIntroduction(this.userIntro.introduction)
       .subscribe(res => {
-        console.log(res);
+        if (res.status) {
+
+          // get introduction
+          this.getIntroduction();
+        }
+
+        // show snackbar
+        this.showSuccessSnackbar("Introduction updated successfully!");
+
+        // close processing dialog
+        this.closeTxnProcessingDialog();
       })
   }
+  
 
   /**
    * Subscribes to observable input from 
@@ -139,6 +178,36 @@ export class ResumeComponent implements OnInit {
   }
 
   /**
+   * Opnes transaction processing dialog
+   */
+  private openTxnProcessingDialog(): void {
+    this.dialogRef = this.dialog.open(TransactionProcessingDialogComponent, {
+      role: "alertdialog",
+      disableClose: true
+    });
+  }
+
+  /**
+   * Closes transaction processing dialog
+   */
+  private closeTxnProcessingDialog(): void {
+    this.dialogRef.close();
+  }
+
+  /**
+   * Shows the snackbar with the given message
+   * 
+   * @param string message 
+   * Message to be displayed on the snackbar
+   */
+  private showSuccessSnackbar(message: string): void {
+    this.snackbar.open(message, null, {
+      duration: 2000,
+      panelClass: 'success'
+    });
+  }
+
+  /**
    * Maps the url username to address
    * 
    * @note 
@@ -158,6 +227,9 @@ export class ResumeComponent implements OnInit {
           .getAddrForUsername(this.urlUsername)
           .subscribe(res => {
             this.checkMetamask.owner = res;
+
+            // get Introduction
+            this.getIntroduction();
 
             // get UserDetail Object
             this.getUserDetail();
@@ -181,6 +253,16 @@ export class ResumeComponent implements OnInit {
   }
 
   /**
+   * Gets the introduction
+   */
+  private getIntroduction(): void {
+    this.checkMetamask.getUserIntroduction()
+      .subscribe(intro => {
+        this.userIntro.introduction = intro;
+      });
+  }
+
+  /**
    * Get the user detail object
    * Network returns a string array
    * therefore, needs to be casted into
@@ -189,12 +271,11 @@ export class ResumeComponent implements OnInit {
   private getUserDetail(): void {
     this.checkMetamask.getUserDetail()
       .subscribe(detail => {
-        console.log(detail);
         this.userDetail.fullName = detail[0];
         this.userDetail.userName = detail[1];
         this.userDetail.imgUrl = detail[2] === '' ? "https://images.pexels.com/photos/555790/pexels-photo-555790.png?auto=compress&cs=tinysrgb&h=350" : detail[2];
         this.userDetail.email = detail[3];
-      })
+      });
   }
 
   /**

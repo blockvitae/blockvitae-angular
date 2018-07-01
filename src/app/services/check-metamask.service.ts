@@ -87,7 +87,6 @@ export class CheckMetamaskService {
   // Source for project observable
   private projectSource = new Subject<Observable<string[]>>();
 
-
   constructor() {
     this.web3 = null;
     this.web3Error = null;
@@ -113,7 +112,7 @@ export class CheckMetamaskService {
   /**
    * Get the user detail object from network
    * 
-   * @returns Observable<string[]>
+   * @return Observable<string[]>
    */
   public getUserDetail(): Observable<string[]> {
     return from(
@@ -122,9 +121,20 @@ export class CheckMetamaskService {
   }
 
   /**
+   * Gets the introduction object of the user from the network
+   * 
+   * @return Observable<string>
+   */
+  public getUserIntroduction(): Observable<string> {
+    return from(
+      this.tokenContract.methods.getUserIntroduction(this.owner).call()
+    )
+  }
+
+  /**
    * Get the user social accounts from network
    * 
-   * @returns Observable<string[]>
+   * @return Observable<string[]>
    */
   public getUserSocial(): Observable<string[]> {
     return from(
@@ -197,6 +207,14 @@ export class CheckMetamaskService {
       });
   }
 
+  /**
+   * Sets the introduction of the user on the network
+   * 
+   * @param string intro 
+   * Introduction of the user
+   * 
+   * @return Observable<any>
+   */
   public setIntroduction(intro: string): Observable<any> {
     return from(
       this.tokenContract
@@ -245,7 +263,7 @@ export class CheckMetamaskService {
     // and its abi interface
     this.tokenContract = new this.web3.eth.Contract(
       tokenAbi.abi,
-      '0x12c9f503fe05bb1a10e7f52fd073a7ca810ce5d2'
+      '0xb4191b770cacde35f0fefbe7856c12ad0e63bd53'
     );
 
   }
