@@ -1,18 +1,27 @@
 <div class="bv-container">
   <div fxLayout="column" fxFill>
     <form>
-      <h3>Add your skills separated by Semicolon</h3>
+      <h3>Add your skills separated by comma</h3>
       <mat-form-field fxFill>
         <input 
         type="text"
         matInput 
         placeholder="Skills"
+        name="skills"
+        [(ngModel)]="skills"
+        (keydown)="onSpaceSkills($event)"
         required>
       </mat-form-field>
+      <mat-chip-list>
+        <mat-chip 
+        color="primary" 
+        selected="true"
+        *ngFor="let skill of userSkills">{{ skill }}</mat-chip>
+      </mat-chip-list>
       <div fxLayout class="bv-action-btn">
         <span class="spacer" fxFlex="80"></span>
-        <button mat-button color="primary" [mat-dialog-close]="true">Cancel</button>
-        <button mat-raised-button color="primary">Update</button>
+        <button mat-button color="primary" [mat-dialog-close]="false">Cancel</button>
+        <button mat-raised-button color="primary" [mat-dialog-close]="userSkills">Update</button>
       </div>
     </form>
   </div>
