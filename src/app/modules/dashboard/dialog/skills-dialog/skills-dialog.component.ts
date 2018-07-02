@@ -12,19 +12,15 @@ export class SkillsDialogComponent {
   // holds string of skills
   public skills: string;
 
-  // string array to hold skills
-  public userSkills: string[];
-
   constructor(
-    @Inject(MAT_DIALOG_DATA) public userSkill: any
+    @Inject(MAT_DIALOG_DATA) public userSkills: any
   ) { 
-    this.skills = "";
-    this.userSkills = [];
+    this.skills = this.userSkills.join(", ");
   }
 
   public onSpaceSkills(event): void {
     // 188 is keycode for comma
-    if (event.keyCode === 188) {
+    if (event.keyCode === 188 || event === 'blur' || event === 'mouseenter') {
       this.userSkills = this.skills.split(",");
     }
   }

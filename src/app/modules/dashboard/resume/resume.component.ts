@@ -29,6 +29,9 @@ export class ResumeComponent implements OnInit {
   // user skills array
   public userSkills: string[];
 
+  // user skills array in byte32
+  public userSkillsBytes: string[];
+
   // array of user work experience objects
   public userWorkExp: Blockvitae.UserWorkExp[];
 
@@ -160,7 +163,12 @@ export class ResumeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(skills => {
       if (skills.length > 0) {
-        this.userSkills = skills;
+        // convert from string to bytes
+        this.userSkillsBytes = [];
+        for (let i = 0; i < skills.length; i++) {
+          this.userSkillsBytes
+            .push(this.checkMetamask.web3.utils.asciiToHex(skills[i]));
+        }
 
         // update blockchain
         this.updateUserSkills();
@@ -261,7 +269,7 @@ export class ResumeComponent implements OnInit {
     this.openTxnProcessingDialog();
 
     this.checkMetamask
-      .setUserSkills(this.userSkills)
+      .setUserSkills(this.userSkillsBytes)
       .subscribe(res => {
         if (res.status) {
           this.getUserSkills();
@@ -499,7 +507,12 @@ export class ResumeComponent implements OnInit {
   private getUserSkills(): void {
     this.checkMetamask.getUserSkills()
       .subscribe(skills => {
-        this.userSkills = skills;
+        this.userSkills = [];
+        // convert from bytes to string
+        for (let i = 0; i < skills.length; i++) {
+          this.userSkills
+            .push(this.checkMetamask.web3.utils.hexToAscii(skills[i]).trim());
+        }
       });
   }
 }
