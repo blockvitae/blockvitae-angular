@@ -29,6 +29,9 @@ export class ResumeComponent implements OnInit {
   // user skills array
   public userSkills: string[];
 
+  // user skills array in byte32
+  public userSkillsBytes: string[];
+
   // array of user work experience objects
   public userWorkExp: Blockvitae.UserWorkExp[];
 
@@ -150,8 +153,31 @@ export class ResumeComponent implements OnInit {
     });
   }
 
+  /**
+   * Edit User Skills
+   */
   public editSkills(): void {
-    this.dialog.open(SkillsDialogComponent);
+    let dialogRef = this.dialog.open(SkillsDialogComponent, {
+      data: this.userSkills
+    });
+
+    dialogRef.afterClosed().subscribe(skills => {
+      if (skills.length > 0) {
+        // convert from string to bytes
+        this.userSkillsBytes = [];
+        for (let i = 0; i < skills.length; i++) {
+          this.userSkillsBytes
+            .push(this.checkMetamask.web3.utils.asciiToHex(skills[i]));
+        }
+
+        // update blockchain
+        this.updateUserSkills();
+      }
+      else {
+        // get old skills
+        this.getUserSkills();
+      }
+    });
   }
 
   public addWorkExp(): void {
@@ -190,6 +216,9 @@ export class ResumeComponent implements OnInit {
       })
   }
 
+  /**
+   * Update user details
+   */
   private updateUserDetail(): void {
     // open processing dialog
     this.openTxnProcessingDialog();
@@ -197,20 +226,23 @@ export class ResumeComponent implements OnInit {
     // update user details first and then
     // update the social contacts
     this.checkMetamask
-    .setUserDetail(this.userDetail)
-    .subscribe(res => {
-      if (res.status) {
-        this.getUserDetail();
-      }
+      .setUserDetail(this.userDetail)
+      .subscribe(res => {
+        if (res.status) {
+          this.getUserDetail();
+        }
 
-      // show snackbar
-      this.showSuccessSnackbar("Profile details updated successfully!");
+        // show snackbar
+        this.showSuccessSnackbar("Profile details updated successfully!");
 
-      // close processing dialog
-      this.closeTxnProcessingDialog();
-    })
+        // close processing dialog
+        this.closeTxnProcessingDialog();
+      })
   }
 
+  /**
+   * Update User social
+   */
   private updateUserSocial(): void {
     // open processing dialog
     this.openTxnProcessingDialog();
@@ -218,18 +250,37 @@ export class ResumeComponent implements OnInit {
     // update user details first and then
     // update the social contacts
     this.checkMetamask
-    .setUserSocial(this.userSocial)
-    .subscribe(res => {
-      if (res.status) {
-       this.getUserSocial();
-      }
+      .setUserSocial(this.userSocial)
+      .subscribe(res => {
+        if (res.status) {
+          this.getUserSocial();
+        }
 
-      // show snackbar
-      this.showSuccessSnackbar("Social accounts updated successfully!");
+        // show snackbar
+        this.showSuccessSnackbar("Social accounts updated successfully!");
 
-      // close processing dialog
-      this.closeTxnProcessingDialog();
-    })
+        // close processing dialog
+        this.closeTxnProcessingDialog();
+      })
+  }
+
+  private updateUserSkills(): void {
+    // open processing dialog
+    this.openTxnProcessingDialog();
+
+    this.checkMetamask
+      .setUserSkills(this.userSkillsBytes)
+      .subscribe(res => {
+        if (res.status) {
+          this.getUserSkills();
+        }
+
+        // show snackbar
+        this.showSuccessSnackbar("Skills updated successfully!");
+
+        // close processing dialog
+        this.closeTxnProcessingDialog();
+      })
   }
 
   /**
@@ -456,9 +507,11 @@ export class ResumeComponent implements OnInit {
   private getUserSkills(): void {
     this.checkMetamask.getUserSkills()
       .subscribe(skills => {
+        this.userSkills = [];
+        // convert from bytes to string
         for (let i = 0; i < skills.length; i++) {
-          // add to the array
-          this.userSkills.push(skills[i]);
+          this.userSkills
+            .push(this.checkMetamask.web3.utils.hexToAscii(skills[i]).trim());
         }
       });
   }

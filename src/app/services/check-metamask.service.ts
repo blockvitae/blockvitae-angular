@@ -279,6 +279,17 @@ export class CheckMetamaskService {
     );
   }
 
+  public setUserSkills(userSkills: string[]): Observable<any> {
+    return from(
+      this.tokenContract
+        .methods
+        .createUserSkill(userSkills)
+        .send({
+          from: this.web3.eth.defaultAccount
+        })
+    );
+  }
+
   /**
    * Checks if any Dapp browser is installed or not
    *
