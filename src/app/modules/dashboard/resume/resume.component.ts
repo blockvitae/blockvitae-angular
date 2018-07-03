@@ -174,7 +174,7 @@ export class ResumeComponent implements OnInit {
         this.userSkillsBytes = [];
         for (let i = 0; i < skills.length; i++) {
           this.userSkillsBytes
-            .push(this.checkMetamask.web3.utils.utf8ToHex(skills[i]));
+            .push(this.checkMetamask.web3.utils.asciiToHex(skills[i]));
         }
 
         // update blockchain

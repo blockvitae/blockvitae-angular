@@ -79,7 +79,7 @@ export class CheckMetamaskService {
   private metamaskInstalledSource = new Subject<boolean>();
 
   // Source for work exp observable
-  private workExpSource = new Subject<string[]>();
+  private workExpSource = new Subject<{}>();
 
   // Source for education observable
   private educationSource = new Subject<Observable<string[]>>();
