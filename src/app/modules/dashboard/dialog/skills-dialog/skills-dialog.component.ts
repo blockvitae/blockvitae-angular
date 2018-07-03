@@ -13,7 +13,7 @@ export class SkillsDialogComponent {
   public skills: string;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public userSkills: any
+    @Inject(MAT_DIALOG_DATA) public userSkills: string[]
   ) { 
     this.skills = this.userSkills.join(", ");
   }

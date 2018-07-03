@@ -52,11 +52,11 @@ export namespace Blockvitae {
      */
     export interface UserWorkExp {
         company: string; // name of the company
-        position?: string; // position held in the company
-        dateStart?: string; // start date
-        dateEnd?: string; // end date
-        description?: string; // description of the job role
-        isWorking?: boolean; // true if user is currently working here
+        position: string; // position held in the company
+        dateStart: string; // start date
+        dateEnd: string; // end date
+        description: string; // description of the job role
+        isWorking: boolean; // true if user is currently working here
     }
 
     /**
