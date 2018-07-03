@@ -13,6 +13,9 @@ import { EducationDialogComponent } from '../dialog/education-dialog/education-d
 import { TransactionProcessingDialogComponent } from '../dialog/transaction-processing-dialog/transaction-processing-dialog.component';
 import { UserSocialDialogComponent } from '../dialog/user-social-dialog/user-social-dialog.component';
 
+// import moment
+import * as _moment from 'moment';
+
 @Component({
   selector: 'app-resume',
   templateUrl: './resume.component.html',
@@ -34,6 +37,9 @@ export class ResumeComponent implements OnInit {
 
   // array of user work experience objects
   public userWorkExp: Blockvitae.UserWorkExp[];
+
+  // for holding single record of workExp
+  public userWork: Blockvitae.UserWorkExp;
 
   // array of user education objects
   public userEducation: Blockvitae.UserEducation[];
@@ -73,6 +79,7 @@ export class ResumeComponent implements OnInit {
     this.urlUsername = null;
     this.userSkills = [];
     this.dialogRef = null;
+    this.userWork = <Blockvitae.UserWorkExp>{};
   }
 
   ngOnInit() {
@@ -167,7 +174,7 @@ export class ResumeComponent implements OnInit {
         this.userSkillsBytes = [];
         for (let i = 0; i < skills.length; i++) {
           this.userSkillsBytes
-            .push(this.checkMetamask.web3.utils.asciiToHex(skills[i]));
+            .push(this.checkMetamask.web3.utils.utf8ToHex(skills[i]));
         }
 
         // update blockchain
@@ -180,8 +187,39 @@ export class ResumeComponent implements OnInit {
     });
   }
 
+  /**
+   * Add Work Experience
+   */
   public addWorkExp(): void {
-    this.dialog.open(WorkexpDialogComponent);
+    this.userWork = <Blockvitae.UserWorkExp>{};
+    let dialogRef = this.dialog.open(WorkexpDialogComponent, {
+      data: this.userWork
+    });
+
+    dialogRef.afterClosed().subscribe(userWork => {
+      if (userWork) {
+        this.userWork = userWork;
+        
+        // fix date format
+        if (this.userWork.dateStart != null) {
+          this.userWork.dateStart = _moment(this.userWork.dateStart).format("MMM-YY");
+        }
+
+        if (this.userWork.dateEnd != null) {
+          this.userWork.dateEnd = _moment(this.userWork.dateEnd).format("MMM-YY");
+        }
+        else {
+          this.userWork.dateEnd = "";
+        }
+        
+        // update blockchain
+        this.updateWorkExp();
+      }
+      else {
+        // get old work exp data
+        this.getUserWorkExp();
+      }
+    });
   }
 
   public addProject(): void {
@@ -213,6 +251,27 @@ export class ResumeComponent implements OnInit {
 
         // close processing dialog
         this.closeTxnProcessingDialog();
+      })
+  }
+
+  private updateWorkExp(): void {
+    // open processing dialog
+    this.openTxnProcessingDialog();
+
+    // update work exp
+    this.checkMetamask
+      .setUserWorkExp(this.userWork)
+      .subscribe(res => {
+        if (res.status) {
+          // get work exp
+          this.getUserWorkExp();
+        }
+
+         // show snackbar
+         this.showSuccessSnackbar("Work Experience updated successfully!");
+
+         // close processing dialog
+         this.closeTxnProcessingDialog();
       })
   }
 
@@ -422,8 +481,6 @@ export class ResumeComponent implements OnInit {
         this.userSocial.linkedinUrl = social[5].length > 0 ? social[5] : null;
         this.userSocial.behanceUrl = social[6].length > 0 ? social[6] : null;
         this.userSocial.mediumUrl = social[7].length > 0 ? social[7] : null;
-
-        // @TODO add personal website link
       });
   }
 
@@ -436,6 +493,9 @@ export class ResumeComponent implements OnInit {
     // start fetching observables
     this.checkMetamask.getWorkExp();
 
+    // empty userWorkExp
+    this.userWorkExp = [];
+
     // observe observables
     this.checkMetamask.workExp$
       .subscribe(workExp => {
@@ -444,7 +504,8 @@ export class ResumeComponent implements OnInit {
           position: workExp[1],
           dateStart: workExp[2],
           dateEnd: workExp[3],
-          description: workExp[4]
+          description: workExp[4],
+          isWorking: workExp[5]
         };
 
         // push in the array
@@ -511,7 +572,7 @@ export class ResumeComponent implements OnInit {
         // convert from bytes to string
         for (let i = 0; i < skills.length; i++) {
           this.userSkills
-            .push(this.checkMetamask.web3.utils.hexToAscii(skills[i]).trim());
+            .push(this.checkMetamask.web3.utils.hexToUtf8(skills[i]));
         }
       });
   }

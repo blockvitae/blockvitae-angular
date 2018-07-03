@@ -79,7 +79,7 @@ export class CheckMetamaskService {
   private metamaskInstalledSource = new Subject<boolean>();
 
   // Source for work exp observable
-  private workExpSource = new Subject<Observable<string[]>>();
+  private workExpSource = new Subject<string[]>();
 
   // Source for education observable
   private educationSource = new Subject<Observable<string[]>>();
@@ -162,11 +162,15 @@ export class CheckMetamaskService {
     this.getWorkExpCount()
       .subscribe(count => {
         for (let i = 0; i < count; i++) {
-          this.workExpSource.next(
-            from(
-              this.tokenContract.methods.getUserWorkExp(this.owner, i).call()
-            )
-          );
+          from(
+            this.tokenContract.methods.getUserWorkExp(this.owner, i).call()
+          )
+          .subscribe(res => {
+            return this.workExpSource.next(
+              // @TODO Handle Errors
+              res
+            );
+          })
         }
       });
   }
@@ -279,11 +283,37 @@ export class CheckMetamaskService {
     );
   }
 
+  /**
+   * Sets the user skills on the network
+   * 
+   * @param string[] userSkills 
+   * array of skills
+   * 
+   * @return Observable<any>
+   */
   public setUserSkills(userSkills: string[]): Observable<any> {
     return from(
       this.tokenContract
         .methods
         .createUserSkill(userSkills)
+        .send({
+          from: this.web3.eth.defaultAccount
+        })
+    );
+  }
+
+  public setUserWorkExp(userWork: Blockvitae.UserWorkExp): Observable<any> {
+    return from(
+      this.tokenContract
+        .methods
+        .createUserWorkExp(
+          userWork.company,
+          userWork.position,
+          userWork.dateStart,
+          userWork.dateEnd,
+          userWork.description,
+          userWork.isWorking
+        )
         .send({
           from: this.web3.eth.defaultAccount
         })

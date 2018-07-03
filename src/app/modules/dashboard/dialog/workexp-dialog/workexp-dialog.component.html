@@ -7,6 +7,8 @@
         type="text"
         matInput 
         placeholder="Company Name"
+        name="company"
+        [(ngModel)]="userWork.company"
         required>
       </mat-form-field>
       <mat-form-field fxFill>
@@ -14,6 +16,8 @@
         type="text"
         matInput 
         placeholder="Position"
+        name="position"
+        [(ngModel)]="userWork.position"
         required>
       </mat-form-field>
       <mat-form-field fxFill>
@@ -21,6 +25,8 @@
         matInput 
         [matDatepicker]="startDate" 
         placeholder="Start Date"
+        name="dateStart"
+        [(ngModel)]="userWork.dateStart"
         required />
         <mat-datepicker-toggle 
         matSuffix 
@@ -32,24 +38,31 @@
         matInput 
         [matDatepicker]="endDate" 
         placeholder="End Date"
-        required />
+        name="dateEnd"
+        [(ngModel)]="userWork.dateEnd"/>
         <mat-datepicker-toggle 
         matSuffix 
         [for]="endDate"></mat-datepicker-toggle>
         <mat-datepicker #endDate></mat-datepicker>
       </mat-form-field>
-      <mat-checkbox color="primary"> I still Work Here!</mat-checkbox>
+      <mat-checkbox 
+      color="primary"
+      name="isWorking"
+      [(ngModel)]="userWork.isWorking"
+      > I still Work Here!</mat-checkbox>
       <mat-form-field fxFill>
         <textarea 
         type="text"
         matInput 
         placeholder="Description"
+        name="description"
+        [(ngModel)]="userWork.description"
         required></textarea>
       </mat-form-field>
       <div fxLayout class="bv-action-btn">
         <span class="spacer" fxFlex="80"></span>
-        <button mat-button color="primary" [mat-dialog-close]="true">Cancel</button>
-        <button mat-raised-button color="primary">Add</button>
+        <button mat-button color="primary" [mat-dialog-close]="false">Cancel</button>
+        <button mat-raised-button color="primary" [mat-dialog-close]="userWork">Add</button>
       </div>
     </form>
   </div>
