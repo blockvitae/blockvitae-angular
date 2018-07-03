@@ -21,7 +21,12 @@ export class SkillsDialogComponent {
   public onSpaceSkills(event): void {
     // 188 is keycode for comma
     if (event.keyCode === 188 || event === 'blur' || event === 'mouseenter') {
-      this.userSkills = this.skills.split(",");
+
+      // split to array from string and filter for non-empty strings
+      this.userSkills = this.skills.split(", ").filter(skill => {
+        if (skill.trim() !== "") 
+          return skill.trim();
+      });
     }
   }
 }

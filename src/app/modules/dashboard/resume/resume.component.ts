@@ -174,7 +174,7 @@ export class ResumeComponent implements OnInit {
         this.userSkillsBytes = [];
         for (let i = 0; i < skills.length; i++) {
           this.userSkillsBytes
-            .push(this.checkMetamask.web3.utils.asciiToHex(skills[i]));
+            .push(this.checkMetamask.web3.utils.utf8ToHex(skills[i]));
         }
 
         // update blockchain
@@ -187,6 +187,9 @@ export class ResumeComponent implements OnInit {
     });
   }
 
+  /**
+   * Add Work Experience
+   */
   public addWorkExp(): void {
     this.userWork = <Blockvitae.UserWorkExp>{};
     let dialogRef = this.dialog.open(WorkexpDialogComponent, {
@@ -490,6 +493,9 @@ export class ResumeComponent implements OnInit {
     // start fetching observables
     this.checkMetamask.getWorkExp();
 
+    // empty userWorkExp
+    this.userWorkExp = [];
+
     // observe observables
     this.checkMetamask.workExp$
       .subscribe(workExp => {
@@ -504,8 +510,6 @@ export class ResumeComponent implements OnInit {
 
         // push in the array
         this.userWorkExp.push(userWorkExp);
-
-        console.log(workExp);
       });
   }
 
@@ -568,7 +572,7 @@ export class ResumeComponent implements OnInit {
         // convert from bytes to string
         for (let i = 0; i < skills.length; i++) {
           this.userSkills
-            .push(this.checkMetamask.web3.utils.hexToAscii(skills[i]).trim());
+            .push(this.checkMetamask.web3.utils.hexToUtf8(skills[i]));
         }
       });
   }
