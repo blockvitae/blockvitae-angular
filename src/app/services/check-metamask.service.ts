@@ -298,6 +298,24 @@ export class CheckMetamaskService {
     );
   }
 
+  public setUserWorkExp(userWork: Blockvitae.UserWorkExp): Observable<any> {
+    return from(
+      this.tokenContract
+        .methods
+        .createUserWorkExp(
+          userWork.company,
+          userWork.position,
+          userWork.dateStart,
+          userWork.dateEnd,
+          userWork.description,
+          userWork.isWorking
+        )
+        .send({
+          from: this.web3.eth.defaultAccount
+        })
+    );
+  }
+
   /**
    * Checks if any Dapp browser is installed or not
    *
