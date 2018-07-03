@@ -199,11 +199,11 @@ export class ResumeComponent implements OnInit {
         
         // fix date format
         if (this.userWork.dateStart != null) {
-          this.userWork.dateStart = _moment(this.userWork.dateStart).format("DD-MMM-YY");
+          this.userWork.dateStart = _moment(this.userWork.dateStart).format("MMM-YY");
         }
 
         if (this.userWork.dateEnd != null) {
-          this.userWork.dateEnd = _moment(this.userWork.dateEnd).format("DD-MMM-YY");
+          this.userWork.dateEnd = _moment(this.userWork.dateEnd).format("MMM-YY");
         }
         else {
           this.userWork.dateEnd = "";

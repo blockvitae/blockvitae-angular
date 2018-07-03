@@ -124,7 +124,12 @@
             <i class="far fa-dot-circle"></i>
             {{ workExp.position }} at {{ workExp.company }}
         </h3>
-        <p class="bv-list-sub-head">{{ workExp.dateStart }} to {{ workExp.dateEnd }}</p>
+        <p class="bv-list-sub-head" *ngIf="!workExp.isWorking">
+          {{ workExp.dateStart }} to {{ workExp.dateEnd }}
+        </p>
+        <p class="bv-list-sub-head" *ngIf="workExp.isWorking">
+          {{ workExp.dateStart }} to Present
+        </p>
         <p class="bv-list-description">
           {{ workExp.description }}
         </p>
