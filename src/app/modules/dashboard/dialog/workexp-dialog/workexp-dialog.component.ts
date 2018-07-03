@@ -10,7 +10,7 @@ import { Blockvitae } from '../../../../interfaces/interface';
 export class WorkexpDialogComponent {
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public userWork: Blockvitae.UserWorkExp;
+    @Inject(MAT_DIALOG_DATA) public userWork: Blockvitae.UserWorkExp
   ) { }
 
 }
