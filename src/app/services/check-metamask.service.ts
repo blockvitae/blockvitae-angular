@@ -279,6 +279,14 @@ export class CheckMetamaskService {
     );
   }
 
+  /**
+   * Sets the user skills on the network
+   * 
+   * @param string[] userSkills 
+   * array of skills
+   * 
+   * @return Observable<any>
+   */
   public setUserSkills(userSkills: string[]): Observable<any> {
     return from(
       this.tokenContract
