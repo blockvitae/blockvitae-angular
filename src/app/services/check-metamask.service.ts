@@ -302,6 +302,14 @@ export class CheckMetamaskService {
     );
   }
 
+  /**
+   * Sets the user work experience
+   * 
+   * @param userWork Blockvitae.UserWorkExp
+   * UserWorkExp object
+   * 
+   * @return Observable<any> 
+   */
   public setUserWorkExp(userWork: Blockvitae.UserWorkExp): Observable<any> {
     return from(
       this.tokenContract
@@ -322,7 +330,6 @@ export class CheckMetamaskService {
 
   /**
    * Checks if any Dapp browser is installed or not
-   *
    */
   public initializeDappBrowser(): void {
     if (this.isWeb3Defined()) {

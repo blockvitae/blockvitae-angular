@@ -200,17 +200,20 @@ export class ResumeComponent implements OnInit {
       if (userWork) {
         this.userWork = userWork;
         
-        // fix date format
+        // fix date start format
         if (this.userWork.dateStart != null) {
           this.userWork.dateStart = _moment(this.userWork.dateStart).format("MMM-YY");
         }
 
+        // fix date end format
         if (this.userWork.dateEnd != null) {
           this.userWork.dateEnd = _moment(this.userWork.dateEnd).format("MMM-YY");
         }
         else {
           this.userWork.dateEnd = "";
         }
+
+        // @TODO: User cannot select end date and is working simultaneously
         
         // update blockchain
         this.updateWorkExp();
@@ -254,6 +257,9 @@ export class ResumeComponent implements OnInit {
       })
   }
 
+  /**
+   * Updates work experience
+   */
   private updateWorkExp(): void {
     // open processing dialog
     this.openTxnProcessingDialog();
