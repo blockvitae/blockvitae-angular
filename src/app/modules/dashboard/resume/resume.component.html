@@ -138,7 +138,7 @@
     </div>
 
     <!--Education-->
-    <div class="bv-container" *ngIf="userEducation.length == 0">
+    <div class="bv-container" *ngIf="userEducation.length != 0">
       <h1 class="bv-head">
         Education
         <a class="bv-edit" (click)="addEducation()">

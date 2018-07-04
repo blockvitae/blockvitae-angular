@@ -66,10 +66,10 @@ export namespace Blockvitae {
      */
     export interface UserEducation {
         organization: string; // name of the school
-        degree?: string; // degree of qualification
-        dateStart?: string; // start date
-        dateEnd?: string; // end date
-        description?: string; // description of the qualification
+        degree: string; // degree of qualification
+        dateStart: string; // start date
+        dateEnd: string; // end date
+        description: string; // description of the qualification
     }
 
     /**

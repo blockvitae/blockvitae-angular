@@ -82,7 +82,7 @@ export class CheckMetamaskService {
   private workExpSource = new Subject<{}>();
 
   // Source for education observable
-  private educationSource = new Subject<Observable<string[]>>();
+  private educationSource = new Subject<{}>();
 
   // Source for project observable
   private projectSource = new Subject<{}>();
@@ -166,7 +166,7 @@ export class CheckMetamaskService {
             this.tokenContract.methods.getUserWorkExp(this.owner, i).call()
           )
             .subscribe(res => {
-              return this.workExpSource.next(
+              this.workExpSource.next(
                 // TODO Handle Errors
                 res
               );
@@ -184,11 +184,15 @@ export class CheckMetamaskService {
     this.getEducationCount()
       .subscribe(count => {
         for (let i = 0; i < count; i++) {
-          this.educationSource.next(
-            from(
-              this.tokenContract.methods.getUserEducation(this.owner, i).call()
-            )
-          );
+          from(
+            this.tokenContract.methods.getUserEducation(this.owner, i).call()
+          )
+            .subscribe(res => {
+              this.educationSource.next(
+                // TODO Handle Errors
+                res
+              );
+            })
         }
       });
   }
@@ -349,6 +353,31 @@ export class CheckMetamaskService {
           userProject.shortDescription,
           userProject.description,
           userProject.url
+        )
+        .send({
+          from: this.web3.eth.defaultAccount
+        })
+    )
+  }
+
+  /**
+   * Sets the user education
+   * 
+   * @param userEdu Blockvitae.UserEducation
+   * UserEducation object 
+   * 
+   * @return Observable<any>
+   */
+  public setUserEducation(userEdu: Blockvitae.UserEducation): Observable<any> {
+    return from(
+      this.tokenContract
+        .methods
+        .createUserEducation(
+          userEdu.organization,
+          userEdu.degree,
+          userEdu.dateStart,
+          userEdu.dateEnd,
+          userEdu.description
         )
         .send({
           from: this.web3.eth.defaultAccount
