@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
+import { Blockvitae } from '../../../../interfaces/interface';
 
 @Component({
   selector: 'app-projects-dialog',
@@ -9,6 +10,6 @@ import { MAT_DIALOG_DATA } from '@angular/material';
 export class ProjectsDialogComponent {
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public userProject: Blockvitae.userProject
+    @Inject(MAT_DIALOG_DATA) public userProject: Blockvitae.UserProject
   ) { }
 }
