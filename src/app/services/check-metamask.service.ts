@@ -85,7 +85,7 @@ export class CheckMetamaskService {
   private educationSource = new Subject<Observable<string[]>>();
 
   // Source for project observable
-  private projectSource = new Subject<Observable<string[]>>();
+  private projectSource = new Subject<{}>();
 
   constructor() {
     this.web3 = null;
@@ -167,7 +167,7 @@ export class CheckMetamaskService {
           )
             .subscribe(res => {
               return this.workExpSource.next(
-                // @TODO Handle Errors
+                // TODO Handle Errors
                 res
               );
             })
@@ -202,11 +202,15 @@ export class CheckMetamaskService {
     this.getProjectCount()
       .subscribe(count => {
         for (let i = 0; i < count; i++) {
-          this.projectSource.next(
-            from(
-              this.tokenContract.methods.getUserProject(this.owner, i).call()
-            )
-          );
+          from(
+            this.tokenContract.methods.getUserProject(this.owner, i).call()
+          )
+            .subscribe(res => {
+              this.projectSource.next(
+                // TODO: Handle errors
+                res
+              );
+            })
         }
       });
   }

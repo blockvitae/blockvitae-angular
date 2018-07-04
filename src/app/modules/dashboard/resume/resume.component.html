@@ -159,7 +159,7 @@
     </div>
 
     <!--Projects-->
-    <div class="bv-container" *ngIf="userProjects.length == 0">
+    <div class="bv-container" *ngIf="userProjects.length != 0">
       <h1 class="bv-head">
         Projects
         <a class="bv-edit" (click)="addProject()">
@@ -169,7 +169,9 @@
       <span *ngFor="let project of userProjects">
         <h3 class="bv-list-head">
           <i class="far fa-dot-circle"></i>
-          <a [href]="project.url.length > 0 ? project.url: '#'">
+          <a 
+          [href]="project.url.length > 0 ? project.url : '#'"
+          target="_blank">
             {{ project.name }}
           </a>
         </h3>
