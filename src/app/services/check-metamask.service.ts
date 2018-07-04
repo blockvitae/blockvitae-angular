@@ -85,7 +85,7 @@ export class CheckMetamaskService {
   private educationSource = new Subject<Observable<string[]>>();
 
   // Source for project observable
-  private projectSource = new Subject<Observable<string[]>>();
+  private projectSource = new Subject<{}>();
 
   constructor() {
     this.web3 = null;
@@ -165,12 +165,12 @@ export class CheckMetamaskService {
           from(
             this.tokenContract.methods.getUserWorkExp(this.owner, i).call()
           )
-          .subscribe(res => {
-            return this.workExpSource.next(
-              // @TODO Handle Errors
-              res
-            );
-          })
+            .subscribe(res => {
+              return this.workExpSource.next(
+                // TODO Handle Errors
+                res
+              );
+            })
         }
       });
   }
@@ -202,11 +202,15 @@ export class CheckMetamaskService {
     this.getProjectCount()
       .subscribe(count => {
         for (let i = 0; i < count; i++) {
-          this.projectSource.next(
-            from(
-              this.tokenContract.methods.getUserProject(this.owner, i).call()
-            )
-          );
+          from(
+            this.tokenContract.methods.getUserProject(this.owner, i).call()
+          )
+            .subscribe(res => {
+              this.projectSource.next(
+                // TODO: Handle errors
+                res
+              );
+            })
         }
       });
   }
@@ -302,6 +306,14 @@ export class CheckMetamaskService {
     );
   }
 
+  /**
+   * Sets the user work experience
+   * 
+   * @param userWork Blockvitae.UserWorkExp
+   * UserWorkExp object
+   * 
+   * @return Observable<any> 
+   */
   public setUserWorkExp(userWork: Blockvitae.UserWorkExp): Observable<any> {
     return from(
       this.tokenContract
@@ -321,8 +333,31 @@ export class CheckMetamaskService {
   }
 
   /**
+   * Sets the user project
+   * 
+   * @param userProject Blockvitae.UserProject]
+   * UserProject object
+   * 
+   * @return Observable<any>
+   */
+  public setUserProject(userProject: Blockvitae.UserProject): Observable<any> {
+    return from(
+      this.tokenContract
+        .methods
+        .createUserProject(
+          userProject.name,
+          userProject.shortDescription,
+          userProject.description,
+          userProject.url
+        )
+        .send({
+          from: this.web3.eth.defaultAccount
+        })
+    )
+  }
+
+  /**
    * Checks if any Dapp browser is installed or not
-   *
    */
   public initializeDappBrowser(): void {
     if (this.isWeb3Defined()) {

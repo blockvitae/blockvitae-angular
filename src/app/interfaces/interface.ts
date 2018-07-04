@@ -79,7 +79,7 @@ export namespace Blockvitae {
     export interface UserProject {
         name: string; // name of the project
         shortDescription: string; // one line description
-        description?: string; // description of the project
+        description: string; // description of the project
         url?: string; // url of the project
     }
 
