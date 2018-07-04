@@ -32,23 +32,14 @@ export class ResumeComponent implements OnInit {
   // user skills array
   public userSkills: string[];
 
-  // user skills array in byte32
-  public userSkillsBytes: string[];
-
   // array of user work experience objects
   public userWorkExp: Blockvitae.UserWorkExp[];
-
-  // for holding single record of workExp
-  public userWork: Blockvitae.UserWorkExp;
 
   // array of user education objects
   public userEducation: Blockvitae.UserEducation[];
 
   // array of user project objects
   public userProjects: Blockvitae.UserProject[];
-
-  // for holding single record of project
-  public userProject: Blockvitae.UserProject;
 
   // true if user has clicked on edit profile
   // for making changes
@@ -82,8 +73,6 @@ export class ResumeComponent implements OnInit {
     this.urlUsername = null;
     this.userSkills = [];
     this.dialogRef = null;
-    this.userWork = <Blockvitae.UserWorkExp>{};
-    this.userProject = <Blockvitae.UserProject>{};
   }
 
   ngOnInit() {
@@ -175,14 +164,14 @@ export class ResumeComponent implements OnInit {
     dialogRef.afterClosed().subscribe(skills => {
       if (skills.length > 0) {
         // convert from string to bytes
-        this.userSkillsBytes = [];
+        let userSkillsBytes = [];
         for (let i = 0; i < skills.length; i++) {
-          this.userSkillsBytes
+          userSkillsBytes
             .push(this.checkMetamask.web3.utils.asciiToHex(skills[i]));
         }
 
         // update blockchain
-        this.updateUserSkills();
+        this.updateUserSkills(userSkillsBytes);
       }
       else {
         // get old skills
@@ -195,32 +184,30 @@ export class ResumeComponent implements OnInit {
    * Add Work Experience
    */
   public addWorkExp(): void {
-    this.userWork = <Blockvitae.UserWorkExp>{};
+    let userWork = <Blockvitae.UserWorkExp>{};
     let dialogRef = this.dialog.open(WorkexpDialogComponent, {
-      data: this.userWork
+      data: userWork
     });
 
     dialogRef.afterClosed().subscribe(userWork => {
       if (userWork) {
-        this.userWork = userWork;
+        userWork = userWork;
 
-        // fix date start format
-        if (this.userWork.dateStart != null) {
-          this.userWork.dateStart = _moment(this.userWork.dateStart).format("MMM-YY");
+        // change date start format
+        if (userWork.dateStart != null) {
+          userWork.dateStart = _moment(userWork.dateStart).format("MMM-YY");
         }
 
-        // fix date end format
-        if (this.userWork.dateEnd != null) {
-          this.userWork.dateEnd = _moment(this.userWork.dateEnd).format("MMM-YY");
-        }
-        else {
-          this.userWork.dateEnd = "";
-        }
+        // change date end format
+        if (userWork.dateEnd != null)
+          userWork.dateEnd = _moment(userWork.dateEnd).format("MMM-YY");
+        else
+          userWork.dateEnd = "";
 
-        // @TODO: User cannot select end date and is working simultaneously
+        // TODO: user cannot select end date and is working simultaneously
 
         // update blockchain
-        this.updateWorkExp();
+        this.updateWorkExp(userWork);
       }
       else {
         // get old work exp data
@@ -233,21 +220,21 @@ export class ResumeComponent implements OnInit {
    * Adds a new project
    */
   public addProject(): void {
-    this.userProject = <Blockvitae.UserProject>{};
+    let userProject = <Blockvitae.UserProject>{};
     let dialogRef = this.dialog.open(ProjectsDialogComponent, {
-      data: this.userProject
+      data: userProject
     })
 
     dialogRef.afterClosed().subscribe(project => {
       if (project != null) {
-        this.userProject = project;
+        userProject = project;
 
-        if (!this.userProject.url) {
-          this.userProject.url = "";
+        if (!userProject.url) {
+          userProject.url = "";
         }
 
         // update blockchain
-        this.updateProject();
+        this.updateProject(userProject);
       }
       else {
         // get old projects
@@ -256,8 +243,41 @@ export class ResumeComponent implements OnInit {
     });
   }
 
+  /**
+   * Adds a new education
+   */
   public addEducation(): void {
-    this.dialog.open(EducationDialogComponent);
+    let userEdu = <Blockvitae.UserEducation>{};
+    let dialogRef = this.dialog.open(EducationDialogComponent, {
+      data: userEdu
+    });
+
+    dialogRef.afterClosed().subscribe(education => {
+      if (education != null) {
+        userEdu = education;
+
+        // change date start format
+        if (userEdu.dateStart != null)
+          userEdu.dateStart = _moment(userEdu.dateStart).format("MMM-YY");
+        else  
+          userEdu.dateStart = "";
+
+        // change date end format
+        if (userEdu.dateEnd != null)
+          userEdu.dateEnd = _moment(userEdu.dateEnd).format("MMM-YY");
+        else
+          userEdu.dateEnd = "";  
+
+        // update blockchain
+        this.updateEducation(userEdu);
+      }
+      else {
+        // get old education
+        this.getUserEducation();
+      }
+
+
+    });
   }
 
   /**
@@ -286,14 +306,17 @@ export class ResumeComponent implements OnInit {
 
   /**
    * Updates work experience
+   * 
+   * @param Blockvitae.UserWorkExp userWork
+   * UserWorkExp Object
    */
-  private updateWorkExp(): void {
+  private updateWorkExp(userWork: Blockvitae.UserWorkExp): void {
     // open processing dialog
     this.openTxnProcessingDialog();
 
     // update work exp
     this.checkMetamask
-      .setUserWorkExp(this.userWork)
+      .setUserWorkExp(userWork)
       .subscribe(res => {
         if (res.status) {
           // get work exp
@@ -311,14 +334,17 @@ export class ResumeComponent implements OnInit {
 
   /**
    * Updates project
+   * 
+   * @param Blockvitae.UserProject userProject
+   * UserProject object
    */
-  private updateProject(): void {
+  private updateProject(userProject: Blockvitae.UserProject): void {
     // open processing dialog
     this.openTxnProcessingDialog();
 
     // update project
     this.checkMetamask
-      .setUserProject(this.userProject)
+      .setUserProject(userProject)
       .subscribe(res => {
         if (res.status) {
           // get projects
@@ -327,6 +353,32 @@ export class ResumeComponent implements OnInit {
 
         // show snackbar
         this.showSuccessSnackbar("Projects updated successfully!");
+
+        // close processing dialog
+        this.closeTxnProcessingDialog();
+      })
+  }
+
+  /**
+   * Updates the education entry of the user
+   * 
+   * @param Blockvitae.UserEducation userEdu 
+   * UserEducation object of the user
+   */
+  private updateEducation(userEdu: Blockvitae.UserEducation): void {
+    // open processing dialog
+    this.openTxnProcessingDialog();
+
+    this.checkMetamask
+      .setUserEducation(userEdu)
+      .subscribe(res => {
+        if (res.status) {
+          // get education
+          this.getUserEducation();
+        }
+
+        // show snackbar
+        this.showSuccessSnackbar("Education updated successfully!");
 
         // close processing dialog
         this.closeTxnProcessingDialog();
@@ -383,13 +435,16 @@ export class ResumeComponent implements OnInit {
 
   /**
    * Update user skills
+   * 
+   * @param string[] userSkillsBytes 
+   * Skills array where each skill string is in byte32 format
    */
-  private updateUserSkills(): void {
+  private updateUserSkills(userSkillsBytes: string[]): void {
     // open processing dialog
     this.openTxnProcessingDialog();
 
     this.checkMetamask
-      .setUserSkills(this.userSkillsBytes)
+      .setUserSkills(userSkillsBytes)
       .subscribe(res => {
         if (res.status) {
           this.getUserSkills();
@@ -584,7 +639,7 @@ export class ResumeComponent implements OnInit {
     this.checkMetamask.getEducation();
 
     // observe observables
-    this.checkMetamask.workExp$
+    this.checkMetamask.education$
       .subscribe(education => {
         let userEducation = {
           organization: education[0],
