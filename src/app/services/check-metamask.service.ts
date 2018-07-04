@@ -165,12 +165,12 @@ export class CheckMetamaskService {
           from(
             this.tokenContract.methods.getUserWorkExp(this.owner, i).call()
           )
-          .subscribe(res => {
-            return this.workExpSource.next(
-              // @TODO Handle Errors
-              res
-            );
-          })
+            .subscribe(res => {
+              return this.workExpSource.next(
+                // @TODO Handle Errors
+                res
+              );
+            })
         }
       });
   }
@@ -339,16 +339,16 @@ export class CheckMetamaskService {
   public setUserProject(userProject: Blockvitae.UserProject): Observable<any> {
     return from(
       this.tokenContract
-      .methods
-      .createUserProject(
-        userProject.name,
-        userProject.shortDescription,
-        userProject.description,
-        userProject.url
-      )
-      .send({
-        from: this.web3.eth.defaultAccount
-      })
+        .methods
+        .createUserProject(
+          userProject.name,
+          userProject.shortDescription,
+          userProject.description,
+          userProject.url
+        )
+        .send({
+          from: this.web3.eth.defaultAccount
+        })
     )
   }
 

@@ -47,6 +47,9 @@ export class ResumeComponent implements OnInit {
   // array of user project objects
   public userProjects: Blockvitae.UserProject[];
 
+  // for holding single record of project
+  public userProject: Blockvitae.UserProject;
+
   // true if user has clicked on edit profile
   // for making changes
   public isEditModeOn: boolean;
@@ -80,6 +83,7 @@ export class ResumeComponent implements OnInit {
     this.userSkills = [];
     this.dialogRef = null;
     this.userWork = <Blockvitae.UserWorkExp>{};
+    this.userProject = <Blockvitae.UserProject>{};
   }
 
   ngOnInit() {
@@ -199,7 +203,7 @@ export class ResumeComponent implements OnInit {
     dialogRef.afterClosed().subscribe(userWork => {
       if (userWork) {
         this.userWork = userWork;
-        
+
         // fix date start format
         if (this.userWork.dateStart != null) {
           this.userWork.dateStart = _moment(this.userWork.dateStart).format("MMM-YY");
@@ -214,7 +218,7 @@ export class ResumeComponent implements OnInit {
         }
 
         // @TODO: User cannot select end date and is working simultaneously
-        
+
         // update blockchain
         this.updateWorkExp();
       }
@@ -225,8 +229,31 @@ export class ResumeComponent implements OnInit {
     });
   }
 
+  /**
+   * Adds a new project
+   */
   public addProject(): void {
-    this.dialog.open(ProjectsDialogComponent);
+    this.userProject = <Blockvitae.UserProject>{};
+    let dialogRef = this.dialog.open(ProjectsDialogComponent, {
+      data: this.userProject
+    })
+
+    dialogRef.afterClosed().subscribe(project => {
+      if (project != null) {
+        this.userProject = project;
+
+        if (!this.userProject.url) {
+          this.userProject.url = "";
+        }
+
+        // update blockchain
+        this.updateProject();
+      }
+      else {
+        // get old projects
+        this.getUserProjects();
+      }
+    });
   }
 
   public addEducation(): void {
@@ -273,11 +300,36 @@ export class ResumeComponent implements OnInit {
           this.getUserWorkExp();
         }
 
-         // show snackbar
-         this.showSuccessSnackbar("Work Experience updated successfully!");
+        // show snackbar
+        this.showSuccessSnackbar("Work Experience updated successfully!");
 
-         // close processing dialog
-         this.closeTxnProcessingDialog();
+        // close processing dialog
+        this.closeTxnProcessingDialog();
+      })
+  }
+
+
+  /**
+   * Updates project
+   */
+  private updateProject(): void {
+    // open processing dialog
+    this.openTxnProcessingDialog();
+
+    // update project
+    this.checkMetamask
+      .setUserProject(this.userProject)
+      .subscribe(res => {
+        if (res.status) {
+          // get projects
+          this.getUserProjects();
+        }
+
+        // show snackbar
+        this.showSuccessSnackbar("Projects updated successfully!");
+
+        // close processing dialog
+        this.closeTxnProcessingDialog();
       })
   }
 
@@ -329,6 +381,9 @@ export class ResumeComponent implements OnInit {
       })
   }
 
+  /**
+   * Update user skills
+   */
   private updateUserSkills(): void {
     // open processing dialog
     this.openTxnProcessingDialog();
