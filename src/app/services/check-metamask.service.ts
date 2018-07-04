@@ -82,7 +82,7 @@ export class CheckMetamaskService {
   private workExpSource = new Subject<{}>();
 
   // Source for education observable
-  private educationSource = new Subject<Observable<string[]>>();
+  private educationSource = new Subject<{}>();
 
   // Source for project observable
   private projectSource = new Subject<{}>();
@@ -353,6 +353,31 @@ export class CheckMetamaskService {
         .send({
           from: this.web3.eth.defaultAccount
         })
+    )
+  }
+
+  /**
+   * Sets the user education
+   * 
+   * @param userEdu Blockvitae.UserEducation
+   * UserEducation object 
+   * 
+   * @return Observable<any>
+   */
+  public setUserEducation(userEdu: Blockvitae.UserEducation): Observable<any> {
+    return from(
+     this.tokenContract
+     .methods
+     .createUserEducation(
+       userEdu.organization,
+       userEdu.degree,
+       userEdu.dateStart,
+       userEdu.dateEnd,
+       userEdu.description
+     ) 
+     .send({
+       from: this.web3.eth.defaultAccount
+     })
     )
   }
 
