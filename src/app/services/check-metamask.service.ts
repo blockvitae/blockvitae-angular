@@ -329,6 +329,30 @@ export class CheckMetamaskService {
   }
 
   /**
+   * Sets the user project
+   * 
+   * @param userProject Blockvitae.UserProject]
+   * UserProject object
+   * 
+   * @return Observable<any>
+   */
+  public setUserProject(userProject: Blockvitae.UserProject): Observable<any> {
+    return from(
+      this.tokenContract
+      .methods
+      .createUserProject(
+        userProject.name,
+        userProject.shortDescription,
+        userProject.description,
+        userProject.url
+      )
+      .send({
+        from: this.web3.eth.defaultAccount
+      })
+    )
+  }
+
+  /**
    * Checks if any Dapp browser is installed or not
    */
   public initializeDappBrowser(): void {
