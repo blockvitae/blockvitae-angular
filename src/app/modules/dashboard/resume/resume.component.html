@@ -11,7 +11,10 @@
       <div fxFlexOffset="1" fxFlex="80">
         <span class="bv-name">
           {{userDetail.fullName}}
-          <a class="bv-edit" (click)="editUserDetail()">
+          <a 
+          class="bv-edit" 
+          (click)="editUserDetail()"
+          matTooltip="Edit Profile">
             <i class="fas fa-pencil-alt"></i>
           </a>
         </span>
@@ -24,7 +27,10 @@
         <br/>
         <br/>
         <span class="bv-social">
-          <a class="bv-edit" (click)="editUserSocial()">
+          <a 
+          class="bv-edit" 
+          (click)="editUserSocial()"
+          matTooltip="Edit Social Accounts">
             <i class="fas fa-pencil-alt"></i>
           </a>
           <a matTooltip="Twitter" 
@@ -86,7 +92,10 @@
     <div class="bv-container">
       <h1 class="bv-head">
         Introduction
-        <a class="bv-edit" (click)="editIntroduction()">
+        <a 
+        class="bv-edit" 
+        (click)="editIntroduction()"
+        matTooltip="Edit Introduction">
           <i class="fas fa-pencil-alt"></i>
         </a>
       </h1>
@@ -99,7 +108,10 @@
     <div class="bv-container" *ngIf="userSkills.length != 0">
       <h1 class="bv-head">
         Skills
-        <a class="bv-edit" (click)="editSkills()">
+        <a 
+        class="bv-edit" 
+        (click)="editSkills()"
+        matTooltip="Edit Skills">
           <i class="fas fa-pencil-alt"></i>
         </a>
       </h1>
@@ -115,7 +127,10 @@
     <div class="bv-container" *ngIf="userWorkExp.length != 0">
       <h1 class="bv-head">
         Work Experience
-        <a class="bv-edit" (click)="addWorkExp()">
+        <a 
+        class="bv-edit" 
+        (click)="addWorkExp()"
+        matTooltip="Add New Work Experience">
           <i class="fas fa-plus-circle"></i>
         </a>
       </h1>
@@ -123,6 +138,11 @@
         <h3 class="bv-list-head">
             <i class="far fa-dot-circle"></i>
             {{ workExp.position }} at {{ workExp.company }}
+            <a 
+            class="bv-edit" 
+            matTooltip="Delete">
+              <i class="fas fa-minus-circle"></i>
+            </a>
         </h3>
         <p class="bv-list-sub-head" *ngIf="!workExp.isWorking">
           {{ workExp.dateStart }} to {{ workExp.dateEnd }}
@@ -141,7 +161,10 @@
     <div class="bv-container" *ngIf="userEducation.length != 0">
       <h1 class="bv-head">
         Education
-        <a class="bv-edit" (click)="addEducation()">
+        <a 
+        class="bv-edit" 
+        (click)="addEducation()"
+        matTooltip="Add New Education">
           <i class="fas fa-plus-circle"></i>
         </a>
       </h1>
@@ -149,6 +172,11 @@
         <h3 class="bv-list-head">
           <i class="far fa-dot-circle"></i>
           {{ education.degree }} at {{ education.organization }}
+          <a 
+          class="bv-edit" 
+          matTooltip="Delete">
+            <i class="fas fa-minus-circle"></i>
+          </a>
         </h3>
         <p class="bv-list-sub-head">{{ education.dateStart }} to {{ education.dateEnd }}</p>
         <p class="bv-list-description">
@@ -162,7 +190,10 @@
     <div class="bv-container" *ngIf="userProjects.length != 0">
       <h1 class="bv-head">
         Projects
-        <a class="bv-edit" (click)="addProject()">
+        <a 
+        class="bv-edit" 
+        (click)="addProject()"
+        matTooltip="Add New Project">
           <i class="fas fa-plus-circle"></i>
         </a>
       </h1>
@@ -173,6 +204,11 @@
           [href]="project.url.length > 0 ? project.url : '#'"
           target="_blank">
             {{ project.name }}
+          </a>
+          <a 
+          class="bv-edit" 
+          matTooltip="Delete">
+            <i class="fas fa-minus-circle"></i>
           </a>
         </h3>
         <p class="bv-list-sub-head">One Line Description Here</p>
