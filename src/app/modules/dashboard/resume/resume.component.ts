@@ -259,14 +259,14 @@ export class ResumeComponent implements OnInit {
         // change date start format
         if (userEdu.dateStart != null)
           userEdu.dateStart = _moment(userEdu.dateStart).format("MMM-YY");
-        else  
+        else
           userEdu.dateStart = "";
 
         // change date end format
         if (userEdu.dateEnd != null)
           userEdu.dateEnd = _moment(userEdu.dateEnd).format("MMM-YY");
         else
-          userEdu.dateEnd = "";  
+          userEdu.dateEnd = "";
 
         // update blockchain
         this.updateEducation(userEdu);
@@ -626,6 +626,12 @@ export class ResumeComponent implements OnInit {
 
         // push in the array
         this.userWorkExp.push(userWorkExp);
+
+        // sort workExp
+        this.userWorkExp
+          .sort((a: Blockvitae.UserWorkExp, b: Blockvitae.UserWorkExp) =>
+            new Date(a.dateStart).getTime() - new Date(b.dateStart).getTime()
+          );
       });
   }
 
@@ -651,6 +657,12 @@ export class ResumeComponent implements OnInit {
 
         // push in the array
         this.userEducation.push(userEducation);
+
+        // sort user education
+        this.userEducation
+        .sort((a: Blockvitae.UserEducation, b: Blockvitae.UserEducation) =>
+          new Date(a.dateStart).getTime() - new Date(b.dateStart).getTime()
+        );
       });
   }
 
