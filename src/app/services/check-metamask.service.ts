@@ -168,7 +168,7 @@ export class CheckMetamaskService {
             .subscribe(res => {
               this.workExpSource.next(
                 // TODO Handle Errors
-                res
+                { response: res, index: i }
               );
             })
         }
@@ -190,11 +190,28 @@ export class CheckMetamaskService {
             .subscribe(res => {
               this.educationSource.next(
                 // TODO Handle Errors
-                res
+                { response: res, index: i }
               );
             })
         }
       });
+  }
+
+  /**
+   * Delete education
+   * 
+   * @param number index
+   * index of the education to be deleted
+   */
+  public deleteEducation(index: number): Observable<any> {
+    return from(
+      this.tokenContract
+        .methods
+        .deleteUserEducation(index)
+        .send({
+          from: this.web3.eth.defaultAccount
+        })
+    )
   }
 
   /**
@@ -212,7 +229,7 @@ export class CheckMetamaskService {
             .subscribe(res => {
               this.projectSource.next(
                 // TODO: Handle errors
-                res
+                { response: res, index: i }
               );
             })
         }

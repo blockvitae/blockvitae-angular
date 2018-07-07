@@ -281,6 +281,31 @@ export class ResumeComponent implements OnInit {
   }
 
   /**
+   * Deletes an education record
+   * 
+   * @param number index
+   * Index of the education to be deleted 
+   */
+  public deleteEducation(index: number): void {
+    // open processing dialog
+    this.openTxnProcessingDialog();
+
+    this.checkMetamask
+      .deleteEducation(index)
+      .subscribe(res => {
+        if (res.status) {
+          this.getUserEducation();
+        }
+
+        // show snackbar
+        this.showSuccessSnackbar("Education updated successfully!");
+
+        // close processing dialog
+        this.closeTxnProcessingDialog();
+      });
+  }
+
+  /**
    * Updates introduction
    */
   private updateIntroduction(): void {
@@ -614,18 +639,22 @@ export class ResumeComponent implements OnInit {
 
     // observe observables
     this.checkMetamask.workExp$
-      .subscribe(workExp => {
+      .subscribe(res => {
+        let workExp = res.response;
         let userWorkExp = {
           company: workExp[0],
           position: workExp[1],
           dateStart: workExp[2],
           dateEnd: workExp[3],
           description: workExp[4],
-          isWorking: workExp[5]
+          isWorking: workExp[5],
+          isDeleted: workExp[6],
+          index: res.index
         };
 
         // push in the array
-        this.userWorkExp.push(userWorkExp);
+        if (!workExp.isDeleted)
+          this.userWorkExp.push(userWorkExp);
 
         // sort workExp
         this.userWorkExp
@@ -646,23 +675,27 @@ export class ResumeComponent implements OnInit {
 
     // observe observables
     this.checkMetamask.education$
-      .subscribe(education => {
+      .subscribe(res => {
+        let education = res.response;
         let userEducation = {
           organization: education[0],
           degree: education[1],
           dateStart: education[2],
           dateEnd: education[3],
-          description: education[4]
+          description: education[4],
+          isDeleted: education[5],
+          index: res.index
         };
 
         // push in the array
-        this.userEducation.push(userEducation);
+        if (!education.isDeleted)
+          this.userEducation.push(userEducation);
 
         // sort user education
         this.userEducation
-        .sort((a: Blockvitae.UserEducation, b: Blockvitae.UserEducation) =>
-          new Date(a.dateStart).getTime() - new Date(b.dateStart).getTime()
-        );
+          .sort((a: Blockvitae.UserEducation, b: Blockvitae.UserEducation) =>
+            new Date(a.dateStart).getTime() - new Date(b.dateStart).getTime()
+          );
       });
   }
 
@@ -677,16 +710,20 @@ export class ResumeComponent implements OnInit {
 
     // observe observables
     this.checkMetamask.project$
-      .subscribe(project => {
+      .subscribe(res => {
+        let project = res.response;
         let userProject = {
           name: project[0],
           shortDescription: project[1],
           description: project[2],
-          url: project[3]
+          url: project[3],
+          isDeleted: project[4],
+          index: res.index
         };
 
         // push in the array
-        this.userProjects.push(userProject);
+        if (!project.isDeleted)
+          this.userProjects.push(userProject);
       });
   }
 

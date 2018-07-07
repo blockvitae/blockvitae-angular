@@ -19,7 +19,7 @@
           </a>
         </span>
         <br/>
-        <span class="bv-description"> Full-Stack Developer</span>
+        <span class="bv-description"> {{userDetail.shortDescription}}</span>
         <br/>
         <br/>
         <span class="bv-detail">
@@ -174,7 +174,8 @@
           {{ education.degree }} at {{ education.organization }}
           <a 
           class="bv-edit" 
-          matTooltip="Delete">
+          matTooltip="Delete"
+          (click)="deleteEducation(education.index)">
             <i class="fas fa-minus-circle"></i>
           </a>
         </h3>
