@@ -198,6 +198,23 @@ export class CheckMetamaskService {
   }
 
   /**
+   * Delete education
+   * 
+   * @param number index
+   * index of the education to be deleted
+   */
+  public deleteEducation(index: number): Observable<any> {
+    return from(
+      this.tokenContract
+        .methods
+        .deleteUserEducation(index)
+        .send({
+          from: this.web3.eth.defaultAccount
+        })
+    )
+  }
+
+  /**
   * Gets the count of projects user has
   * and then initiates the observables for each project
   * user has
