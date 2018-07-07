@@ -281,6 +281,31 @@ export class ResumeComponent implements OnInit {
   }
 
   /**
+   * Deletes an education record
+   * 
+   * @param number index
+   * Index of the education to be deleted 
+   */
+  public deleteEducation(index: number): void {
+    // open processing dialog
+    this.openTxnProcessingDialog();
+
+    this.checkMetamask
+      .deleteEducation(index)
+      .subscribe(res => {
+        if (res.status) {
+          this.getUserEducation();
+        }
+
+        // show snackbar
+        this.showSuccessSnackbar("Education updated successfully!");
+
+        // close processing dialog
+        this.closeTxnProcessingDialog();
+      });
+  }
+
+  /**
    * Updates introduction
    */
   private updateIntroduction(): void {
