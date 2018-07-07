@@ -168,7 +168,7 @@ export class CheckMetamaskService {
             .subscribe(res => {
               this.workExpSource.next(
                 // TODO Handle Errors
-                res
+                { response: res, index: i }
               );
             })
         }
@@ -190,7 +190,7 @@ export class CheckMetamaskService {
             .subscribe(res => {
               this.educationSource.next(
                 // TODO Handle Errors
-                res
+                { response: res, index: i }
               );
             })
         }
@@ -212,7 +212,7 @@ export class CheckMetamaskService {
             .subscribe(res => {
               this.projectSource.next(
                 // TODO: Handle errors
-                res
+                { response: res, index: i }
               );
             })
         }

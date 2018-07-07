@@ -614,7 +614,8 @@ export class ResumeComponent implements OnInit {
 
     // observe observables
     this.checkMetamask.workExp$
-      .subscribe(workExp => {
+      .subscribe(res => {
+        let workExp = res.response;
         let userWorkExp = {
           company: workExp[0],
           position: workExp[1],
@@ -622,7 +623,8 @@ export class ResumeComponent implements OnInit {
           dateEnd: workExp[3],
           description: workExp[4],
           isWorking: workExp[5],
-          isDeleted: workExp[6]
+          isDeleted: workExp[6],
+          index: res.index
         };
 
         // push in the array
@@ -648,14 +650,16 @@ export class ResumeComponent implements OnInit {
 
     // observe observables
     this.checkMetamask.education$
-      .subscribe(education => {
+      .subscribe(res => {
+        let education = res.response;
         let userEducation = {
           organization: education[0],
           degree: education[1],
           dateStart: education[2],
           dateEnd: education[3],
           description: education[4],
-          isDeleted: education[5]
+          isDeleted: education[5],
+          index: res.index
         };
 
         // push in the array
@@ -664,9 +668,9 @@ export class ResumeComponent implements OnInit {
 
         // sort user education
         this.userEducation
-        .sort((a: Blockvitae.UserEducation, b: Blockvitae.UserEducation) =>
-          new Date(a.dateStart).getTime() - new Date(b.dateStart).getTime()
-        );
+          .sort((a: Blockvitae.UserEducation, b: Blockvitae.UserEducation) =>
+            new Date(a.dateStart).getTime() - new Date(b.dateStart).getTime()
+          );
       });
   }
 
@@ -681,18 +685,20 @@ export class ResumeComponent implements OnInit {
 
     // observe observables
     this.checkMetamask.project$
-      .subscribe(project => {
+      .subscribe(res => {
+        let project = res.response;
         let userProject = {
           name: project[0],
           shortDescription: project[1],
           description: project[2],
           url: project[3],
-          isDeleted: project[4]
+          isDeleted: project[4],
+          index: res.index
         };
 
         // push in the array
-       if (!project.isDeleted) 
-        this.userProjects.push(project);
+        if (!project.isDeleted)
+          this.userProjects.push(userProject);
       });
   }
 
