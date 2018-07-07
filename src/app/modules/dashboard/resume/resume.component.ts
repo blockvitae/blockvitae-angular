@@ -621,11 +621,13 @@ export class ResumeComponent implements OnInit {
           dateStart: workExp[2],
           dateEnd: workExp[3],
           description: workExp[4],
-          isWorking: workExp[5]
+          isWorking: workExp[5],
+          isDeleted: workExp[6]
         };
 
         // push in the array
-        this.userWorkExp.push(userWorkExp);
+        if (!workExp.isDeleted)
+          this.userWorkExp.push(userWorkExp);
 
         // sort workExp
         this.userWorkExp
@@ -652,11 +654,13 @@ export class ResumeComponent implements OnInit {
           degree: education[1],
           dateStart: education[2],
           dateEnd: education[3],
-          description: education[4]
+          description: education[4],
+          isDeleted: education[5]
         };
 
         // push in the array
-        this.userEducation.push(userEducation);
+        if (!education.isDeleted)
+          this.userEducation.push(userEducation);
 
         // sort user education
         this.userEducation
@@ -682,11 +686,13 @@ export class ResumeComponent implements OnInit {
           name: project[0],
           shortDescription: project[1],
           description: project[2],
-          url: project[3]
+          url: project[3],
+          isDeleted: project[4]
         };
 
         // push in the array
-        this.userProjects.push(userProject);
+       if (!project.isDeleted) 
+        this.userProjects.push(project);
       });
   }
 

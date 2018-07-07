@@ -57,6 +57,7 @@ export namespace Blockvitae {
         dateEnd: string; // end date
         description: string; // description of the job role
         isWorking: boolean; // true if user is currently working here
+        isDeleted: boolean; // true if the project has been deleted
     }
 
     /**
@@ -70,6 +71,7 @@ export namespace Blockvitae {
         dateStart: string; // start date
         dateEnd: string; // end date
         description: string; // description of the qualification
+        isDeleted: boolean; // true if education has been deleted
     }
 
     /**
@@ -81,6 +83,7 @@ export namespace Blockvitae {
         shortDescription: string; // one line description
         description: string; // description of the project
         url?: string; // url of the project
+        isDeleted: boolean; // true if project has been deleted
     }
 
     /**
