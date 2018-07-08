@@ -653,6 +653,7 @@ export class ResumeComponent implements OnInit {
         this.userDetail.imgUrl = detail[2] === '' ? "https://images.pexels.com/photos/555790/pexels-photo-555790.png?auto=compress&cs=tinysrgb&h=350" : detail[2];
         this.userDetail.email = detail[3];
         this.userDetail.location = detail[4];
+        this.userDetail.shortDescription = detail[5];
       });
   }
 
