@@ -364,7 +364,7 @@ export class CheckMetamaskService {
           userWork.dateEnd,
           userWork.description,
           userWork.isWorking,
-          false
+          userWork.isDeleted
         )
         .send({
           from: this.web3.eth.defaultAccount
@@ -388,7 +388,8 @@ export class CheckMetamaskService {
           userProject.name,
           userProject.shortDescription,
           userProject.description,
-          userProject.url
+          userProject.url,
+          userProject.isDeleted
         )
         .send({
           from: this.web3.eth.defaultAccount
@@ -413,7 +414,8 @@ export class CheckMetamaskService {
           userEdu.degree,
           userEdu.dateStart,
           userEdu.dateEnd,
-          userEdu.description
+          userEdu.description,
+          userEdu.isDeleted
         )
         .send({
           from: this.web3.eth.defaultAccount

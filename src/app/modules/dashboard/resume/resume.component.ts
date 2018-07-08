@@ -697,6 +697,9 @@ export class ResumeComponent implements OnInit {
     // start fecthing observables
     this.checkMetamask.getEducation();
 
+    // empty education
+    this.userEducation = [];
+
     // observe observables
     this.checkMetamask.education$
       .subscribe(res => {
@@ -712,7 +715,7 @@ export class ResumeComponent implements OnInit {
         };
 
         // push in the array
-        if (!education.isDeleted)
+        if (!userEducation.isDeleted)
           this.userEducation.push(userEducation);
 
         // sort user education
@@ -732,6 +735,9 @@ export class ResumeComponent implements OnInit {
     // start fecthing observables
     this.checkMetamask.getProjects();
 
+    // empty projects
+    this.userProjects = [];
+
     // observe observables
     this.checkMetamask.project$
       .subscribe(res => {
@@ -746,7 +752,7 @@ export class ResumeComponent implements OnInit {
         };
 
         // push in the array
-        if (!project.isDeleted)
+        if (!userProject.isDeleted)
           this.userProjects.push(userProject);
       });
   }
