@@ -58,12 +58,6 @@ export class CheckMetamaskService {
   // on the application
   public isMetamaskInstalled: boolean;
 
-  // Observable that lets parent component: AppComponent
-  // to display a dialog inside resume component
-  // when user clicks on edit profile button
-  // but the metamask is not installed
-  public metamaskWarningDialog$: any;
-
   // Observable for work exp
   public workExp$: any;
 
@@ -73,10 +67,8 @@ export class CheckMetamaskService {
   // Observable for project
   public project$: any;
 
-  // true if the current user is the
-  // owner of the profile else false
-  // used to show edit button
-  private metamaskInstalledSource = new Subject<boolean>();
+  // Observabe for public mode of profile
+  public profilePublicView$: Observable<boolean>;
 
   // Source for work exp observable
   private workExpSource = new Subject<{}>();
@@ -87,6 +79,10 @@ export class CheckMetamaskService {
   // Source for project observable
   private projectSource = new Subject<{}>();
 
+  // Source for view public mode of profile
+  // observable listened in app component
+  private profilePublicViewSource = new Subject<boolean>();
+
   constructor() {
     this.web3 = null;
     this.web3Error = null;
@@ -94,19 +90,14 @@ export class CheckMetamaskService {
     this.isRopstenSet = false;
     this.owner = null;
     this.isMetamaskInstalled = false;
-    this.metamaskWarningDialog$ = this.metamaskInstalledSource.asObservable();
     this.workExp$ = this.workExpSource.asObservable();
     this.education$ = this.educationSource.asObservable();
     this.project$ = this.projectSource.asObservable();
+    this.profilePublicView$ = this.profilePublicViewSource.asObservable();
   }
 
-  /**
-    * Generates a warning dialog inside resume component through observable
-    * if the client doesn't has metamask extension installed
-    * and tries to edit their profile
-    */
-  public generateMetamaskWarning(generateWarning: boolean): void {
-    this.metamaskInstalledSource.next(generateWarning)
+  public togglePublicViewMode(viewPublic: boolean): void {
+    this.profilePublicViewSource.next(viewPublic);
   }
 
   /**
@@ -175,12 +166,12 @@ export class CheckMetamaskService {
       });
   }
 
-    /**
-   * Delete work exp
-   * 
-   * @param number index
-   * index of the work exp to be deleted
-   */
+  /**
+ * Delete work exp
+ * 
+ * @param number index
+ * index of the work exp to be deleted
+ */
   public deleteWorkExp(index: number): Observable<any> {
     return from(
       this.tokenContract

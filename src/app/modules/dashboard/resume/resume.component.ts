@@ -48,6 +48,13 @@ export class ResumeComponent implements OnInit {
   // Object for user introduction
   public userIntro: Blockvitae.UserIntroduction;
 
+  // true if the current viewer is the owner of the
+  // profile
+  public isOwner: boolean;
+
+  // true if public mode on
+  public viewPublic: boolean;
+
   // username from the url
   // basically the username of the profile
   private urlUsername: string;
@@ -73,15 +80,17 @@ export class ResumeComponent implements OnInit {
     this.urlUsername = null;
     this.userSkills = [];
     this.dialogRef = null;
+    this.isOwner = false;
+    this.viewPublic = false;
   }
 
   ngOnInit() {
     // map username to address
     this.mapUsername();
 
-    // subscribe to metamask plugin update from 
+    // subscribe to view public mode update from 
     // app component
-    this.generateMetamaskWarning();
+    this.subscribeViewPublicMode();
   }
 
   /**
@@ -408,12 +417,12 @@ export class ResumeComponent implements OnInit {
       })
   }
 
-   /**
-   * Deletes an project record
-   * 
-   * @param number index
-   * Index of the project to be deleted 
-   */
+  /**
+  * Deletes an project record
+  * 
+  * @param number index
+  * Index of the project to be deleted 
+  */
   public deleteProject(index: number): void {
     // open processing dialog
     this.openTxnProcessingDialog();
@@ -533,28 +542,6 @@ export class ResumeComponent implements OnInit {
   }
 
   /**
-   * Subscribes to observable input from 
-   * AppComponent. Triggers Dialog for warning
-   * if metamask is not installed and user tries to edit their 
-   * account
-   */
-  private generateMetamaskWarning(): void {
-    this.checkMetamask.metamaskWarningDialog$
-      .subscribe(generateWarning => {
-        if (generateWarning) {
-          this.openMetmaskWarningDialog();
-        }
-      });
-  }
-
-  /**
-   * Triggers the warning dialog
-   */
-  private openMetmaskWarningDialog(): void {
-    this.dialog.open(MetamaskWarningDialogComponent);
-  }
-
-  /**
    * Opnes transaction processing dialog
    */
   private openTxnProcessingDialog(): void {
@@ -625,6 +612,12 @@ export class ResumeComponent implements OnInit {
 
             // get user projects
             this.getUserProjects();
+
+            // check if the current viewer is the owner
+            if (this.checkMetamask.owner === this.checkMetamask.web3.eth.defaultAccount)
+              this.isOwner = true;
+            else
+              this.isOwner = false;
           });
       });
   }
@@ -637,6 +630,19 @@ export class ResumeComponent implements OnInit {
       .subscribe(intro => {
         this.userIntro.introduction = intro;
       });
+  }
+
+  /**
+   * Sunscribe to the observable for 
+   * toggling public view mode
+   * Observable initiated from app component
+   */
+  private subscribeViewPublicMode(): void {
+    this.checkMetamask
+      .profilePublicView$
+      .subscribe(res => {
+        this.viewPublic = res;
+      })
   }
 
   /**
