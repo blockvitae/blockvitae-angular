@@ -3,6 +3,7 @@
     <span><i class="fas fa-th"></i> Blockvitae</span>
     <span class="spacer"></span>
     <button
+    *ngIf="showBtn"
     mat-raised-button
     color="accent"
     (click) = "editPublicView()"
