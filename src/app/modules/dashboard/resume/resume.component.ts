@@ -356,6 +356,30 @@ export class ResumeComponent implements OnInit {
       })
   }
 
+  /**
+   * Deletes an workexp record
+   * 
+   * @param number index
+   * Index of the work exp to be deleted 
+   */
+  public deleteWorkExp(index: number): void {
+    // open processing dialog
+    this.openTxnProcessingDialog();
+
+    this.checkMetamask
+      .deleteWorkExp(index)
+      .subscribe(res => {
+        if (res.status) {
+          this.getUserEducation();
+        }
+
+        // show snackbar
+        this.showSuccessSnackbar("Work Exp updated successfully!");
+
+        // close processing dialog
+        this.closeTxnProcessingDialog();
+      });
+  }
 
   /**
    * Updates project
@@ -653,7 +677,7 @@ export class ResumeComponent implements OnInit {
         };
 
         // push in the array
-        if (!workExp.isDeleted)
+        if (!userWorkExp.isDeleted)
           this.userWorkExp.push(userWorkExp);
 
         // sort workExp

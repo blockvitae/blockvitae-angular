@@ -175,6 +175,23 @@ export class CheckMetamaskService {
       });
   }
 
+    /**
+   * Delete work exp
+   * 
+   * @param number index
+   * index of the work exp to be deleted
+   */
+  public deleteWorkExp(index: number): Observable<any> {
+    return from(
+      this.tokenContract
+        .methods
+        .deleteUserWorkExp(index)
+        .send({
+          from: this.web3.eth.defaultAccount
+        })
+    )
+  }
+
   /**
   * Gets the count of education user has
   * and then initiates the observables for each education
@@ -346,7 +363,8 @@ export class CheckMetamaskService {
           userWork.dateStart,
           userWork.dateEnd,
           userWork.description,
-          userWork.isWorking
+          userWork.isWorking,
+          false
         )
         .send({
           from: this.web3.eth.defaultAccount
