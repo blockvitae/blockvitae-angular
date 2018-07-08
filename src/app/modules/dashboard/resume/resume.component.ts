@@ -370,11 +370,11 @@ export class ResumeComponent implements OnInit {
       .deleteWorkExp(index)
       .subscribe(res => {
         if (res.status) {
-          this.getUserEducation();
+          this.getUserWorkExp();
         }
 
         // show snackbar
-        this.showSuccessSnackbar("Work Exp updated successfully!");
+        this.showSuccessSnackbar("Work Experience updated successfully!");
 
         // close processing dialog
         this.closeTxnProcessingDialog();
@@ -406,6 +406,31 @@ export class ResumeComponent implements OnInit {
         // close processing dialog
         this.closeTxnProcessingDialog();
       })
+  }
+
+   /**
+   * Deletes an project record
+   * 
+   * @param number index
+   * Index of the project to be deleted 
+   */
+  public deleteProject(index: number): void {
+    // open processing dialog
+    this.openTxnProcessingDialog();
+
+    this.checkMetamask
+      .deleteProject(index)
+      .subscribe(res => {
+        if (res.status) {
+          this.getUserProjects();
+        }
+
+        // show snackbar
+        this.showSuccessSnackbar("Project updated successfully!");
+
+        // close processing dialog
+        this.closeTxnProcessingDialog();
+      });
   }
 
   /**

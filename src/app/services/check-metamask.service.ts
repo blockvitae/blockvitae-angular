@@ -254,6 +254,23 @@ export class CheckMetamaskService {
   }
 
   /**
+   * Delete project
+   * 
+   * @param number index
+   * index of the project to be deleted
+   */
+  public deleteProject(index: number): Observable<any> {
+    return from(
+      this.tokenContract
+        .methods
+        .deleteUserProject(index)
+        .send({
+          from: this.web3.eth.defaultAccount
+        })
+    )
+  }
+
+  /**
    * Sets the introduction of the user on the network
    * 
    * @param string intro 
