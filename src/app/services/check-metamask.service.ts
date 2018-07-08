@@ -272,7 +272,8 @@ export class CheckMetamaskService {
           userDetail.userName,
           userDetail.imgUrl,
           userDetail.email,
-          userDetail.location
+          userDetail.location,
+          userDetail.shortDescription
         )
         .send({
           from: this.web3.eth.defaultAccount
@@ -438,7 +439,7 @@ export class CheckMetamaskService {
     // and its abi interface
     this.tokenContract = new this.web3.eth.Contract(
       tokenAbi.abi,
-      '0xb4191b770cacde35f0fefbe7856c12ad0e63bd53'
+      '0x89c6aa97dd850db16ef3a0989527c9fc97e3d1c3'
     );
 
   }
@@ -478,6 +479,7 @@ export class CheckMetamaskService {
           user.userName,
           '',
           user.email,
+          '',
           ''
         ).send({
           from: this.web3.eth.defaultAccount
