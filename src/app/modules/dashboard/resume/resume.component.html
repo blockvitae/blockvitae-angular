@@ -14,7 +14,8 @@
           <a 
           class="bv-edit" 
           (click)="editUserDetail()"
-          matTooltip="Edit Profile">
+          matTooltip="Edit Profile"
+          *ngIf="isOwner && !viewPublic">
             <i class="fas fa-pencil-alt"></i>
           </a>
         </span>
@@ -30,7 +31,8 @@
           <a 
           class="bv-edit" 
           (click)="editUserSocial()"
-          matTooltip="Edit Social Accounts">
+          matTooltip="Edit Social Accounts"
+          *ngIf="isOwner && !viewPublic">
             <i class="fas fa-pencil-alt"></i>
           </a>
           <a matTooltip="Twitter" 
@@ -89,13 +91,14 @@
     </div>
 
     <!--Introduction-->
-    <div class="bv-container">
+    <div class="bv-container" *ngIf="userIntro.introduction != '' || (isOwner && !viewPublic)">
       <h1 class="bv-head">
-        Introduction
+        Introduction 
         <a 
         class="bv-edit" 
         (click)="editIntroduction()"
-        matTooltip="Edit Introduction">
+        matTooltip="Edit Introduction"
+        *ngIf="isOwner && !viewPublic">
           <i class="fas fa-pencil-alt"></i>
         </a>
       </h1>
@@ -105,13 +108,14 @@
     </div>
 
     <!--Skills-->
-    <div class="bv-container" *ngIf="userSkills.length != 0">
+    <div class="bv-container" *ngIf="userSkills.length > 0 || (isOwner && !viewPublic)">
       <h1 class="bv-head">
         Skills
         <a 
         class="bv-edit" 
         (click)="editSkills()"
-        matTooltip="Edit Skills">
+        matTooltip="Edit Skills"
+        *ngIf="isOwner && !viewPublic">
           <i class="fas fa-pencil-alt"></i>
         </a>
       </h1>
@@ -124,13 +128,14 @@
     </div>
 
     <!--Experience-->
-    <div class="bv-container" *ngIf="userWorkExp.length != 0">
+    <div class="bv-container" *ngIf="userWorkExp.length > 0 || (isOwner && !viewPublic)">
       <h1 class="bv-head">
         Work Experience
         <a 
         class="bv-edit" 
         (click)="addWorkExp()"
-        matTooltip="Add New Work Experience">
+        matTooltip="Add New Work Experience"
+        *ngIf="isOwner && !viewPublic">
           <i class="fas fa-plus-circle"></i>
         </a>
       </h1>
@@ -140,7 +145,9 @@
             {{ workExp.position }} at {{ workExp.company }}
             <a 
             class="bv-edit" 
-            matTooltip="Delete">
+            matTooltip="Delete"
+            (click)="deleteWorkExp(workExp.index)"
+            *ngIf="isOwner && !viewPublic">
               <i class="fas fa-minus-circle"></i>
             </a>
         </h3>
@@ -158,13 +165,14 @@
     </div>
 
     <!--Education-->
-    <div class="bv-container" *ngIf="userEducation.length != 0">
+    <div class="bv-container" *ngIf="userEducation.length > 0 || (isOwner && !viewPublic)">
       <h1 class="bv-head">
         Education
         <a 
         class="bv-edit" 
         (click)="addEducation()"
-        matTooltip="Add New Education">
+        matTooltip="Add New Education"
+        *ngIf="isOwner && !viewPublic">
           <i class="fas fa-plus-circle"></i>
         </a>
       </h1>
@@ -175,7 +183,8 @@
           <a 
           class="bv-edit" 
           matTooltip="Delete"
-          (click)="deleteEducation(education.index)">
+          (click)="deleteEducation(education.index)"
+          *ngIf="isOwner && !viewPublic">
             <i class="fas fa-minus-circle"></i>
           </a>
         </h3>
@@ -188,13 +197,14 @@
     </div>
 
     <!--Projects-->
-    <div class="bv-container" *ngIf="userProjects.length != 0">
+    <div class="bv-container" *ngIf="userProjects.length > 0 || (isOwner && !viewPublic)">
       <h1 class="bv-head">
         Projects
         <a 
         class="bv-edit" 
         (click)="addProject()"
-        matTooltip="Add New Project">
+        matTooltip="Add New Project"
+        *ngIf="isOwner && !viewPublic">
           <i class="fas fa-plus-circle"></i>
         </a>
       </h1>
@@ -208,7 +218,9 @@
           </a>
           <a 
           class="bv-edit" 
-          matTooltip="Delete">
+          matTooltip="Delete"
+          (click)="deleteProject(project.index)"
+          *ngIf="isOwner">
             <i class="fas fa-minus-circle"></i>
           </a>
         </h3>

@@ -58,12 +58,6 @@ export class CheckMetamaskService {
   // on the application
   public isMetamaskInstalled: boolean;
 
-  // Observable that lets parent component: AppComponent
-  // to display a dialog inside resume component
-  // when user clicks on edit profile button
-  // but the metamask is not installed
-  public metamaskWarningDialog$: any;
-
   // Observable for work exp
   public workExp$: any;
 
@@ -73,10 +67,8 @@ export class CheckMetamaskService {
   // Observable for project
   public project$: any;
 
-  // true if the current user is the
-  // owner of the profile else false
-  // used to show edit button
-  private metamaskInstalledSource = new Subject<boolean>();
+  // Observabe for public mode of profile
+  public profilePublicView$: Observable<boolean>;
 
   // Source for work exp observable
   private workExpSource = new Subject<{}>();
@@ -87,6 +79,10 @@ export class CheckMetamaskService {
   // Source for project observable
   private projectSource = new Subject<{}>();
 
+  // Source for view public mode of profile
+  // observable listened in app component
+  private profilePublicViewSource = new Subject<boolean>();
+
   constructor() {
     this.web3 = null;
     this.web3Error = null;
@@ -94,19 +90,14 @@ export class CheckMetamaskService {
     this.isRopstenSet = false;
     this.owner = null;
     this.isMetamaskInstalled = false;
-    this.metamaskWarningDialog$ = this.metamaskInstalledSource.asObservable();
     this.workExp$ = this.workExpSource.asObservable();
     this.education$ = this.educationSource.asObservable();
     this.project$ = this.projectSource.asObservable();
+    this.profilePublicView$ = this.profilePublicViewSource.asObservable();
   }
 
-  /**
-    * Generates a warning dialog inside resume component through observable
-    * if the client doesn't has metamask extension installed
-    * and tries to edit their profile
-    */
-  public generateMetamaskWarning(generateWarning: boolean): void {
-    this.metamaskInstalledSource.next(generateWarning)
+  public togglePublicViewMode(viewPublic: boolean): void {
+    this.profilePublicViewSource.next(viewPublic);
   }
 
   /**
@@ -176,6 +167,23 @@ export class CheckMetamaskService {
   }
 
   /**
+ * Delete work exp
+ * 
+ * @param number index
+ * index of the work exp to be deleted
+ */
+  public deleteWorkExp(index: number): Observable<any> {
+    return from(
+      this.tokenContract
+        .methods
+        .deleteUserWorkExp(index)
+        .send({
+          from: this.web3.eth.defaultAccount
+        })
+    )
+  }
+
+  /**
   * Gets the count of education user has
   * and then initiates the observables for each education
   * user has
@@ -237,6 +245,23 @@ export class CheckMetamaskService {
   }
 
   /**
+   * Delete project
+   * 
+   * @param number index
+   * index of the project to be deleted
+   */
+  public deleteProject(index: number): Observable<any> {
+    return from(
+      this.tokenContract
+        .methods
+        .deleteUserProject(index)
+        .send({
+          from: this.web3.eth.defaultAccount
+        })
+    )
+  }
+
+  /**
    * Sets the introduction of the user on the network
    * 
    * @param string intro 
@@ -272,7 +297,8 @@ export class CheckMetamaskService {
           userDetail.userName,
           userDetail.imgUrl,
           userDetail.email,
-          userDetail.location
+          userDetail.location,
+          userDetail.shortDescription
         )
         .send({
           from: this.web3.eth.defaultAccount
@@ -345,7 +371,8 @@ export class CheckMetamaskService {
           userWork.dateStart,
           userWork.dateEnd,
           userWork.description,
-          userWork.isWorking
+          userWork.isWorking,
+          userWork.isDeleted
         )
         .send({
           from: this.web3.eth.defaultAccount
@@ -369,7 +396,8 @@ export class CheckMetamaskService {
           userProject.name,
           userProject.shortDescription,
           userProject.description,
-          userProject.url
+          userProject.url,
+          userProject.isDeleted
         )
         .send({
           from: this.web3.eth.defaultAccount
@@ -394,7 +422,8 @@ export class CheckMetamaskService {
           userEdu.degree,
           userEdu.dateStart,
           userEdu.dateEnd,
-          userEdu.description
+          userEdu.description,
+          userEdu.isDeleted
         )
         .send({
           from: this.web3.eth.defaultAccount
@@ -438,7 +467,7 @@ export class CheckMetamaskService {
     // and its abi interface
     this.tokenContract = new this.web3.eth.Contract(
       tokenAbi.abi,
-      '0xb4191b770cacde35f0fefbe7856c12ad0e63bd53'
+      '0x89c6aa97dd850db16ef3a0989527c9fc97e3d1c3'
     );
 
   }
@@ -478,6 +507,7 @@ export class CheckMetamaskService {
           user.userName,
           '',
           user.email,
+          '',
           ''
         ).send({
           from: this.web3.eth.defaultAccount

@@ -48,6 +48,13 @@ export class ResumeComponent implements OnInit {
   // Object for user introduction
   public userIntro: Blockvitae.UserIntroduction;
 
+  // true if the current viewer is the owner of the
+  // profile
+  public isOwner: boolean;
+
+  // true if public mode on
+  public viewPublic: boolean;
+
   // username from the url
   // basically the username of the profile
   private urlUsername: string;
@@ -73,15 +80,17 @@ export class ResumeComponent implements OnInit {
     this.urlUsername = null;
     this.userSkills = [];
     this.dialogRef = null;
+    this.isOwner = false;
+    this.viewPublic = false;
   }
 
   ngOnInit() {
     // map username to address
     this.mapUsername();
 
-    // subscribe to metamask plugin update from 
+    // subscribe to view public mode update from 
     // app component
-    this.generateMetamaskWarning();
+    this.subscribeViewPublicMode();
   }
 
   /**
@@ -356,6 +365,30 @@ export class ResumeComponent implements OnInit {
       })
   }
 
+  /**
+   * Deletes an workexp record
+   * 
+   * @param number index
+   * Index of the work exp to be deleted 
+   */
+  public deleteWorkExp(index: number): void {
+    // open processing dialog
+    this.openTxnProcessingDialog();
+
+    this.checkMetamask
+      .deleteWorkExp(index)
+      .subscribe(res => {
+        if (res.status) {
+          this.getUserWorkExp();
+        }
+
+        // show snackbar
+        this.showSuccessSnackbar("Work Experience updated successfully!");
+
+        // close processing dialog
+        this.closeTxnProcessingDialog();
+      });
+  }
 
   /**
    * Updates project
@@ -382,6 +415,31 @@ export class ResumeComponent implements OnInit {
         // close processing dialog
         this.closeTxnProcessingDialog();
       })
+  }
+
+  /**
+  * Deletes an project record
+  * 
+  * @param number index
+  * Index of the project to be deleted 
+  */
+  public deleteProject(index: number): void {
+    // open processing dialog
+    this.openTxnProcessingDialog();
+
+    this.checkMetamask
+      .deleteProject(index)
+      .subscribe(res => {
+        if (res.status) {
+          this.getUserProjects();
+        }
+
+        // show snackbar
+        this.showSuccessSnackbar("Project updated successfully!");
+
+        // close processing dialog
+        this.closeTxnProcessingDialog();
+      });
   }
 
   /**
@@ -484,28 +542,6 @@ export class ResumeComponent implements OnInit {
   }
 
   /**
-   * Subscribes to observable input from 
-   * AppComponent. Triggers Dialog for warning
-   * if metamask is not installed and user tries to edit their 
-   * account
-   */
-  private generateMetamaskWarning(): void {
-    this.checkMetamask.metamaskWarningDialog$
-      .subscribe(generateWarning => {
-        if (generateWarning) {
-          this.openMetmaskWarningDialog();
-        }
-      });
-  }
-
-  /**
-   * Triggers the warning dialog
-   */
-  private openMetmaskWarningDialog(): void {
-    this.dialog.open(MetamaskWarningDialogComponent);
-  }
-
-  /**
    * Opnes transaction processing dialog
    */
   private openTxnProcessingDialog(): void {
@@ -576,6 +612,12 @@ export class ResumeComponent implements OnInit {
 
             // get user projects
             this.getUserProjects();
+
+            // check if the current viewer is the owner
+            if (this.checkMetamask.owner === this.checkMetamask.web3.eth.defaultAccount)
+              this.isOwner = true;
+            else
+              this.isOwner = false;
           });
       });
   }
@@ -588,6 +630,19 @@ export class ResumeComponent implements OnInit {
       .subscribe(intro => {
         this.userIntro.introduction = intro;
       });
+  }
+
+  /**
+   * Sunscribe to the observable for 
+   * toggling public view mode
+   * Observable initiated from app component
+   */
+  private subscribeViewPublicMode(): void {
+    this.checkMetamask
+      .profilePublicView$
+      .subscribe(res => {
+        this.viewPublic = res;
+      })
   }
 
   /**
@@ -604,6 +659,7 @@ export class ResumeComponent implements OnInit {
         this.userDetail.imgUrl = detail[2] === '' ? "https://images.pexels.com/photos/555790/pexels-photo-555790.png?auto=compress&cs=tinysrgb&h=350" : detail[2];
         this.userDetail.email = detail[3];
         this.userDetail.location = detail[4];
+        this.userDetail.shortDescription = detail[5];
       });
   }
 
@@ -653,7 +709,7 @@ export class ResumeComponent implements OnInit {
         };
 
         // push in the array
-        if (!workExp.isDeleted)
+        if (!userWorkExp.isDeleted)
           this.userWorkExp.push(userWorkExp);
 
         // sort workExp
@@ -673,6 +729,9 @@ export class ResumeComponent implements OnInit {
     // start fecthing observables
     this.checkMetamask.getEducation();
 
+    // empty education
+    this.userEducation = [];
+
     // observe observables
     this.checkMetamask.education$
       .subscribe(res => {
@@ -688,7 +747,7 @@ export class ResumeComponent implements OnInit {
         };
 
         // push in the array
-        if (!education.isDeleted)
+        if (!userEducation.isDeleted)
           this.userEducation.push(userEducation);
 
         // sort user education
@@ -708,6 +767,9 @@ export class ResumeComponent implements OnInit {
     // start fecthing observables
     this.checkMetamask.getProjects();
 
+    // empty projects
+    this.userProjects = [];
+
     // observe observables
     this.checkMetamask.project$
       .subscribe(res => {
@@ -722,7 +784,7 @@ export class ResumeComponent implements OnInit {
         };
 
         // push in the array
-        if (!project.isDeleted)
+        if (!userProject.isDeleted)
           this.userProjects.push(userProject);
       });
   }
