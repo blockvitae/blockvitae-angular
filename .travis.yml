@@ -8,10 +8,7 @@ branches:
     
 cache:
   directories:
-    - "node_modules"    
-
-before_script:
-  - npm install -g @angular/cli
+    - "node_modules" 
 
 ## Reference link
 ## https://ethereum.stackexchange.com/a/42658
