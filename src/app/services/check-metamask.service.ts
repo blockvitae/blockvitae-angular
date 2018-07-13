@@ -292,7 +292,7 @@ export class CheckMetamaskService {
     return from(
       this.tokenContract
         .methods
-        .createUserDetail(
+        .updateUserDetail(
           userDetail.fullName,
           userDetail.userName,
           userDetail.imgUrl,
