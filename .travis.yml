@@ -17,4 +17,3 @@ before_script:
 ## https://ethereum.stackexchange.com/a/42658
 script:
   - npm install
-  - ng build --prod --aot
