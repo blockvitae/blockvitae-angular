@@ -616,6 +616,9 @@ export class ResumeComponent implements OnInit {
             // get user education
             this.getUserEducation();
 
+            // subscribe to user projects
+            this.subscribeToProjects();
+
             // get user projects
             this.getUserProjects();
 
@@ -793,8 +796,13 @@ export class ResumeComponent implements OnInit {
     this.checkMetamask.getProjects();
 
     // empty projects
-    this.userProjects = [];
+    this.userProjects.length = 0;
+  }
 
+  /**
+   * Subscribes to the obervable of projects
+   */
+  private subscribeToProjects(): void {
     // observe observables
     this.checkMetamask.project$
       .subscribe(res => {

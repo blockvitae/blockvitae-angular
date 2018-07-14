@@ -27,7 +27,7 @@ export class AppComponent {
     this.viewPublic = true;
 
     // show button only if on profile page
-    if (this.url.path().indexOf('/resume') < 0)
+    if (this.url.path().indexOf('/resume/') < 0)
       this.showBtn = false;
     else
       this.showBtn = true;
