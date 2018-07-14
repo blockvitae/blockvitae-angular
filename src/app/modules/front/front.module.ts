@@ -7,6 +7,7 @@ import { SignupComponent } from './signup/signup.component';
 import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { LoginComponent } from './login/login.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   imports: [
@@ -16,11 +17,17 @@ import { LoginComponent } from './login/login.component';
     FlexLayoutModule,
     FormsModule,
   ],
-  declarations: [LandingComponent, SignupComponent, LoginComponent],
+  declarations: [
+    LandingComponent, 
+    SignupComponent, 
+    LoginComponent, 
+    PageNotFoundComponent
+  ],
   exports: [
     LandingComponent,
     SignupComponent,
     LoginComponent,
+    PageNotFoundComponent
   ]
 })
 export class FrontModule { }

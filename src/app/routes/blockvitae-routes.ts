@@ -3,6 +3,7 @@ import { SignupComponent } from './../modules/front/signup/signup.component';
 import { LandingComponent } from './../modules/front/landing/landing.component';
 import { Routes } from '@angular/router';
 import { ResumeComponent } from '../modules/dashboard/resume/resume.component';
+import { PageNotFoundComponent } from '../modules/front/page-not-found/page-not-found.component';
 
 export const blockvitaeRoutes: Routes = [
   {path: 'signup', component: SignupComponent},
@@ -12,4 +13,5 @@ export const blockvitaeRoutes: Routes = [
   // and blockchain can't be accessed without web3 instance
   {path: 'resume/:username', component: ResumeComponent},
   {path: '', component: LandingComponent},
+  {path: '**', component: PageNotFoundComponent},
 ];
