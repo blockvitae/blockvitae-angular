@@ -604,6 +604,9 @@ export class ResumeComponent implements OnInit {
             // get user skills
             this.getUserSkills();
 
+            // subscribe to work exp
+            this.subcribeToWorkExp();
+
             // get work exp
             this.getUserWorkExp();
 
@@ -691,11 +694,14 @@ export class ResumeComponent implements OnInit {
     this.checkMetamask.getWorkExp();
 
     // empty userWorkExp
-    this.userWorkExp = [];
+    this.userWorkExp.length = 0;
+  }
 
+  private subcribeToWorkExp(): void {
     // observe observables
     this.checkMetamask.workExp$
       .subscribe(res => {
+        console.log("Observable");
         let workExp = res.response;
         let userWorkExp = {
           company: workExp[0],
@@ -709,14 +715,26 @@ export class ResumeComponent implements OnInit {
         };
 
         // push in the array
-        if (!userWorkExp.isDeleted)
+        if (!userWorkExp.isDeleted) {
           this.userWorkExp.push(userWorkExp);
+          // sort workExp
+          this.sortRecords(this.userWorkExp);
+        }
+      });
+  }
 
-        // sort workExp
-        this.userWorkExp
-          .sort((a: Blockvitae.UserWorkExp, b: Blockvitae.UserWorkExp) =>
-            new Date(a.dateStart).getTime() - new Date(b.dateStart).getTime()
-          );
+  /**
+   * Sorts records based on the dates. Used for sorting Projects, Work Experience,
+   * Education in chronological order
+   * 
+   * @param array records
+   */
+  private sortRecords(records: any): void {
+    records
+      .sort((a: any, b: any) => {
+        let aDateStart = "01-" + a.dateStart;
+        let bDateStart = "01-" + b.dateStart;
+        return new Date(bDateStart).getTime() - new Date(aDateStart).getTime();
       });
   }
 
