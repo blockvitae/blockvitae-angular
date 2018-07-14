@@ -23,8 +23,8 @@ export class AppComponent {
     private url: LocationStrategy
   ) {
     this.checkMetamask.initializeDappBrowser();
-    this.btnText = BTN_TEXT_VIEW_PUBLIC;
-    this.viewPublic = false;
+    this.btnText = BTN_TEXT_HIDE_PUBLIC;
+    this.viewPublic = true;
 
     // show button only if on profile page
     if (this.url.path().indexOf('/resume') < 0)

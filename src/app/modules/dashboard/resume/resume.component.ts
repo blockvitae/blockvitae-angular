@@ -81,7 +81,7 @@ export class ResumeComponent implements OnInit {
     this.userSkills = [];
     this.dialogRef = null;
     this.isOwner = false;
-    this.viewPublic = false;
+    this.viewPublic = true;
   }
 
   ngOnInit() {

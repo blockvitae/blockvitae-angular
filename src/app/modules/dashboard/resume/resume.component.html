@@ -220,7 +220,7 @@
           class="bv-edit" 
           matTooltip="Delete"
           (click)="deleteProject(project.index)"
-          *ngIf="isOwner">
+          *ngIf="isOwner && !viewPublic">
             <i class="fas fa-minus-circle"></i>
           </a>
         </h3>
