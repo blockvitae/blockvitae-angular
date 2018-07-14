@@ -605,10 +605,13 @@ export class ResumeComponent implements OnInit {
             this.getUserSkills();
 
             // subscribe to work exp
-            this.subcribeToWorkExp();
+            this.subscribeToWorkExp();
 
             // get work exp
             this.getUserWorkExp();
+
+            // subscribe to user education
+            this.subscribeToEducation();
 
             // get user education
             this.getUserEducation();
@@ -697,11 +700,13 @@ export class ResumeComponent implements OnInit {
     this.userWorkExp.length = 0;
   }
 
-  private subcribeToWorkExp(): void {
+  /**
+   * Subscribes to work exp observable
+   */
+  private subscribeToWorkExp(): void {
     // observe observables
     this.checkMetamask.workExp$
       .subscribe(res => {
-        console.log("Observable");
         let workExp = res.response;
         let userWorkExp = {
           company: workExp[0],
@@ -748,8 +753,13 @@ export class ResumeComponent implements OnInit {
     this.checkMetamask.getEducation();
 
     // empty education
-    this.userEducation = [];
+    this.userEducation.length = 0;
+  }
 
+  /**
+   * Subscribes to education obervable
+   */
+  private subscribeToEducation(): void {
     // observe observables
     this.checkMetamask.education$
       .subscribe(res => {
@@ -765,14 +775,11 @@ export class ResumeComponent implements OnInit {
         };
 
         // push in the array
-        if (!userEducation.isDeleted)
+        if (!userEducation.isDeleted) {
           this.userEducation.push(userEducation);
-
-        // sort user education
-        this.userEducation
-          .sort((a: Blockvitae.UserEducation, b: Blockvitae.UserEducation) =>
-            new Date(a.dateStart).getTime() - new Date(b.dateStart).getTime()
-          );
+          // sort workExp
+          this.sortRecords(this.userEducation);
+        }
       });
   }
 
