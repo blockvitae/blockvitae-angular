@@ -15,11 +15,13 @@ import { UserSocialDialogComponent } from '../dialog/user-social-dialog/user-soc
 
 // import moment
 import * as _moment from 'moment';
+import { Title } from '../../../../../node_modules/@angular/platform-browser';
 
 @Component({
   selector: 'app-resume',
   templateUrl: './resume.component.html',
-  styleUrls: ['./resume.component.scss']
+  styleUrls: ['./resume.component.scss'],
+  providers: [Title]
 })
 export class ResumeComponent implements OnInit {
 
@@ -67,7 +69,8 @@ export class ResumeComponent implements OnInit {
     public dialog: MatDialog,
     private checkMetamask: CheckMetamaskService,
     private activatedRoute: ActivatedRoute,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private title: Title
   ) {
     this.checkMetamask.initializeDappBrowser();
     this.userDetail = <Blockvitae.UserDetail>{};
@@ -669,6 +672,10 @@ export class ResumeComponent implements OnInit {
         this.userDetail.email = detail[3];
         this.userDetail.location = detail[4];
         this.userDetail.shortDescription = detail[5];
+
+        // set dynamic title
+        this.title.setTitle(this.userDetail.fullName + " | " +
+          this.userDetail.shortDescription + " | " + this.userDetail.location);
       });
   }
 
