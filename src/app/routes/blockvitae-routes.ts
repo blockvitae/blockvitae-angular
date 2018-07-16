@@ -12,6 +12,7 @@ export const blockvitaeRoutes: Routes = [
   // because metamask injects web3 provider after DOM loads
   // and blockchain can't be accessed without web3 instance
   {path: 'resume/:username', component: ResumeComponent},
+  {path: 'not-found', component: PageNotFoundComponent},
   {path: '', component: LandingComponent},
   {path: '**', component: PageNotFoundComponent},
 ];

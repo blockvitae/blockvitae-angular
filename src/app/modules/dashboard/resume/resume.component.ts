@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CheckMetamaskService } from '../../../services/check-metamask.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { Blockvitae } from '../../../interfaces/interface';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MetamaskWarningDialogComponent } from '../dialog/metamask-warning-dialog/metamask-warning-dialog.component';
 import { ProfileDialogComponent } from '../dialog/profile-dialog/profile-dialog.component';
 import { IntroductionDialogComponent } from '../dialog/introduction-dialog/introduction-dialog.component';
@@ -70,7 +70,8 @@ export class ResumeComponent implements OnInit {
     private checkMetamask: CheckMetamaskService,
     private activatedRoute: ActivatedRoute,
     private snackbar: MatSnackBar,
-    private title: Title
+    private title: Title,
+    private router: Router
   ) {
     this.checkMetamask.initializeDappBrowser();
     this.userDetail = <Blockvitae.UserDetail>{};
@@ -586,7 +587,7 @@ export class ResumeComponent implements OnInit {
   private mapUsername(): void {
     this.activatedRoute.paramMap
       .subscribe(params => {
-        // @TODO: validate username
+        // TODO: validate username
         this.urlUsername = params.get('username');
 
         // get address for username
@@ -630,8 +631,11 @@ export class ResumeComponent implements OnInit {
               this.isOwner = true;
             else
               this.isOwner = false;
-          });
-      });
+          },
+        err => {
+          this.router.navigateByUrl('/not-found')
+        })
+      })
   }
 
   /**
@@ -668,7 +672,7 @@ export class ResumeComponent implements OnInit {
       .subscribe(detail => {
         this.userDetail.fullName = detail[0];
         this.userDetail.userName = detail[1];
-        this.userDetail.imgUrl = detail[2] === '' ? "https://images.pexels.com/photos/555790/pexels-photo-555790.png?auto=compress&cs=tinysrgb&h=350" : detail[2];
+        this.userDetail.imgUrl = detail[2] === '' ? "https://image.ibb.co/kewzod/avatar_1577909_640.png" : detail[2];
         this.userDetail.email = detail[3];
         this.userDetail.location = detail[4];
         this.userDetail.shortDescription = detail[5];
