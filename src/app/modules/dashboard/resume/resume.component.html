@@ -140,7 +140,7 @@
         </a>
       </h1>
       <span *ngFor="let workExp of userWorkExp">
-        <h3 class="bv-list-head">
+        <h4 class="bv-list-head">
             <i class="far fa-dot-circle"></i>
             {{ workExp.position }} at {{ workExp.company }}
             <a 
@@ -150,7 +150,7 @@
             *ngIf="isOwner && !viewPublic">
               <i class="fas fa-minus-circle"></i>
             </a>
-        </h3>
+        </h4>
         <p class="bv-list-sub-head" *ngIf="!workExp.isWorking">
           {{ workExp.dateStart }} to {{ workExp.dateEnd }}
         </p>
@@ -177,7 +177,7 @@
         </a>
       </h1>
       <span *ngFor="let education of userEducation">
-        <h3 class="bv-list-head">
+        <h4 class="bv-list-head">
           <i class="far fa-dot-circle"></i>
           {{ education.degree }} at {{ education.organization }}
           <a 
@@ -187,7 +187,7 @@
           *ngIf="isOwner && !viewPublic">
             <i class="fas fa-minus-circle"></i>
           </a>
-        </h3>
+        </h4>
         <p class="bv-list-sub-head">{{ education.dateStart }} to {{ education.dateEnd }}</p>
         <p class="bv-list-description">
           {{ education.description }}
@@ -209,7 +209,7 @@
         </a>
       </h1>
       <span *ngFor="let project of userProjects">
-        <h3 class="bv-list-head">
+        <h4 class="bv-list-head">
           <i class="far fa-dot-circle"></i>
           <a 
           [href]="project.url.length > 0 ? project.url : '#'"
@@ -223,10 +223,47 @@
           *ngIf="isOwner && !viewPublic">
             <i class="fas fa-minus-circle"></i>
           </a>
-        </h3>
-        <p class="bv-list-sub-head">One Line Description Here</p>
+        </h4>
+        <p class="bv-list-sub-head">
+          {{ project.shortDescription }}
+        </p>
         <p class="bv-list-description">
           {{ project.description }}
+        </p>
+        <br/>
+      </span>
+    </div>
+
+    <!--Publications-->
+    <div class="bv-container" *ngIf="userPublications.length > 0 || (isOwner && !viewPublic)">
+      <h1 class="bv-head">
+        Publications
+        <a 
+        class="bv-edit" 
+        (click)="addPublication()"
+        matTooltip="Add New Project"
+        *ngIf="isOwner && !viewPublic">
+          <i class="fas fa-plus-circle"></i>
+        </a>
+      </h1>
+      <span *ngFor="let publication of userPublications">
+        <h4 class="bv-list-head">
+          <i class="far fa-dot-circle"></i>
+          <a 
+          [href]="publication.url.length > 0 ? publication.url : '#'"
+          target="_blank">
+            {{ publication.title }}
+          </a>
+          <a 
+          class="bv-edit" 
+          matTooltip="Delete"
+          (click)="deletePublication(publication.index)"
+          *ngIf="isOwner && !viewPublic">
+            <i class="fas fa-minus-circle"></i>
+          </a>
+        </h4>
+        <p class="bv-list-description">
+          {{ publication.description }}
         </p>
         <br/>
       </span>

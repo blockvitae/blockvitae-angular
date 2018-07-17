@@ -42,6 +42,9 @@ export class ResumeComponent implements OnInit {
   // array of user project objects
   public userProjects: Blockvitae.UserProject[];
 
+  // array of user pubications
+  public userPublications: Blockvitae.UserPublication[];
+
   // true if user has clicked on edit profile
   // for making changes
   public isEditModeOn: boolean;
@@ -79,6 +82,7 @@ export class ResumeComponent implements OnInit {
     this.userWorkExp = [];
     this.userEducation = [];
     this.userProjects = [];
+    this.userPublications = [];
     this.isEditModeOn = false;
     this.urlUsername = null;
     this.userSkills = [];

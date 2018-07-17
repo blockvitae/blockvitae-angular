@@ -97,6 +97,7 @@ export namespace Blockvitae {
         url: string; // link to the paper
         description: string; // description of the paper
         isDeleted: boolean; // true if the current publication has been deleted
+        index: number; // index of the project in the array
     }
 
     /**
