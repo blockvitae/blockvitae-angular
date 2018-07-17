@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '../../../../../node_modules/@angular/platform-browser';
 import { CheckMetamaskService } from '../../../services/check-metamask.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { Blockvitae } from '../../../interfaces/interface';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MetamaskWarningDialogComponent } from '../dialog/metamask-warning-dialog/metamask-warning-dialog.component';
 import { ProfileDialogComponent } from '../dialog/profile-dialog/profile-dialog.component';
 import { IntroductionDialogComponent } from '../dialog/introduction-dialog/introduction-dialog.component';
 import { SkillsDialogComponent } from '../dialog/skills-dialog/skills-dialog.component';
@@ -15,7 +15,6 @@ import { UserSocialDialogComponent } from '../dialog/user-social-dialog/user-soc
 
 // import moment
 import * as _moment from 'moment';
-import { Title } from '../../../../../node_modules/@angular/platform-browser';
 
 @Component({
   selector: 'app-resume',
@@ -568,9 +567,9 @@ export class ResumeComponent implements OnInit {
    * @param string message 
    * Message to be displayed on the snackbar
    */
-  private showSuccessSnackbar(message: string): void {
+  private showSuccessSnackbar(message: string, time: number = 2000): void {
     this.snackbar.open(message, null, {
-      duration: 2000,
+      duration: time,
       panelClass: 'success'
     });
   }
@@ -632,9 +631,9 @@ export class ResumeComponent implements OnInit {
             else
               this.isOwner = false;
           },
-        err => {
-          this.router.navigateByUrl('/not-found')
-        })
+            err => {
+              this.router.navigateByUrl('/not-found')
+            })
       })
   }
 
@@ -657,7 +656,13 @@ export class ResumeComponent implements OnInit {
     this.checkMetamask
       .profilePublicView$
       .subscribe(res => {
-        this.viewPublic = res;
+        if (this.checkMetamask.web3.eth.defaultAccount != null) {
+          this.viewPublic = res;
+        }
+        else {
+          // show snackbar
+          this.showSuccessSnackbar("Please Unlock Your Metamask Account and refresh the page", 5000);
+        }
       })
   }
 
