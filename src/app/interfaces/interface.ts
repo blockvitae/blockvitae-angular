@@ -90,6 +90,16 @@ export namespace Blockvitae {
     }
 
     /**
+     * Holds all the publications
+     */
+    export interface UserPublication {
+        title: string; // title of the paper
+        url: string; // link to the paper
+        description: string; // description of the paper
+        isDeleted: boolean; // true if the current publication has been deleted
+    }
+
+    /**
      * Holds introduction paragraph of the user
      */
     export interface UserIntroduction {
