@@ -383,7 +383,7 @@ export class CheckMetamaskService {
   /**
    * Sets the user project
    * 
-   * @param userProject Blockvitae.UserProject]
+   * @param userProject Blockvitae.UserProject
    * UserProject object
    * 
    * @return Observable<any>
@@ -398,6 +398,30 @@ export class CheckMetamaskService {
           userProject.description,
           userProject.url,
           userProject.isDeleted
+        )
+        .send({
+          from: this.web3.eth.defaultAccount
+        })
+    )
+  }
+
+  /**
+   * Sets the user publication
+   * 
+   * @param userProject Blockvitae.UserPublication
+   * UserPublication object
+   * 
+   * @return Observable<any>
+   */
+  public setUserPublication(userPublication: Blockvitae.UserPublication): Observable<any> {
+    return from(
+      this.tokenContract
+        .methods
+        .createUserPublication(
+          userPublication.title,
+          userPublication.url,
+          userPublication.description,
+          userPublication.isDeleted
         )
         .send({
           from: this.web3.eth.defaultAccount
@@ -549,6 +573,17 @@ export class CheckMetamaskService {
   private getProjectCount(): Observable<number> {
     return from(
       this.tokenContract.methods.getProjectCount(this.owner).call()
+    );
+  }
+
+  /**
+   * Get the count of total publications from the network
+   * 
+   * @returns Observable<number>
+   */
+  private getPublicationCount(): Observable<number> {
+    return from(
+      this.tokenContract.methods.getPublicationCount(this.owner).call()
     );
   }
 
