@@ -1,0 +1,38 @@
+<div class="bv-container">
+  <div fxLayout="column" fxFill>
+    <form>
+      <h3>Add your publication details</h3>
+      <mat-form-field fxFill>
+        <input 
+        type="text"
+        matInput 
+        placeholder="Publication Title"
+        name="name"
+        [(ngModel)]="userPublication.title"
+        required>
+      </mat-form-field>
+      <mat-form-field fxFill>
+        <input 
+        type="url"
+        matInput 
+        name="url"
+        [(ngModel)]="userPublication.url"
+        placeholder="URL">
+      </mat-form-field>
+      <mat-form-field fxFill>
+        <textarea 
+        type="text"
+        matInput 
+        placeholder="Description"
+        name="description"
+        [(ngModel)]="userPublication.description"
+        required></textarea>
+      </mat-form-field>
+      <div fxLayout class="bv-action-btn">
+        <span class="spacer" fxFlex="80"></span>
+        <button mat-button color="primary" [mat-dialog-close]="false">Cancel</button>
+        <button mat-raised-button color="primary" [mat-dialog-close]="userPublication">Add</button>
+      </div>
+    </form>
+  </div>
+</div>
