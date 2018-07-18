@@ -67,6 +67,9 @@ export class CheckMetamaskService {
   // Observable for project
   public project$: any;
 
+  // Observable for publication
+  public publication$: any;
+
   // Observabe for public mode of profile
   public profilePublicView$: Observable<boolean>;
 
@@ -78,6 +81,9 @@ export class CheckMetamaskService {
 
   // Source for project observable
   private projectSource = new Subject<{}>();
+
+  // Source for publication observable
+  private publicationSource = new Subject<{}>();
 
   // Source for view public mode of profile
   // observable listened in app component
@@ -93,6 +99,7 @@ export class CheckMetamaskService {
     this.workExp$ = this.workExpSource.asObservable();
     this.education$ = this.educationSource.asObservable();
     this.project$ = this.projectSource.asObservable();
+    this.publication$ = this.publicationSource.asObservable();
     this.profilePublicView$ = this.profilePublicViewSource.asObservable();
   }
 
@@ -243,6 +250,28 @@ export class CheckMetamaskService {
         }
       });
   }
+
+  /**
+  * Gets the count of publications user has
+  * and then initiates the observables for each publication
+  * user has
+  */
+ public getPublications(): void {
+  this.getPublicationCount()
+    .subscribe(count => {
+      for (let i = 0; i < count; i++) {
+        from(
+          this.tokenContract.methods.getUserPublication(this.owner, i).call()
+        )
+          .subscribe(res => {
+            this.publicationSource.next(
+              // TODO: Handle errors
+              { response: res, index: i }
+            );
+          })
+      }
+    });
+}
 
   /**
    * Delete project
