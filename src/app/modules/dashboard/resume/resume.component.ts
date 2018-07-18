@@ -15,6 +15,7 @@ import { UserSocialDialogComponent } from '../dialog/user-social-dialog/user-soc
 
 // import moment
 import * as _moment from 'moment';
+import { PublicationDialogComponent } from '../dialog/publication-dialog/publication-dialog.component';
 
 @Component({
   selector: 'app-resume',
@@ -197,6 +198,28 @@ export class ResumeComponent implements OnInit {
   }
 
   /**
+   * Add Publication
+   */
+  public addPublication(): void {
+    let userPublication = <Blockvitae.UserPublication>{};
+    let dialogRef = this.dialog.open(PublicationDialogComponent, {
+      data: userPublication
+    });
+
+    dialogRef.afterClosed().subscribe(userPublication => {
+      if (userPublication != null) {
+
+        // update blockchain
+        this.updatePublication(userPublication)
+      }
+      else {
+        // get old publications
+        this.getUserPublications();
+      }
+    });
+  }
+
+  /**
    * Add Work Experience
    */
   public addWorkExp(): void {
@@ -206,8 +229,7 @@ export class ResumeComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(userWork => {
-      if (userWork) {
-        userWork = userWork;
+      if (userWork != null) {
 
         // change date start format
         if (userWork.dateStart != null) {
@@ -243,7 +265,6 @@ export class ResumeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(project => {
       if (project != null) {
-        userProject = project;
 
         if (!userProject.url) {
           userProject.url = "";
@@ -270,7 +291,6 @@ export class ResumeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(education => {
       if (education != null) {
-        userEdu = education;
 
         // change date start format
         if (userEdu.dateStart != null)
@@ -418,6 +438,33 @@ export class ResumeComponent implements OnInit {
 
         // show snackbar
         this.showSuccessSnackbar("Projects updated successfully!");
+
+        // close processing dialog
+        this.closeTxnProcessingDialog();
+      })
+  }
+
+   /**
+   * Updates publication
+   * 
+   * @param Blockvitae.UserPublication userPublication
+   * UserPublication object
+   */
+  private updatePublication(userPublication: Blockvitae.UserPublication): void {
+    // open processing dialog
+    this.openTxnProcessingDialog();
+
+    // update publication
+    this.checkMetamask
+      .setUserPublication(userPublication)
+      .subscribe(res => {
+        if (res.status) {
+          // get publications
+          this.getUserPublications();
+        }
+
+        // show snackbar
+        this.showSuccessSnackbar("Publications updated successfully!");
 
         // close processing dialog
         this.closeTxnProcessingDialog();
@@ -839,6 +886,41 @@ export class ResumeComponent implements OnInit {
         // push in the array
         if (!userProject.isDeleted)
           this.userProjects.push(userProject);
+      });
+  }
+
+  /**
+   * Initiates the getUserPublications method and
+   * then subscribes to the observables for
+   * each project set by getPublications method
+   */
+  private getUserPublications(): void {
+    // start fecthing observables
+    this.checkMetamask.getPublications();
+
+    // empty publications
+    this.userPublications.length = 0;
+  }
+
+  /**
+   * Subscribes to the obervable of publications
+   */
+  private subscribeToPublications(): void {
+    // observe observables
+    this.checkMetamask.publication$
+      .subscribe(res => {
+        let publication = res.response;
+        let userPublication = {
+          title: publication[0],
+          url: publication[1],
+          description: publication[2],
+          isDeleted: publication[3],
+          index: res.index
+        };
+
+        // push in the array
+        if (!userPublication.isDeleted)
+          this.userPublications.push(userPublication);
       });
   }
 
