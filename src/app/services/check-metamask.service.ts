@@ -43,6 +43,15 @@ export class CheckMetamaskService {
   // reference to the token on Blockchain
   public tokenContract: any;
 
+  // reference to the getter token
+  public getterTokenContract: any;
+
+  // reference to the setter token
+  public setterTokenContract: any;
+
+  // reference to the delete token
+  public deleteTokenContract: any;
+
   // if selected network is ropsten or not
   public isRopstenSet: boolean;
 
