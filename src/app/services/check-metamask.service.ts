@@ -21,6 +21,9 @@ declare let window: any;
 
 // token abi
 let tokenAbi = require('./../token/Blockvitae.json');
+let getterTokenAbi = require('./../token/BlockvitaeGetter.json');
+let deleteTokenAbi = require('./../token/BlockvitaeDelete.json');
+let insertTokenAbi = require('./../token/BlockvitaeInsert.json');
 
 @Injectable({
   providedIn: "root"
@@ -532,6 +535,20 @@ export class CheckMetamaskService {
       '0xbf9af915815f8c321d8de99849b5a95f0042bae5'
     );
 
+    this.getterTokenContract = new this.web3.eth.Contract(
+      getterTokenAbi.abi,
+      '0x6baf0a3cd0a811bbfdabb280daf75a60e3174280' 
+    );
+
+    this.setterTokenContract = new this.web3.eth.Contract(
+      insertTokenAbi.abi,
+      '0x8ebbda14bb27351c9002fe64a1a97571d9d0554e'
+    );
+
+    this.deleteTokenContract = new this.web3.eth.Contract(
+      deleteTokenAbi.abi,
+      '0x8c698182cf136a220aeff47b212c30a3dd13165a'
+    );
   }
 
   /**
