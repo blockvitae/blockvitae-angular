@@ -126,7 +126,7 @@ export class CheckMetamaskService {
    */
   public getUserDetail(): Observable<string[]> {
     return from(
-      this.tokenContract.methods.getUserDetail(this.owner).call()
+      this.getterTokenContract.methods.getUserDetail(this.owner).call()
     );
   }
 
@@ -137,7 +137,7 @@ export class CheckMetamaskService {
    */
   public getUserIntroduction(): Observable<string> {
     return from(
-      this.tokenContract.methods.getUserIntroduction(this.owner).call()
+      this.getterTokenContract.methods.getUserIntroduction(this.owner).call()
     )
   }
 
@@ -148,7 +148,7 @@ export class CheckMetamaskService {
    */
   public getUserSocial(): Observable<string[]> {
     return from(
-      this.tokenContract.methods.getUserSocial(this.owner).call()
+      this.getterTokenContract.methods.getUserSocial(this.owner).call()
     );
   }
 
@@ -159,7 +159,7 @@ export class CheckMetamaskService {
    */
   public getUserSkills(): Observable<string[]> {
     return from(
-      this.tokenContract.methods.getUserSkills(this.owner).call()
+      this.getterTokenContract.methods.getUserSkills(this.owner).call()
     );
   }
 
@@ -173,7 +173,7 @@ export class CheckMetamaskService {
       .subscribe(count => {
         for (let i = 0; i < count; i++) {
           from(
-            this.tokenContract.methods.getUserWorkExp(this.owner, i).call()
+            this.getterTokenContract.methods.getUserWorkExp(this.owner, i).call()
           )
             .subscribe(res => {
               this.workExpSource.next(
@@ -193,7 +193,7 @@ export class CheckMetamaskService {
  */
   public deleteWorkExp(index: number): Observable<any> {
     return from(
-      this.tokenContract
+      this.deleteTokenContract
         .methods
         .deleteUserWorkExp(index)
         .send({
@@ -212,7 +212,7 @@ export class CheckMetamaskService {
       .subscribe(count => {
         for (let i = 0; i < count; i++) {
           from(
-            this.tokenContract.methods.getUserEducation(this.owner, i).call()
+            this.getterTokenContract.methods.getUserEducation(this.owner, i).call()
           )
             .subscribe(res => {
               this.educationSource.next(
@@ -232,7 +232,7 @@ export class CheckMetamaskService {
    */
   public deleteEducation(index: number): Observable<any> {
     return from(
-      this.tokenContract
+      this.deleteTokenContract
         .methods
         .deleteUserEducation(index)
         .send({
@@ -251,7 +251,7 @@ export class CheckMetamaskService {
       .subscribe(count => {
         for (let i = 0; i < count; i++) {
           from(
-            this.tokenContract.methods.getUserProject(this.owner, i).call()
+            this.getterTokenContract.methods.getUserProject(this.owner, i).call()
           )
             .subscribe(res => {
               this.projectSource.next(
@@ -273,7 +273,7 @@ export class CheckMetamaskService {
     .subscribe(count => {
       for (let i = 0; i < count; i++) {
         from(
-          this.tokenContract.methods.getUserPublication(this.owner, i).call()
+          this.getterTokenContract.methods.getUserPublication(this.owner, i).call()
         )
           .subscribe(res => {
             this.publicationSource.next(
@@ -293,7 +293,7 @@ export class CheckMetamaskService {
    */
   public deleteProject(index: number): Observable<any> {
     return from(
-      this.tokenContract
+      this.deleteTokenContract
         .methods
         .deleteUserProject(index)
         .send({
@@ -312,7 +312,7 @@ export class CheckMetamaskService {
    */
   public setIntroduction(intro: string): Observable<any> {
     return from(
-      this.tokenContract
+      this.setterTokenContract
         .methods
         .createUserIntroduction(intro)
         .send({
@@ -331,7 +331,7 @@ export class CheckMetamaskService {
    */
   public setUserDetail(userDetail: Blockvitae.UserDetail): Observable<any> {
     return from(
-      this.tokenContract
+      this.setterTokenContract
         .methods
         .updateUserDetail(
           userDetail.fullName,
@@ -357,7 +357,7 @@ export class CheckMetamaskService {
    */
   public setUserSocial(userSocial: Blockvitae.UserSocial): Observable<any> {
     return from(
-      this.tokenContract
+      this.setterTokenContract
         .methods
         .createUserSocial(
           userSocial.websiteUrl,
@@ -385,7 +385,7 @@ export class CheckMetamaskService {
    */
   public setUserSkills(userSkills: string[]): Observable<any> {
     return from(
-      this.tokenContract
+      this.setterTokenContract
         .methods
         .createUserSkill(userSkills)
         .send({
@@ -404,7 +404,7 @@ export class CheckMetamaskService {
    */
   public setUserWorkExp(userWork: Blockvitae.UserWorkExp): Observable<any> {
     return from(
-      this.tokenContract
+      this.setterTokenContract
         .methods
         .createUserWorkExp(
           userWork.company,
@@ -431,7 +431,7 @@ export class CheckMetamaskService {
    */
   public setUserProject(userProject: Blockvitae.UserProject): Observable<any> {
     return from(
-      this.tokenContract
+      this.setterTokenContract
         .methods
         .createUserProject(
           userProject.name,
@@ -456,7 +456,7 @@ export class CheckMetamaskService {
    */
   public setUserPublication(userPublication: Blockvitae.UserPublication): Observable<any> {
     return from(
-      this.tokenContract
+      this.setterTokenContract
         .methods
         .createUserPublication(
           userPublication.title,
@@ -480,7 +480,7 @@ export class CheckMetamaskService {
    */
   public setUserEducation(userEdu: Blockvitae.UserEducation): Observable<any> {
     return from(
-      this.tokenContract
+      this.setterTokenContract
         .methods
         .createUserEducation(
           userEdu.organization,
@@ -561,7 +561,7 @@ export class CheckMetamaskService {
   */
   public checkUserNameAvailability(userName: string): Observable<boolean> {
     return from(
-      this.tokenContract.methods
+      this.getterTokenContract.methods
         .isUsernameAvailable(userName)
         .call()
     );
@@ -580,7 +580,7 @@ export class CheckMetamaskService {
    */
   public signupUser(user: Blockvitae.UserDetail): Observable<any> {
     return from(
-      this.tokenContract.methods
+      this.setterTokenContract.methods
         .createUserDetail(
           user.fullName,
           user.userName,
@@ -604,7 +604,7 @@ export class CheckMetamaskService {
    */
   public getAddrForUsername(username: string): Observable<string> {
     return from(
-      this.tokenContract.methods.getAddrForUserName(username).call()
+      this.getterTokenContract.methods.getAddrForUserName(username).call()
     );
   }
 
@@ -615,7 +615,7 @@ export class CheckMetamaskService {
    */
   private getEducationCount(): Observable<number> {
     return from(
-      this.tokenContract.methods.getEducationCount(this.owner).call()
+      this.getterTokenContract.methods.getEducationCount(this.owner).call()
     );
   }
 
@@ -627,7 +627,7 @@ export class CheckMetamaskService {
    */
   private getProjectCount(): Observable<number> {
     return from(
-      this.tokenContract.methods.getProjectCount(this.owner).call()
+      this.getterTokenContract.methods.getProjectCount(this.owner).call()
     );
   }
 
@@ -638,7 +638,7 @@ export class CheckMetamaskService {
    */
   private getPublicationCount(): Observable<number> {
     return from(
-      this.tokenContract.methods.getPublicationCount(this.owner).call()
+      this.getterTokenContract.methods.getPublicationCount(this.owner).call()
     );
   }
 
@@ -649,7 +649,7 @@ export class CheckMetamaskService {
    */
   private getWorkExpCount(): Observable<number> {
     return from(
-      this.tokenContract.methods.getWorkExpCount(this.owner).call()
+      this.getterTokenContract.methods.getWorkExpCount(this.owner).call()
     );
   }
 
