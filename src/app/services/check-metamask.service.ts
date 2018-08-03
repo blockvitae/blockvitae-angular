@@ -560,6 +560,7 @@ export class CheckMetamaskService {
   * @returns Observable<boolean>
   */
   public checkUserNameAvailability(userName: string): Observable<boolean> {
+    userName = this.web3.utils.fromAscii(userName);
     return from(
       this.getterTokenContract.methods
         .isUsernameAvailable(userName)
@@ -583,7 +584,7 @@ export class CheckMetamaskService {
       this.setterTokenContract.methods
         .createUserDetail(
           user.fullName,
-          user.userName,
+          this.web3.utils.fromAscii(user.userName),
           '',
           user.email,
           '',
@@ -603,6 +604,7 @@ export class CheckMetamaskService {
    * @returns Observable<string>
    */
   public getAddrForUsername(username: string): Observable<string> {
+    username = this.web3.utils.fromAscii(username);
     return from(
       this.getterTokenContract.methods.getAddrForUserName(username).call()
     );

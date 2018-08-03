@@ -26,6 +26,7 @@ class="signup-card">
                 [(ngModel)]="user.userName"
                 name="userName"
                 (blur)="checkUserNameAvailability()" 
+                max-length="20"
                 required/>
               </mat-form-field>
     
