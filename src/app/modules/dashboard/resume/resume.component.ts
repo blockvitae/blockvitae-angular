@@ -114,7 +114,6 @@ export class ResumeComponent implements OnInit {
     dialogRef.afterClosed().subscribe(data => {
       if (data) {
         this.userDetail = data;
-
         this.updateUserDetail();
       }
       else {

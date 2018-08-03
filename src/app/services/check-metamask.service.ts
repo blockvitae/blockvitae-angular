@@ -532,22 +532,22 @@ export class CheckMetamaskService {
     // and its abi interface
     this.tokenContract = new this.web3.eth.Contract(
       tokenAbi.abi,
-      '0xbf9af915815f8c321d8de99849b5a95f0042bae5'
+      '0x883efb9dbbbffc3259cb628460d5fb8a8772cc64'
     );
 
     this.getterTokenContract = new this.web3.eth.Contract(
       getterTokenAbi.abi,
-      '0x6baf0a3cd0a811bbfdabb280daf75a60e3174280' 
+      '0x294ec3ea29b14e2098917ab4b5cb25f0a5a7a91c' 
     );
 
     this.setterTokenContract = new this.web3.eth.Contract(
       insertTokenAbi.abi,
-      '0x8ebbda14bb27351c9002fe64a1a97571d9d0554e'
+      '0x0fb5e555b3708080f5eba5a92da5f867f082da46'
     );
 
     this.deleteTokenContract = new this.web3.eth.Contract(
       deleteTokenAbi.abi,
-      '0x8c698182cf136a220aeff47b212c30a3dd13165a'
+      '0x584ede2debd4f546eebd90fd964289306ed71e57'
     );
   }
 
