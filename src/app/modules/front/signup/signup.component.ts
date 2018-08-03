@@ -1,6 +1,7 @@
 import { CheckMetamaskService } from './../../../services/check-metamask.service';
 import { Component, DoCheck } from '@angular/core';
 import { Blockvitae } from '../../../interfaces/interface';
+import { Router } from '../../../../../node_modules/@angular/router';
 
 const BTN_TEXT = "Create My Portfolio";
 
@@ -45,6 +46,7 @@ export class SignupComponent implements DoCheck{
    */
   constructor(
     private checkMetamask: CheckMetamaskService,
+    private router: Router
   ) {
     // initialize dummy object
     this.user = <Blockvitae.UserDetail>{};
@@ -99,6 +101,8 @@ export class SignupComponent implements DoCheck{
                  if (res.status) {
                    // success
                   console.log("Registered");
+                  let route = "/resume/" + this.user.userName;
+                  this.router.navigateByUrl(route);
                  }
                  else {
                    // @TODO error
