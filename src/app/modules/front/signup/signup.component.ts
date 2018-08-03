@@ -100,9 +100,8 @@ export class SignupComponent implements DoCheck{
                .subscribe(res => {
                  if (res.status) {
                    // success
-                  console.log("Registered");
                   let route = "/resume/" + this.user.userName;
-                  this.router.navigateByUrl(route);
+                  window.location.href = 'https://blockvitae.herokuapp.com'+route;
                  }
                  else {
                    // @TODO error
