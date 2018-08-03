@@ -2,13 +2,13 @@
   <mat-card fxLayout="column" fxFlex="90" fxFlexOffset="5">
 
     <!--Profile Image-->
-    <div class="bv-container bv-first-container">
+    <div class="bv-container bv-first-container" fxLayout.sm="column" fxLayout.xs="column">
       <div fxFlex="20" fxLayoutAlign="start">
         <div>
           <img class="bv-profile-img" [src]="userDetail.imgUrl" [alt]="userDetail.fullName" />
         </div>
       </div>
-      <div fxFlexOffset="1" fxFlex="80">
+      <div fxFlexOffset="1" fxFlex="80" fxFlex.sm="100" fxFlex.xs="100">
         <span class="bv-name">
           {{userDetail.fullName}}
           <a 
