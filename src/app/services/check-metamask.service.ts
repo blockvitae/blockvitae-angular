@@ -560,6 +560,7 @@ export class CheckMetamaskService {
   * @returns Observable<boolean>
   */
   public checkUserNameAvailability(userName: string): Observable<boolean> {
+    userName = userName.toLowerCase();
     userName = this.web3.utils.fromAscii(userName);
     return from(
       this.getterTokenContract.methods
@@ -580,6 +581,7 @@ export class CheckMetamaskService {
    * @returns Observable<any>
    */
   public signupUser(user: Blockvitae.UserDetail): Observable<any> {
+    user.userName = user.userName.toLowerCase();
     return from(
       this.setterTokenContract.methods
         .createUserDetail(
@@ -604,6 +606,7 @@ export class CheckMetamaskService {
    * @returns Observable<string>
    */
   public getAddrForUsername(username: string): Observable<string> {
+    username = username.toLowerCase();
     username = this.web3.utils.fromAscii(username);
     return from(
       this.getterTokenContract.methods.getAddrForUserName(username).call()
