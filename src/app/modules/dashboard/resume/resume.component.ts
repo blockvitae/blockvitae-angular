@@ -17,6 +17,8 @@ import { UserSocialDialogComponent } from '../dialog/user-social-dialog/user-soc
 import * as _moment from 'moment';
 import { PublicationDialogComponent } from '../dialog/publication-dialog/publication-dialog.component';
 
+const NO_USERNAME = "0x0000000000000000000000000000000000000000";
+
 @Component({
   selector: 'app-resume',
   templateUrl: './resume.component.html',
@@ -639,11 +641,16 @@ export class ResumeComponent implements OnInit {
       .subscribe(params => {
         // TODO: validate username
         this.urlUsername = params.get('username');
-
+        
         // get address for username
         this.checkMetamask
           .getAddrForUsername(this.urlUsername)
           .subscribe(res => {
+            // username not found
+            if (res == NO_USERNAME) {
+              this.router.navigateByUrl('/not-found');
+            }
+            
             this.checkMetamask.owner = res;
 
             // get Introduction
@@ -683,7 +690,7 @@ export class ResumeComponent implements OnInit {
               this.isOwner = false;
           },
             err => {
-              this.router.navigateByUrl('/not-found')
+              this.router.navigateByUrl('/not-found');
             })
       })
   }
