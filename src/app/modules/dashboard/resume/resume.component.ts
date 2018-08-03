@@ -208,8 +208,7 @@ export class ResumeComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(userPublication => {
-      if (userPublication != null) {
-
+      if (userPublication) {
         // update blockchain
         this.updatePublication(userPublication)
       }
@@ -230,7 +229,7 @@ export class ResumeComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(userWork => {
-      if (userWork != null) {
+      if (userWork) {
 
         // change date start format
         if (userWork.dateStart != null) {
@@ -265,7 +264,7 @@ export class ResumeComponent implements OnInit {
     })
 
     dialogRef.afterClosed().subscribe(project => {
-      if (project != null) {
+      if (project) {
 
         if (!userProject.url) {
           userProject.url = "";
@@ -291,7 +290,7 @@ export class ResumeComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(education => {
-      if (education != null) {
+      if (education) {
 
         // change date start format
         if (userEdu.dateStart != null)
