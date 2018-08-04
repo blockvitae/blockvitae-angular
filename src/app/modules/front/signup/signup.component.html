@@ -8,7 +8,7 @@ class="signup-card">
       <div fxFlexFill>
           <h2 *ngIf="web3Installed && ropstenSelected">Getting Started</h2>
           <span *ngIf="!isUsernameAvailable || !isCorrectUsername" class="error">{{errorMsg}}</span>
-          <form *ngIf="web3Installed && ropstenSelected">
+          <form *ngIf="web3Installed && ropstenSelected" #signUp="ngForm">
               <mat-form-field>
                 <input 
                 matInput 
@@ -54,7 +54,7 @@ class="signup-card">
               color="primary" 
               fxFlexFill
               (click)="registerUser()"
-              [disabled]="registrationInProcess || !isUsernameAvailable">
+              [disabled]="registrationInProcess || !isUsernameAvailable || !isCorrectUsername || signUp.form.invalid">
               {{btnText}} 
               <mat-spinner diameter="20" *ngIf="registrationInProcess"></mat-spinner>
             </button>
