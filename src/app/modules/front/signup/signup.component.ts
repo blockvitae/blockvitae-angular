@@ -10,7 +10,7 @@ const BTN_TEXT = "Create My Portfolio";
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
-export class SignupComponent implements DoCheck{
+export class SignupComponent implements DoCheck {
 
   // user object containing
   // fullname, email and username
@@ -39,7 +39,15 @@ export class SignupComponent implements DoCheck{
   // waiting for response
   public btnText: string;
 
+  // web3 installed
   public web3Installed: boolean;
+
+  // Regex for username
+  // @Ref: https://stackoverflow.com/a/12019115/7868843
+  private regexp: RegExp;
+
+  // true if username has correct Regex
+  public isCorrectUsername: boolean;
 
   /**
    * constructor
@@ -53,9 +61,11 @@ export class SignupComponent implements DoCheck{
     this.address = "";
     this.ropstenSelected = true;
     this.isUsernameAvailable = false;
+    this.isCorrectUsername = false;
     this.registrationInProcess = false;
     this.errorMsg = "";
     this.btnText = BTN_TEXT;
+    this.regexp = new RegExp('^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$');
 
     // initialize web3
     this.checkMetamask.initializeDappBrowser();
@@ -80,12 +90,18 @@ export class SignupComponent implements DoCheck{
    * already been taken or not
    */
   public checkUserNameAvailability() {
+    this.isCorrectUsername = this.regexp.test(this.user.userName);
+    if (this.isCorrectUsername) {
       this.checkMetamask.checkUserNameAvailability(this.user.userName)
-                 .subscribe(res =>  {
-                    this.isUsernameAvailable = res;
-                    if (!this.isUsernameAvailable)
-                      this.errorMsg = "Username is already taken!";
-                 });
+        .subscribe(res => {
+          this.isUsernameAvailable = res;
+          if (!this.isUsernameAvailable)
+            this.errorMsg = "Username is already taken!";
+        });
+    }
+    else {
+      this.errorMsg = "Invalid Username! Max-length allowed: 20, no @, _ or . at the beginning, no __ or _. or ._ or .. inside, no _ or . at the end";
+    }
   }
 
   /**
@@ -97,17 +113,17 @@ export class SignupComponent implements DoCheck{
     this.registrationInProcess = true;
     this.btnText = "Please Wait...";
     this.checkMetamask.signupUser(this.user)
-               .subscribe(res => {
-                 if (res.status) {
-                   // success
-                  let route = "/resume/" + this.user.userName;
-                  window.location.href = 'https://blockvitae.herokuapp.com'+route;
-                 }
-                 else {
-                   // @TODO error
-                 }
-                 this.registrationInProcess = false;
-                 this.btnText = BTN_TEXT;
-                });          
+      .subscribe(res => {
+        if (res.status) {
+          // success
+          let route = "/resume/" + this.user.userName;
+          window.location.href = 'https://blockvitae.herokuapp.com' + route;
+        }
+        else {
+          // @TODO error
+        }
+        this.registrationInProcess = false;
+        this.btnText = BTN_TEXT;
+      });
   }
 }
