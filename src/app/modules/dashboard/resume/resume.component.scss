@@ -49,6 +49,7 @@ hr {
 .bv-about {
     text-align: justify;
     font-size: 14px;
+    white-space: pre-line; // preserves whitespace and new line in description
 }
 
 button {
@@ -81,6 +82,7 @@ button {
     font-size: 14px;
     margin-left: 24px;
     text-align: justify;
+    white-space: pre-line; // preserves whitespace and new line in description
 }
 
 .bv-social {
